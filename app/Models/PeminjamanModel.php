@@ -112,5 +112,19 @@ class PeminjamanModel extends Model {
     $builder->update();
   }
 
+  public function insert_tabel_kembali($data){
+    $db = \Config\Database::connect();
+    $builder = $db->table('data_pengembalian');
+    $builder->insert($data);
+  }
+
+  public function delete_pengembalian($id){
+    $db = \Config\Database::connect();
+    $builder = $db->table('data_pengembalian');
+    $builder->where('id_peminjaman', $id);
+    $query = $builder->delete();
+    return $query;
+  }
+
 }
 ?>

@@ -67,6 +67,7 @@
                     <th>Eksemplar</th>
                     <th>No. Rak</th>
                     <th>Kategori</th>
+                    <th>QR Code</th>
                     <th>Aksi</th>
                   </tr>
                 </thead>
@@ -83,6 +84,7 @@
                     <th>Eksemplar</th>
                     <th>No. Rak</th>
                     <th>Kategori</th>
+                    <th>QR Code</th>
                     <th>Aksi</th>
                   </tr>
                 </tfoot>

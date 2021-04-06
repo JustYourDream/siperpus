@@ -20,4 +20,5 @@
   <link rel="stylesheet" href="<?= base_url('../../assets/vendor/sweetalert2/dist/sweetalert2.min.css') ?>">
   <!-- Argon CSS -->
   <link rel="stylesheet" href="<?= base_url('../../assets/css/argon.css?v=1.1.0')?>" type="text/css">
+
 </head>

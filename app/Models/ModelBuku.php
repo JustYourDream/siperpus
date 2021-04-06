@@ -7,8 +7,8 @@ use CodeIgniter\Model;
 class ModelBuku extends Model {
 
 protected $table = "data_buku";
-protected $column_order = array('no_induk','isbn','judul_buku','pengarang_buku','kota_dibuat','penerbit_buku','tahun_buku','eksemplar_buku','no_rak','kategori_buku');
-protected $column_search = array('no_induk','isbn','judul_buku','pengarang_buku','kota_dibuat','penerbit_buku','tahun_buku','eksemplar_buku','no_rak','kategori_buku');
+protected $column_order = array('no_induk','isbn','judul_buku','pengarang_buku','kota_dibuat','penerbit_buku','tahun_buku','eksemplar_buku','no_rak','kategori_buku','qr_code');
+protected $column_search = array('no_induk','isbn','judul_buku','pengarang_buku','kota_dibuat','penerbit_buku','tahun_buku','eksemplar_buku','no_rak','kategori_buku','qr_code');
 protected $order = array('no_induk' => 'asc');
 protected $request;
 protected $db;

@@ -138,6 +138,7 @@ function cari_buku(buku)
           'Data buku ditemukan!',
           'success'
         );
+        $('#jml').val(data[0].eksemplar_buku);
         $('#btnSave').attr('disabled',false);
       }
       if(!data[0]){
@@ -352,32 +353,34 @@ function hapus_peminjaman(id, induk)
             </div>
           </div>
           <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-5">
               <div class="form-group">
                 <label for="buku" class="form-control-label">No. Induk Buku</label>
                 <div class="input-group">
                   <input type="text" class="form-control" placeholder="No. Induk" id="buku" name="buku">
                   <div class="input-group-append">
-                    <button class="btn btn-outline-primary" type="button" id="cari" onclick="cari_buku(document.getElementById('buku').value)"><i class="fas fa-search"></i></button>
+                    <button class="btn btn-outline-primary" type="button" id="scan_buku" data-toggle="modal" data-target="#modal_qr" onclick="start_cam()"><i class="fas fa-qrcode"></i></button>
+                    <button class="btn btn-primary" type="button" id="cari" onclick="cari_buku(document.getElementById('buku').value)"><i class="fas fa-search"></i></button>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-5">
               <div class="form-group">
                 <label for="anggota" class="form-control-label">No. Induk Anggota</label>
                 <div class="input-group">
                   <input type="text" class="form-control" placeholder="No. Anggota" id="anggota" name="anggota">
                   <div class="input-group-append">
-                    <button class="btn btn-outline-primary" type="button" id="anggota"><i class="fas fa-search"></i></button>
+                    <button class="btn btn-outline-primary" type="button" id="scan_anggota"><i class="fas fa-qrcode"></i></button>
+                    <button class="btn btn-primary" type="button" id="search_anggota"><i class="fas fa-search"></i></button>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
               <div class="form-group">
                 <label for="jml" class="form-control-label">Jumlah Pinjam</label>
-                <input class="form-control" type="text" name="jml" id="jml" placeholder="Jumlah Pinjam">
+                <input class="form-control" type="number" name="jml" id="jml" min="1">
               </div>
             </div>
           </div>
@@ -391,4 +394,5 @@ function hapus_peminjaman(id, induk)
   </div>
 </div>
 <!--End Of Modal Add-->
+<?php include('_partials/modal_scan.php'); ?>
 </html>

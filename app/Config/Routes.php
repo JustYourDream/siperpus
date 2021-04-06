@@ -33,10 +33,11 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
-$routes->get('petugas/dashboard_petugas', 'Petugas/Dashboard_Petugas::index');
-$routes->get('petugas/databuku_petugas', 'Petugas/DataBuku_Petugas::index');
-$routes->get('petugas/datapeminjaman_petugas','Petugas/DataPeminjaman_Petugas::index');
-$routes->get('petugas/akun_petugas','Petugas/Akun_Petugas::index');
+$routes->get('petugas/dashboard_petugas', 'Petugas/Dashboard_Petugas::index',['filter' => 'auth']);
+$routes->get('petugas/databuku_petugas', 'Petugas/DataBuku_Petugas::index',['filter' => 'auth']);
+$routes->get('petugas/datapeminjaman_petugas','Petugas/DataPeminjaman_Petugas::index',['filter' => 'auth']);
+$routes->get('petugas/datapengembalian_petugas','Petugas/DataPengembalian_Petugas::index',['filter' => 'auth']);
+$routes->get('petugas/akun_petugas','Petugas/Akun_Petugas::index',['filter' => 'auth']);
 
 /*
  * --------------------------------------------------------------------

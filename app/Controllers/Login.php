@@ -48,3 +48,4 @@ class Login extends Controller
         return redirect()->to('/login');
     }
 }
+?>

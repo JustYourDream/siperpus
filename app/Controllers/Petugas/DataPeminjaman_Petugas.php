@@ -42,7 +42,7 @@ class DataPeminjaman_Petugas extends Controller{
         }
         else if($list->status == "Menunggu"){
           $row[] = '<a class="btn btn-sm btn-primary btn-block" href="javascript:void(0)" title="Confirm" onclick="konfirmasi_pinjam('."'".$list->id_peminjaman."'".')"><i class="fas fa-thumbs-up"></i> Konfirmasi</a>
-                    <button class="btn btn-sm btn-success btn-block" style="background-color: grey; border-color: grey;" title="Back disabled" ><i class="fas fa-check-double"></i> Kembali</a>
+                    <button class="btn btn-sm btn-success btn-block" style="background-color: grey; border-color: grey;" title="Back disabled" ><i class="fas fa-check-double"></i> Kembali</button>
                     <a class="btn btn-sm btn-danger btn-block" href="javascript:void(0)" title="Del" onclick="hapus_peminjaman('."'".$list->id_peminjaman."'".','."'".$list->id_buku."'".')"><i class="fas fa-trash-alt"></i> Hapus</a>';
         }
 
@@ -92,12 +92,24 @@ class DataPeminjaman_Petugas extends Controller{
     $request = Services::request();
     $pinjam = new PeminjamanModel($request);
 
-    //Update Stok Buku//
-    $stok_kembali = implode(" ",$pinjam->select('jml_pinjam')->where(['id_peminjaman' => $id])->first());
-    $update_stok = $pinjam->update_stok_plus(array('no_induk' => $induk), $stok_kembali);
+    $status = implode(" ",$pinjam->select('status')->where(['id_peminjaman' => $id])->first());
+    if($status == "Dikembalikan"){
+      //Hapus Data
+      $lists = $pinjam->delete_by_id($id, $induk);
 
-    //Hapus Data
-    $lists = $pinjam->delete_by_id($id, $induk);
+      //Hapus Data Tabel PengembalianModel
+      $hapus_pengembalian = $pinjam->delete_pengembalian($id);
+    }else{
+      //Update Stok Buku//
+      $stok_kembali = implode(" ",$pinjam->select('jml_pinjam')->where(['id_peminjaman' => $id])->first());
+      $update_stok = $pinjam->update_stok_plus(array('no_induk' => $induk), $stok_kembali);
+
+      //Hapus Data
+      $lists = $pinjam->delete_by_id($id, $induk);
+
+      //Hapus Data Tabel PengembalianModel
+      $hapus_pengembalian = $pinjam->delete_pengembalian($id);
+    }
 
     echo json_encode(array("status" => TRUE));
   }
@@ -132,6 +144,41 @@ class DataPeminjaman_Petugas extends Controller{
     //Stok update
     $stok_kembali = implode(" ",$pinjam->select('jml_pinjam')->where(['id_peminjaman' => $id])->first());
     $update_stok = $pinjam->update_stok_plus(array('no_induk' => $induk), $stok_kembali);
+
+    //Insert Ke Tabel kembali
+    $tgl_pinjam = implode(" ", $pinjam->select('tanggal_pinjam')->where(['id_peminjaman' => $id])->first());
+    $id_anggota = implode(" ", $pinjam->select('id_anggota')->where(['id_peminjaman' => $id])->first());
+    $tgl_kembali = implode(" ", $pinjam->select('tanggal_kembali')->where(['id_peminjaman' => $id])->first());
+    $date_kembali = date_create(date("Y-m-d",strtotime($tgl_kembali)));
+    $tgl_sekarang = date_create(date("Y-m-d",strtotime(date("Y-m-d"))));
+    $date_sekarang = $tgl_sekarang->format('Y-m-d');
+    $kalkulasi = date_diff($date_kembali, $tgl_sekarang);
+    $hasil_terlambat = $kalkulasi->format('%r%d');
+    $denda = (int)$hasil_terlambat*500;
+    if($hasil_terlambat <= 0){
+      $data = array(
+        'id_peminjaman' => $id,
+        'tanggal_pinjam' => $tgl_pinjam,
+        'tanggal_kembali' => $tgl_kembali,
+        'id_anggota' => $id_anggota,
+        'tgl_dikembalikan' => $date_sekarang,
+        'denda' => "0",
+        'status_pembayaran' => "Tidak Ada",
+      );
+      $insert_kembali = $pinjam->insert_tabel_kembali($data);
+    }else if($hasil_terlambat >= 1){
+      $data = array(
+        'id_peminjaman' => $id,
+        'tanggal_pinjam' => $tgl_pinjam,
+        'tanggal_kembali' => $tgl_kembali,
+        'id_anggota' => $id_anggota,
+        'tgl_dikembalikan' => $date_sekarang,
+        'denda' => $denda,
+        'status_pembayaran' => "Belum Dibayar",
+      );
+      $insert_kembali = $pinjam->insert_tabel_kembali($data);
+    }
+
     echo json_encode(array("status" => TRUE));
   }
 }
