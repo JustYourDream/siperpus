@@ -17,13 +17,25 @@
       <ul class="navbar-nav align-items-center ml-auto ml-md-0">
         <li class="nav-item dropdown">
           <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <div class="media align-items-center">
+            <div class="media align-items-center" id="account">
+              <?php
+                $db = \Config\Database::connect();
+                $id = session()->get('id');
+                $query = $db->query('SELECT foto_petugas,nama_petugas FROM petugas WHERE id_petugas = "'.$id.'"');
+                $result = $query->getResult();
+
+                foreach ($result as $row){
+
+              ?>
               <span class="avatar avatar-sm rounded-circle">
-                <img alt="Image placeholder" id="profile">
+                <img alt="Image placeholder" id="profile" src="../assets/img/profile_pic/<?= $row->foto_petugas ?>">
               </span>
               <div class="media-body ml-2 d-none d-lg-block">
-                <span class="mb-0 text-sm  font-weight-bold"><?php echo session()->get('nama')?></span>
+                <span class="mb-0 text-sm  font-weight-bold"><?= $row->nama_petugas; ?></span>
               </div>
+              <?php
+                }
+              ?>
             </div>
           </a>
           <div class="dropdown-menu dropdown-menu-right">

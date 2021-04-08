@@ -35,6 +35,7 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Home::index');
 $routes->get('petugas/dashboard_petugas', 'Petugas/Dashboard_Petugas::index',['filter' => 'auth']);
 $routes->get('petugas/databuku_petugas', 'Petugas/DataBuku_Petugas::index',['filter' => 'auth']);
+$routes->get('petugas/dataanggota_petugas', 'Petugas/DataAnggota_Petugas::index',['filter' => 'auth']);
 $routes->get('petugas/datapeminjaman_petugas','Petugas/DataPeminjaman_Petugas::index',['filter' => 'auth']);
 $routes->get('petugas/datapengembalian_petugas','Petugas/DataPengembalian_Petugas::index',['filter' => 'auth']);
 $routes->get('petugas/akun_petugas','Petugas/Akun_Petugas::index',['filter' => 'auth']);

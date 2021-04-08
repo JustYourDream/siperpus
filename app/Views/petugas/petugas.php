@@ -30,7 +30,7 @@
               <h6 class="h2 text-white d-inline-block mb-0">Dashboard</h6>
               <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                  <li class="breadcrumb-item"><a href="<?php echo base_url('petugas/databuku_petugas')?>"><i class="fas fa-home"></i></a></li>
+                  <li class="breadcrumb-item"><a href="<?php echo base_url('petugas/dashboard_petugas')?>"><i class="fas fa-home"></i></a></li>
                 </ol>
               </nav>
             </div>

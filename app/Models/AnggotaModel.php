@@ -4,12 +4,12 @@ namespace App\Models;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\Model;
 
-class ModelBuku extends Model {
+class AnggotaModel extends Model {
 
-  protected $table = "data_buku";
-  protected $column_order = array('no_induk','isbn','judul_buku','pengarang_buku','kota_dibuat','penerbit_buku','tahun_buku','eksemplar_buku','no_rak','kategori_buku','qr_code');
-  protected $column_search = array('no_induk','isbn','judul_buku','pengarang_buku','kota_dibuat','penerbit_buku','tahun_buku','eksemplar_buku','no_rak','kategori_buku','qr_code');
-  protected $order = array('no_induk' => 'asc');
+  protected $table = "data_anggota";
+  protected $column_order = array('no_anggota','nama_anggota','tempat_lahir','tanggal_lahir','alamat_anggota','agama_anggota','jkel_anggota','foto_anggota','qr_anggota');
+  protected $column_search = array('no_anggota','nama_anggota');
+  protected $order = array('no_anggota' => 'asc');
   protected $request;
   protected $db;
   protected $dt;
@@ -55,33 +55,6 @@ class ModelBuku extends Model {
     return $query->getResult();
   }
 
-  public function save_buku($data)
-  {
-    $query = $this->dt->insert($data);
-    return $query;
-  }
-
-  public function get_by_id($id)
-  {
-    $this->dt->from($this->data_buku);
-    $this->dt->where('no_induk',$id);
-    $query = $this->dt->get();
-    return $query->getResult();
-  }
-
-  public function buku_update($where, $data)
-  {
-    $this->dt->update($data, $where);
-    $query = $this->dt->get();
-    return $query->getResult();
-  }
-
-  public function delete_by_id($id)
-  {
-    $query = $this->dt->delete(array('no_induk' => $id));
-    return $query;
-  }
-
   function count_filtered(){
     $this->_get_datatables_query();
     return $this->dt->countAllResults();
@@ -92,4 +65,53 @@ class ModelBuku extends Model {
     return $tbl_storage->countAllResults();
   }
 
+  public function save_anggota($data)
+  {
+    $query = $this->dt->insert($data);
+    return $query;
+  }
+
+  public function save_pengguna($data)
+  {
+    $db = \Config\Database::connect();
+    $builder = $db->table('pengguna');
+    $builder->insert($data);
+  }
+
+  public function get_by_id($id)
+  {
+    $this->dt->from($this->data_anggota);
+    $this->dt->where('no_anggota',$id);
+    $query = $this->dt->get();
+    return $query->getResult();
+  }
+
+  public function update_anggota($where, $data)
+  {
+    $this->dt->update($data, $where);
+    $query = $this->dt->get();
+    return $query->getResult();
+  }
+
+  public function update_akun_anggota($where, $data)
+  {
+    $db = \Config\Database::connect();
+    $builder = $db->table('pengguna');
+    $builder->update($data, $where);
+  }
+
+  public function delete_by_id($id)
+  {
+    $query = $this->dt->delete(array('no_anggota' => $id));
+    return $query;
+  }
+
+  public function delete_akun($id)
+  {
+    $db = \Config\Database::connect();
+    $builder = $db->table('pengguna');
+    $builder->delete(array('id' => $id));
+  }
+
 }
+?>

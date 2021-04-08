@@ -39,5 +39,10 @@ class PetugasModel extends Model{
     $query = $builder->get();
     return $query->getResult();
   }
+  public function simpan_gambar($where, $data){
+    $db = \Config\Database::connect();
+    $builder = $db->table('petugas');
+    $builder->update($data, $where);
+  }
 }
 ?>

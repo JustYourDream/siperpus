@@ -64,4 +64,75 @@ class Akun_Petugas extends Controller
 			return redirect()->back();
 		}
 	}
+	public function upload_foto() {
+		helper(['form', 'url']);
+		$petugas = new PetugasModel();
+		$id = session()->get('id');
+		if ($this->request->getMethod() !== 'post') {
+			return redirect()->back();
+		}
+		$input = $this->validate([
+				'file' => [
+									'uploaded[file]',
+									'mime_in[file,image/jpg,image/jpeg,image/png]',
+									'max_size[file,2048]',
+				]
+		]);
+
+		if (!$input) {
+			return redirect()->back()->with('error', '<span class="alert-text"><strong>Gagal!</strong> Gagal mengganti foto profil!</span>
+			 																					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				 																			   <span aria-hidden="true">&times;</span>
+			 																				 	</button>');
+		} else {
+			//Ambil data gambar
+			$upload = $this->request->getFile('file');
+
+			//Generate nama file
+			$nama_foto = $id."-PIC";
+
+			//Hapus Foto Sebelumnya
+			$target_foto = "../public/assets/img/profile_pic/{$nama_foto}";
+			if(is_file($target_foto) == TRUE){
+				unlink($target_foto);
+			}
+
+			//Upload
+			$upload->move(WRITEPATH . '../public/assets/img/profile_pic/',$nama_foto);
+
+			//Crop image
+			$cropped_img = \Config\Services::image()->withFile('../public/assets/img/profile_pic/'.$nama_foto)->fit(512,512, 'center')->save('../public/assets/img/profile_pic/'.$nama_foto);
+
+			$data = array(
+				'foto_petugas' => $nama_foto,
+			);
+			$petugas->simpan_gambar(array('id_petugas' => $id), $data);
+			return redirect()->back()->with('success', '<span class="alert-text"><strong>Sukses!</strong> Foto profil berhasil diubah</span>
+																									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+																									  <span aria-hidden="true">&times;</span>
+																									</button>');
+		}
+	}
+	public function hapus_foto(){
+		$petugas = new PetugasModel();
+		$id = session()->get('id');
+		$data = array(
+			'foto_petugas' => "DEFAULT-PIC",
+		);
+
+		$petugas->simpan_gambar(array('id_petugas' => $id), $data);
+		
+		//Generate nama file
+		$nama_foto = $id."-PIC";
+
+		//Hapus Foto Sebelumnya
+		$target_foto = "../public/assets/img/profile_pic/{$nama_foto}";
+		if(is_file($target_foto) == TRUE){
+			unlink($target_foto);
+		}
+		return redirect()->back()->with('success', '<span class="alert-text"><strong>Sukses!</strong> Berhasil hapus foto</span>
+																								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+																									<span aria-hidden="true">&times;</span>
+																								</button>');
+	}
 }

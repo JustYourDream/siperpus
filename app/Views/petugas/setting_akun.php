@@ -41,7 +41,7 @@
               </nav>
             </div>
             <div class="col-lg-6 col-5 text-right">
-              <a href="#" class="btn btn-sm btn-default"><i class="ni ni-paper-diploma"></i> Cetak</a>
+              <a href="#" class="btn btn-sm btn-secondary"><i class="ni ni-paper-diploma"></i> Cetak</a>
             </div>
           </div>
         </div>
@@ -69,7 +69,6 @@
             <div class="card-header">
               <h3 class="mb-0"><i class="fas fa-user-cog"></i> Pengaturan Akun</h3>
             </div>
-            <form action="#" id="form">
               <div class="card-body">
                 <!-- Input groups with icon -->
                 <div class="row" style="padding-bottom: 30px;">
@@ -78,13 +77,14 @@
                   </div>
                   <div class="col-md-2" style="padding-top: 20px;">
                     <div class="row" style="padding-bottom: 10px;">
-                      <button class="btn btn-block btn-default">Ubah Foto</button>
+                      <button class="btn btn-block btn-default" data-toggle="modal" data-target="#modal_foto">Ubah Foto</button>
                     </div>
                     <div class="row">
-                      <button class="btn btn-block btn-danger">Hapus Foto</button>
+                      <a class="btn btn-block btn-danger" href="<?php echo base_url('Petugas/Akun_Petugas/hapus_foto')?>">Hapus Foto</a>
                     </div>
                   </div>
                 </div>
+              <form action="#" id="form">
                 <div class="row">
                   <div class="col-md-3">
                     <div class="form-group">
@@ -152,8 +152,8 @@
                     </div>
                   </div>
                 </div>
+              </form>
               </div>
-            </form>
             <div class="card-footer">
               <div class="row">
                 <div class="col-md-9">
@@ -190,11 +190,8 @@
             $('[name="role"]').val(data[0].jabatan_petugas);
             $('[name="telp"]').val(data[0].no_telp_petugas);
             $('[name="address"]').val(data[0].alamat_petugas);
-            if (data[0].foto_petugas == ""){
-                $('#profil').attr('src','../../assets/img/default.jpg');
-            }else{
-                $('#profil').attr('src',data[0].foto_petugas);
-            }
+            $('#profil').attr('src','../../assets/img/profile_pic/'+data[0].foto_petugas);
+            $('#target').attr('src','../../assets/img/profile_pic/'+data[0].foto_petugas);
         },
         error: function (jqXHR, textStatus, errorThrown)
         {
@@ -202,6 +199,7 @@
         }
     });
   });
+
   function simpan_perubahan(){
     $('#btnSave').text('Menyimpan...'); //change button text
     $('#btnSave').attr('disabled',true); //set button disable
@@ -218,6 +216,7 @@
 
         $('#btnSave').text('Simpan Perubahan'); //change button text
         $('#btnSave').attr('disabled',false); //set button enable
+        $('#account').load("http://siperpus.amga/petugas/akun_petugas #account"); //Reload topnav
         Swal.fire(
           'Berhasil',
           'Data berhasil diupdate!',
@@ -237,6 +236,21 @@
 
       }
     });
+  }
+
+  function showImage(src, target) {
+    var fr = new FileReader();
+
+    fr.onload = function(){
+      target.src = fr.result;
+    }
+    fr.readAsDataURL(src.files[0]);
+  }
+
+  function putImage() {
+    var src = document.getElementById("file");
+    var target = document.getElementById("target");
+    showImage(src, target);
   }
 </script>
 <!--MODAL-->
@@ -273,4 +287,41 @@
   </div>
 </div>
 <!--End Of Modal-->
+
+<!-- Modal Ubah Foto -->
+<div class="modal fade" id="modal_foto" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+  <div class="modal-dialog modal-xs modal-dialog-centered modal-" role="document">
+    <div class="modal-content">
+      <form id="form_foto" action="<?php echo site_url('Petugas/Akun_Petugas/upload_foto')?>" method="post" enctype="multipart/form-data">
+        <div class="modal-header">
+          <h6 class="modal-title" id="modal-title-default">Upload Foto Profil Baru</h6>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body form" style="padding-top:0px; padding-bottom:0px;">
+          <div class="row" style="padding-bottom: 30px;">
+            <div class="col-md-12" align="center">
+              <img id="target" class="rounded-circle" height="200px" width="200px">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <div class="input-group input-group-merge">
+                  <input class="form-control" type="file" name="file" id="file" onchange="putImage()">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary">Upload</button>
+          <button type="button" class="btn btn-link  ml-auto" data-dismiss="modal" onclick="reset_upload()">Batal</button>
+        </div>
+      <form>
+    </div>
+  </div>
+</div>
+<!-- END of Modal Ubah Foto -->
 </html>

@@ -39,7 +39,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../../pages/widgets.html">
+            <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="dataanggota_petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/dataanggota_petugas')?>">
               <i class="ni ni-single-02 text-pink"></i>
               <span class="nav-link-text">Data Anggota</span>
             </a>
@@ -76,7 +76,7 @@
         <ul class="navbar-nav mb-md-3">
           <li class="nav-item">
             <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="akun_petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/akun_petugas')?>">
-              <i class="ni ni-spaceship"></i>
+              <i class="ni ni-settings"></i>
               <span class="nav-link-text">Pengaturan Akun</span>
             </a>
           </li>
