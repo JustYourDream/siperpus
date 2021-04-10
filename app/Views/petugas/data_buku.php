@@ -209,17 +209,19 @@ function save()
       }
 
       if (url = "<?php echo site_url('Petugas/DataBuku_Petugas/ajax_add')?>"){
-        Swal.fire(
-          'Berhasil',
-          'Data buku berhasil ditambahkan',
-          'success'
-        );
+        Swal.fire({
+          title: 'Berhasil',
+          text: "Data buku berhasil ditambahkan!",
+          type: 'success',
+          confirmButtonColor: '#5e72e4'
+        });
       }else if(url = "<?php echo site_url('Petugas/DataBuku_Petugas/ajax_update')?>"){
-        Swal.fire(
-          'Berhasil',
-          'Data buku berhasil diupdate!',
-          'success'
-        );
+        Swal.fire({
+          title: 'Berhasil',
+          text: "Data buku berhasil diupdate!",
+          type: 'success',
+          confirmButtonColor: '#5e72e4'
+        });
       }
       $('#btnSave').text('Simpan'); //change button text
       $('#btnSave').attr('disabled',false); //set button enable
@@ -228,7 +230,12 @@ function save()
     },
     error: function (jqXHR, textStatus, errorThrown)
     {
-      alert('Error adding / update data');
+      Swal.fire({
+        title: 'Gagal',
+        text: "Gagal update / tambah data buku!",
+        type: 'error',
+        confirmButtonColor: '#5e72e4'
+      });
       $('#btnSave').text('Simpan'); //change button text
       $('#btnSave').attr('disabled',false); //set button enable
 
@@ -237,35 +244,47 @@ function save()
 }
 function hapus_buku(NoInduk)
 {
-  if(confirm('Yakin hapus data buku ini?'))
-  {
-    // ajax delete data to database
-    $.ajax({
-      url : "<?php echo site_url('Petugas/DataBuku_Petugas/ajax_delete')?>/"+NoInduk,
-      type: "POST",
-      dataType: "JSON",
-      success: function(data)
-      {
-        //if success reload ajax table
-        Swal.fire(
-          'Berhasil',
-          'Data buku berhasil dihapus!',
-          'success'
-        );
-        $('#modal_form').modal('hide');
-        reload_table();
-      },
-      error: function (jqXHR, textStatus, errorThrown)
-      {
-        Swal.fire(
-          'Gagal',
-          'Data buku gagal dihapus!',
-          'error'
-        );
-      }
-    });
-
-  }
+  Swal.fire({
+    title: 'Yakin hapus data ini??',
+    text: "Data yang dihapus tidak dapat dikembalikan!",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#5e72e4',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Hapus',
+    cancelButtonText: 'Batal',
+    preConfirm: function(){
+      return new Promise(function(resolve){
+        $.ajax({
+          url : "<?php echo site_url('Petugas/DataBuku_Petugas/ajax_delete')?>/"+NoInduk,
+          type: "POST",
+          dataType: "JSON",
+          success: function(data)
+          {
+            //if success reload ajax table
+            Swal.fire({
+              title: 'Berhasil',
+              text: "Data berhasil dihapus!",
+              type: 'success',
+              confirmButtonColor: '#5e72e4'
+            });
+            $('#modal_form').modal('hide');
+            reload_table();
+          },
+          error: function (jqXHR, textStatus, errorThrown)
+          {
+            Swal.fire({
+              title: 'Gagal',
+              text: "Data gagal dihapus!",
+              type: 'error',
+              confirmButtonColor: '#5e72e4'
+            });
+          }
+        });
+      })
+    },
+    allowOutsideClick: false
+  });
 }
 </script>
 <!--MODAL-->

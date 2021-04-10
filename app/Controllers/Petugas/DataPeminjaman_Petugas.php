@@ -3,6 +3,7 @@ namespace App\Controllers\Petugas;
 use CodeIgniter\Controller;
 use App\Models\PeminjamanModel;
 use App\Models\ModelBuku;
+use App\Models\AnggotaModel;
 use Config\Services;
 
 class DataPeminjaman_Petugas extends Controller{
@@ -62,6 +63,13 @@ class DataPeminjaman_Petugas extends Controller{
     $buku = new ModelBuku($request);
     $lists = $buku->get_by_id($id);
     echo json_encode($lists);
+  }
+
+  public function cari_anggota($id){
+    $request = Services::request();
+    $anggota = new AnggotaModel($request);
+    $list = $anggota->get_by_id($id);
+    echo json_encode($list);
   }
 
   public function ajax_add()

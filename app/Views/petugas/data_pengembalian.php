@@ -129,34 +129,47 @@ function reload_table()
 
 function konfirmasi_bayar(id)
 {
-  if(confirm('Yakin konfirmasi pembayaran denda?'))
-  {
-    // ajax delete data to database
-    $.ajax({
-      url : "<?php echo site_url('Petugas/DataPengembalian_Petugas/ajax_bayar')?>/"+id,
-      type: "POST",
-      dataType: "JSON",
-      success: function(data)
-      {
-        //if success reload ajax table
-        Swal.fire(
-          'Berhasil',
-          'Pembayaran denda dikonfirmasi!',
-          'success'
-        );
-        $('#modal_form').modal('hide');
-        reload_table();
-      },
-      error: function (jqXHR, textStatus, errorThrown)
-      {
-        Swal.fire(
-          'Gagal',
-          'Gagal konfirmasi pembayaran denda!',
-          'error'
-        );
-      }
-    });
-  }
+  Swal.fire({
+    title: 'Yakin konfirmasi pembayaran denda?',
+    text: "Pilihan yang dipilih tidak dapat dibatalkan!",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#5e72e4',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Konfirmasi',
+    cancelButtonText: 'Batal',
+    preConfirm: function(){
+      return new Promise(function(resolve){
+        $.ajax({
+          url : "<?php echo site_url('Petugas/DataPengembalian_Petugas/ajax_bayar')?>/"+id,
+          type: "POST",
+          dataType: "JSON",
+          success: function(data)
+          {
+            //if success reload ajax table
+            Swal.fire({
+              title: 'Berhasil',
+              text: "Konfirmasi pembayaran denda berhasil!",
+              type: 'success',
+              confirmButtonColor: '#5e72e4'
+            });
+            $('#modal_form').modal('hide');
+            reload_table();
+          },
+          error: function (jqXHR, textStatus, errorThrown)
+          {
+            Swal.fire({
+              title: 'Gagal',
+              text: "Konfirmasi pembayaran gagal!",
+              type: 'error',
+              confirmButtonColor: '#5e72e4'
+            });
+          }
+        });
+      })
+    },
+    allowOutsideClick: false
+  });
 }
 </script>
 </html>

@@ -133,27 +133,73 @@ function cari_buku(buku)
     success: function(data)
     {
       if(data[0]){
-        Swal.fire(
-          'Ditemukan',
-          'Data buku ditemukan!',
-          'success'
-        );
+        Swal.fire({
+          title: 'Ditemukan',
+          text: "Data buku ditemukan!",
+          type: 'success',
+          confirmButtonColor: '#5e72e4'
+        });
         $('#jml').val(data[0].eksemplar_buku);
         $('#btnSave').attr('disabled',false);
       }
       if(!data[0]){
-        Swal.fire(
-          'Tidak Ditemukan',
-          'Data buku tidak ditemukan!',
-          'error'
-        );
+        Swal.fire({
+          title: 'Tidak Ditemukan',
+          text: "Data buku tidak ditemukan!",
+          type: 'error',
+          confirmButtonColor: '#5e72e4'
+        });
         $('#buku').val(null);
         $('#btnSave').attr('disabled',true);
       }
     },
     error: function (jqXHR, textStatus, errorThrown)
     {
-      alert('Masukkan No. Induk Dahulu!');
+      Swal.fire({
+        title: 'Error',
+        text: "Masukkan nomor induk dulu!",
+        type: 'error',
+        confirmButtonColor: '#5e72e4'
+      });
+    }
+  });
+}
+
+function cari_anggota(anggota)
+{
+  //Ajax Load data from ajax
+  $.ajax({
+    url : "<?php echo site_url('Petugas/DataPeminjaman_Petugas/cari_anggota')?>/" + anggota,
+    type: "GET",
+    dataType: "JSON",
+    success: function(data)
+    {
+      if(data[0]){
+        Swal.fire({
+          title: 'Ditemukan',
+          text: "Anggota ditemukan!",
+          type: 'success',
+          confirmButtonColor: '#5e72e4'
+        });
+      }
+      if(!data[0]){
+        Swal.fire({
+          title: 'Tidak Ditemukan',
+          text: "Anggota tidak ditemukan!",
+          type: 'error',
+          confirmButtonColor: '#5e72e4'
+        });
+        $('#anggota').val(null);
+      }
+    },
+    error: function (jqXHR, textStatus, errorThrown)
+    {
+      Swal.fire({
+        title: 'Error',
+        text: "Masukkan nomor anggota dulu!",
+        type: 'error',
+        confirmButtonColor: '#5e72e4'
+      });
     }
   });
 }
@@ -199,22 +245,24 @@ function simpan_tambah(){
         $('#anggota').val(null);
         $('#jml').val(null);
         reload_table();
-        Swal.fire(
-          'Berhasil',
-          'Berhasil melakukan peminjaman!',
-          'success'
-        );
+        Swal.fire({
+          title: 'Berhasil',
+          text: "Berhasil melakukan peminjaman!",
+          type: 'success',
+          confirmButtonColor: '#5e72e4'
+        });
       }
       $('#btnSave').text('Simpan'); //change button text
 
     },
     error: function (jqXHR, textStatus, errorThrown)
     {
-      Swal.fire(
-        'Gagal',
-        'Gagal melakukan peminjaman!',
-        'error'
-      );
+      Swal.fire({
+        title: 'Gagal',
+        text: "Gagal melakukan peminjaman!",
+        type: 'error',
+        confirmButtonColor: '#5e72e4'
+      });
       $('#btnSave').text('Simpan'); //change button text
       $('#btnSave').attr('disabled',false); //set button enable
 
@@ -224,99 +272,137 @@ function simpan_tambah(){
 
 function konfirmasi_pinjam(id)
 {
-  if(confirm('Yakin konfirmasi peminjaman?'))
-  {
-    // ajax delete data to database
-    $.ajax({
-      url : "<?php echo site_url('Petugas/DataPeminjaman_Petugas/ajax_confirm')?>/"+id,
-      type: "POST",
-      dataType: "JSON",
-      success: function(data)
-      {
-        //if success reload ajax table
-        Swal.fire(
-          'Berhasil',
-          'Peminjaman dikonfirmasi!',
-          'success'
-        );
-        $('#modal_form').modal('hide');
-        reload_table();
-      },
-      error: function (jqXHR, textStatus, errorThrown)
-      {
-        Swal.fire(
-          'Gagal',
-          'Gagal konfirmasi peminjaman!',
-          'error'
-        );
-      }
-    });
-  }
+  Swal.fire({
+    title: 'Yakin konfirmasi peminjaman?',
+    text: "Pilihan yang dipilih tidak dapat dibatalkan!",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#5e72e4',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Konfirmasi',
+    cancelButtonText: 'Batal',
+    preConfirm: function(){
+      return new Promise(function(resolve){
+        $.ajax({
+          url : "<?php echo site_url('Petugas/DataPeminjaman_Petugas/ajax_confirm')?>/"+id,
+          type: "POST",
+          dataType: "JSON",
+          success: function(data)
+          {
+            //if success reload ajax table
+            Swal.fire({
+              title: 'Berhasil',
+              text: "Konfirmasi peminjaman berhasil!",
+              type: 'success',
+              confirmButtonColor: '#5e72e4'
+            });
+            $('#modal_form').modal('hide');
+            reload_table();
+          },
+          error: function (jqXHR, textStatus, errorThrown)
+          {
+            Swal.fire({
+              title: 'Gagal',
+              text: "Konfirmasi peminjaman gagal!",
+              type: 'error',
+              confirmButtonColor: '#5e72e4'
+            });
+          }
+        });
+      })
+    },
+    allowOutsideClick: false
+  });
 }
 
 function dikembalikan(id, induk)
 {
-  if(confirm('Konfirmasi pengembalian?'))
-  {
-    // ajax delete data to database
-    $.ajax({
-      url : "<?php echo site_url('Petugas/DataPeminjaman_Petugas/ajax_kembali')?>/"+id+"/"+induk,
-      type: "POST",
-      dataType: "JSON",
-      success: function(data)
-      {
-        //if success reload ajax table
-        $('#modal_form').modal('hide');
-        reload_table();
-        Swal.fire(
-          'Berhasil',
-          'Pengembalian dikonfirmasi!',
-          'success'
-        );
-      },
-      error: function (jqXHR, textStatus, errorThrown)
-      {
-        Swal.fire(
-          'Gagal',
-          'Gagal proses pengembalian!',
-          'error'
-        );
-      }
-    });
-
-  }
+  Swal.fire({
+    title: 'Yakin konfirmasi pengembalian?',
+    text: "Pilihan yang dipilih tidak dapat dibatalkan!",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#5e72e4',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Konfirmasi',
+    cancelButtonText: 'Batal',
+    preConfirm: function(){
+      return new Promise(function(resolve){
+        $.ajax({
+          url : "<?php echo site_url('Petugas/DataPeminjaman_Petugas/ajax_kembali')?>/"+id+"/"+induk,
+          type: "POST",
+          dataType: "JSON",
+          success: function(data)
+          {
+            //if success reload ajax table
+            Swal.fire({
+              title: 'Berhasil',
+              text: "Konfirmasi pengembalian berhasil!",
+              type: 'success',
+              confirmButtonColor: '#5e72e4'
+            });
+            $('#modal_form').modal('hide');
+            reload_table();
+          },
+          error: function (jqXHR, textStatus, errorThrown)
+          {
+            Swal.fire({
+              title: 'Gagal',
+              text: "Konfirmasi pengembalian gagal!",
+              type: 'error',
+              confirmButtonColor: '#5e72e4'
+            });
+          }
+        });
+      })
+    },
+    allowOutsideClick: false
+  });
 }
 
 function hapus_peminjaman(id, induk)
 {
-  if(confirm('Yakin hapus data peminjaman ini?'))
-  {
-    // ajax delete data to database
-    $.ajax({
-      url : "<?php echo site_url('Petugas/DataPeminjaman_Petugas/ajax_delete')?>/"+id+"/"+induk,
-      type: "POST",
-      dataType: "JSON",
-      success: function(data)
-      {
-        //if success reload ajax table
-        $('#modal_form').modal('hide');
-        reload_table();
-        Swal.fire(
-          'Berhasil',
-          'Data peminjaman berhasil dihapus!',
-          'success'
-        );
-      },
-      error: function (jqXHR, textStatus, errorThrown)
-      {
-        Swal.fire(
-          'Gagal',
-          'Gagal menghapus data!',
-          'error'
-        );
-      }
-    });
-  }
+  Swal.fire({
+    title: 'Yakin hapus data peminjaman?',
+    text: "Data yang dihapus tidak dapat dikembalikan!",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#5e72e4',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Hapus',
+    cancelButtonText: 'Batal',
+    preConfirm: function(){
+      return new Promise(function(resolve){
+        $.ajax({
+          url : "<?php echo site_url('Petugas/DataPeminjaman_Petugas/ajax_delete')?>/"+id+"/"+induk,
+          type: "POST",
+          dataType: "JSON",
+          success: function(data)
+          {
+            //if success reload ajax table
+            Swal.fire({
+              title: 'Berhasil',
+              text: "Berhasil hapus data peminjaman!",
+              type: 'success',
+              confirmButtonColor: '#5e72e4'
+            });
+            $('#modal_form').modal('hide');
+            reload_table();
+          },
+          error: function (jqXHR, textStatus, errorThrown)
+          {
+            Swal.fire({
+              title: 'Gagal',
+              text: "Gagal hapus data peminjaman!",
+              type: 'error',
+              confirmButtonColor: '#5e72e4'
+            });
+          }
+        });
+      })
+    },
+    allowOutsideClick: false
+  });
 }
 
 </script>
@@ -326,7 +412,7 @@ function hapus_peminjaman(id, induk)
     <div class="modal-content">
       <div class="modal-header">
         <h6 class="modal-title" id="modal-title-default">Form Peminjaman</h6>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#form')[0].reset()">
           <span aria-hidden="true">×</span>
         </button>
       </div>
@@ -359,7 +445,7 @@ function hapus_peminjaman(id, induk)
                 <div class="input-group">
                   <input type="text" class="form-control" placeholder="No. Induk" id="buku" name="buku">
                   <div class="input-group-append">
-                    <button class="btn btn-outline-primary" type="button" id="scan_buku" data-toggle="modal" data-target="#modal_qr" onclick="start_cam()"><i class="fas fa-qrcode"></i></button>
+                    <button class="btn btn-outline-primary" type="button" id="scan_buku" data-toggle="modal" data-target="#modal_qr" onclick="start_scan_buku()"><i class="fas fa-qrcode"></i></button>
                     <button class="btn btn-primary" type="button" id="cari" onclick="cari_buku(document.getElementById('buku').value)"><i class="fas fa-search"></i></button>
                   </div>
                 </div>
@@ -371,8 +457,8 @@ function hapus_peminjaman(id, induk)
                 <div class="input-group">
                   <input type="text" class="form-control" placeholder="No. Anggota" id="anggota" name="anggota">
                   <div class="input-group-append">
-                    <button class="btn btn-outline-primary" type="button" id="scan_anggota"><i class="fas fa-qrcode"></i></button>
-                    <button class="btn btn-primary" type="button" id="search_anggota"><i class="fas fa-search"></i></button>
+                    <button class="btn btn-outline-primary" type="button" id="scan_anggota" data-toggle="modal" data-target="#modal_qr" onclick="start_scan_anggota()"><i class="fas fa-qrcode"></i></button>
+                    <button class="btn btn-primary" type="button" id="search_anggota" onclick="cari_anggota(document.getElementById('anggota').value)"><i class="fas fa-search"></i></button>
                   </div>
                 </div>
               </div>
@@ -388,7 +474,7 @@ function hapus_peminjaman(id, induk)
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" id="btnSave" onclick="simpan_tambah()" disabled>Simpan</button>
-        <button type="button" class="btn btn-link  ml-auto" data-dismiss="modal">Batal</button>
+        <button type="button" class="btn btn-link  ml-auto" data-dismiss="modal" onclick="$('#form')[0].reset()">Batal</button>
       </div>
     </div>
   </div>

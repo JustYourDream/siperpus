@@ -3,8 +3,8 @@
   <div class="modal-dialog modal-xs modal-dialog-centered modal-" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h6 class="modal-title" id="modal-title-default">Scan QR Code</h6>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h6 class="modal-title" id="modal-title-default scan">Scan QR Code</h6>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="stop()">
           <span aria-hidden="true">×</span>
         </button>
       </div>
@@ -27,19 +27,23 @@
 <!--End Of Modal QR-->
 
 <!--InstaScan-->
-<script src="<?= base_url('https://rawgit.com/schmich/instascan-builds/master/instascan.min.js'); ?>"></script>
 <script type="text/javascript">
-let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
-scanner.addListener('scan', function (content) {
+let scanner_buku = new Instascan.Scanner({ video: document.getElementById('preview') });
+let scanner_anggota = new Instascan.Scanner({ video: document.getElementById('preview') });
+
+//SCANNER BUKU
+scanner_buku.addListener('scan', function (content) {
   $("#buku").val(content);
-  $('#modal_qr').modal('hide');
-  scanner.stop();
   cari_buku(content);
+  $('#modal_qr').modal('hide');
+  scanner_buku.stop();
 });
-function start_cam(){
+
+function start_scan_buku(){
+  $('.modal-title').text('Scan QR Code Buku');
   Instascan.Camera.getCameras().then(function (cameras) {
     if (cameras.length > 0) {
-      scanner.start(cameras[0]);
+      scanner_buku.start(cameras[0]);
     } else {
       console.error('No cameras found.');
     }
@@ -48,7 +52,30 @@ function start_cam(){
   });
 }
 
+//SCANNER ANGGOTA
+scanner_anggota.addListener('scan', function (content) {
+  $("#anggota").val(content);
+  cari_anggota(content);
+  $('#modal_qr').modal('hide');
+  scanner_anggota.stop();
+});
+
+function start_scan_anggota(){
+  $('.modal-title').text('Scan QR Code Anggota');
+  Instascan.Camera.getCameras().then(function (cameras) {
+    if (cameras.length > 0) {
+      scanner_anggota.start(cameras[0]);
+    } else {
+      console.error('No cameras found.');
+    }
+  }).catch(function (e) {
+    console.error(e);
+  });
+}
+
+//STOP SCANNER
 function stop(){
-  scanner.stop();
+  scanner_buku.stop();
+  scanner_anggota.stop();
 }
 </script>

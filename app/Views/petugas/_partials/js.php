@@ -10,6 +10,7 @@
 <script src="<?= base_url('../../assets/vendor/chart.js/dist/Chart.extension.js')?>"></script>
 <script src="<?= base_url('../../assets/vendor/sweetalert2/dist/sweetalert2.min.js')?>"></script>
 <script src="<?= base_url('../../assets/vendor/bootstrap-notify/bootstrap-notify.min.js')?>"></script>
+<script src="<?= base_url('../../assets/vendor/instascan/instascan.min.js') ?>"></script>
 <!-- DataTables -->
 <script src="<?= base_url('../../assets/vendor/datatables.net/js/jquery.dataTables.min.js') ?>"></script>
 <script src="<?= base_url('../../assets/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js') ?>"></script>

@@ -34,6 +34,7 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 $routes->get('petugas/dashboard_petugas', 'Petugas/Dashboard_Petugas::index',['filter' => 'auth']);
+$routes->get('petugas/form_kunjungan','Petugas/Form_Kunjungan::index',['filter' => 'auth']);
 $routes->get('petugas/databuku_petugas', 'Petugas/DataBuku_Petugas::index',['filter' => 'auth']);
 $routes->get('petugas/dataanggota_petugas', 'Petugas/DataAnggota_Petugas::index',['filter' => 'auth']);
 $routes->get('petugas/datapeminjaman_petugas','Petugas/DataPeminjaman_Petugas::index',['filter' => 'auth']);

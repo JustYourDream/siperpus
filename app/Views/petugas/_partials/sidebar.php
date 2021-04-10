@@ -28,6 +28,14 @@
             </a>
           </li>
         </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="<?php echo base_url('petugas/form_kunjungan')?>" target="_blank">
+              <i class="ni ni-collection text-teal"></i>
+              <span class="nav-link-text">Form Kunjungan</span>
+            </a>
+          </li>
+        </ul>
         <!--Master-->
         <hr class="my-3">
         <h6 class="navbar-heading p-0 text-muted">Master</h6>
