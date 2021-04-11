@@ -40,7 +40,7 @@
         <div class="col-lg-5 col-md-7">
           <div class="card bg-secondary border-0 mb-0">
             <div class="card-header bg-transparent pb-2">
-              <div class="text-muted text-center mt-2 mb-3"><small>Absen Dengan</small></div>
+              <div class="text-muted text-center mt-2 mb-3"><medium>Absen Dengan</medium></div>
               <div class="nav-wrapper">
                 <ul class="nav nav-pills nav-fill flex-md-row" id="tabs-icons-text" role="tablist">
                   <li class="nav-item">
@@ -55,17 +55,17 @@
             <div class="card-body px-lg-5 py-lg-5" id="Fill">
               <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="div-input" role="tabpanel" aria-labelledby="input-tab">
-                  <form role="form">
+                  <form action="#">
                     <div class="form-group">
                       <div class="input-group input-group-merge input-group-alternative">
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="fas fa-id-badge"></i></span>
                         </div>
-                        <input class="form-control" placeholder="Nomor Anggota" type="text" name="no_anggota">
+                        <input class="form-control" placeholder="Nomor Anggota" type="text" name="no_anggota" id="no_anggota">
                       </div>
                     </div>
                     <div class="text-center">
-                      <button type="button" class="btn btn-primary my-4">Masuk</button>
+                      <button type="button" class="btn btn-primary my-4" onclick="absensi(document.getElementById('no_anggota').value)">Masuk</button>
                     </div>
                   </form>
                 </div>
@@ -87,14 +87,45 @@
   <?php include("_partials/js.php") ?>
 </body>
 <script>
+
+function absensi(no_anggota){
+  $.ajax({
+    url : "<?php echo site_url('Petugas/Form_Kunjungan/absensi')?>/" + no_anggota,
+    type: "GET",
+    dataType: "JSON",
+    success: function(data)
+    {
+      if(data[0]){
+        window.location.href = "<?php echo base_url('Petugas/Form_Kunjungan/insert_kunjungan')?>/" + data[0].no_anggota;
+      }
+      if(!data[0]){
+        Swal.fire({
+          title: 'Tidak Ditemukan',
+          text: "Anggota tidak ditemukan!",
+          type: 'error',
+          confirmButtonColor: '#5e72e4'
+        });
+        $('#anggota').val(null);
+      }
+    },
+    error: function (jqXHR, textStatus, errorThrown)
+    {
+      Swal.fire({
+        title: 'Error',
+        text: "Masukkan nomor anggota dulu!",
+        type: 'error',
+        confirmButtonColor: '#5e72e4'
+      });
+    }
+  });
+}
+
+//SCANNER
 let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
 
 //SCANNER BUKU
 scanner.addListener('scan', function (content) {
-  $("#buku").val(content);
-  cari_buku(content);
-  $('#modal_qr').modal('hide');
-  scanner.stop();
+  absensi(content);
 });
 
 function scan_start(){
@@ -113,6 +144,7 @@ function scan_start(){
 function scan_stop(){
   scanner.stop();
 }
+//END OF SCANNER
 </script>
 
 </html>

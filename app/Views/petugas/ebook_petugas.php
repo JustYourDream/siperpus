@@ -27,16 +27,16 @@
         <div class="header-body">
           <div class="row align-items-center py-4">
             <div class="col-lg-6 col-7">
-              <h6 class="h2 text-white d-inline-block mb-0">Data Anggota</h6>
+              <h6 class="h2 text-white d-inline-block mb-0">Data E-book</h6>
               <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                   <li class="breadcrumb-item"><a href="<?php echo base_url('petugas/dashboard_petugas')?>"><i class="fas fa-home"></i></a></li>
-                  <li class="breadcrumb-item"><a href="<?php echo base_url('petugas/dataanggota_petugas')?>">Data Anggota</a></li>
+                  <li class="breadcrumb-item"><a href="<?php echo base_url('petugas/ebook_petugas')?>">Data E-book</a></li>
                 </ol>
               </nav>
             </div>
             <div class="col-lg-6 col-5 text-right">
-              <button class="btn btn-sm btn-secondary" onclick="tambah_anggota()"><i class="fas fa-plus"></i> Tambah</button>
+              <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#modal_form" onclick="tambah_ebook()"><i class="fas fa-plus"></i> Tambah</button>
               <a href="#" class="btn btn-sm btn-secondary"><i class="fas fa-print"></i> Cetak</a>
             </div>
           </div>
@@ -50,21 +50,19 @@
           <div class="card">
             <!-- Card header -->
             <div class="card-header">
-              <h3 class="mb-0"><i class="fas fa-users"></i> Data Anggota</h3>
+              <h3 class="mb-0"><i class="fas fa-book-open"></i> Data E-book</h3>
             </div>
             <div class="table-responsive py-4">
               <table class="table table-flush" id="myTable">
                 <thead class="thead-light">
                   <tr>
                     <th>NO</th>
-                    <th>No. Anggota</th>
-                    <th>Foto</th>
-                    <th>Nama</th>
-                    <th>Tempat Lahir</th>
-                    <th>Tanggal Lahir</th>
-                    <th>Alamat</th>
-                    <th>Agama</th>
-                    <th>Jenis Kelamin</th>
+                    <th>ID E-book</th>
+                    <th>Sampul</th>
+                    <th>Judul</th>
+                    <th>Pengarang</th>
+                    <th>Penerbit</th>
+                    <th>Kategori</th>
                     <th>QR Code</th>
                     <th>Aksi</th>
                   </tr>
@@ -72,14 +70,12 @@
                 <tfoot>
                   <tr>
                     <th>NO</th>
-                    <th>No. Anggota</th>
-                    <th>Foto</th>
-                    <th>Nama</th>
-                    <th>Tempat Lahir</th>
-                    <th>Tanggal Lahir</th>
-                    <th>Alamat</th>
-                    <th>Agama</th>
-                    <th>Jenis Kelamin</th>
+                    <th>ID E-book</th>
+                    <th>Sampul</th>
+                    <th>Judul</th>
+                    <th>Pengarang</th>
+                    <th>Penerbit</th>
+                    <th>Kategori</th>
                     <th>QR Code</th>
                     <th>Aksi</th>
                   </tr>
@@ -97,7 +93,7 @@
   </div>
 </body>
 <?php include("_partials/js.php") ?>
-<script type="text/javascript">
+<script>
 var save_method;
 var table;
 $(document).ready( function () {
@@ -106,7 +102,7 @@ $(document).ready( function () {
     "serverSide": true,
     "order": [],
     "ajax": {
-        "url": "<?php echo base_url('Petugas/DataAnggota_Petugas/ajax_list')?>",
+        "url": "<?php echo base_url('Petugas/Ebook_Petugas/ajax_list')?>",
         "type": "POST"
     },
     //optional
@@ -131,43 +127,53 @@ function reload_table()
   table.ajax.reload(null,false); //reload datatable ajax
 }
 
-function tambah_anggota()
+function tambah_ebook()
 {
+  $.ajax({
+    url : "<?php echo site_url('Petugas/Ebook_Petugas/id_otomatis')?>",
+    type: "POST",
+    data: $('#form').serialize(),
+    dataType: "JSON",
+    success: function(data)
+    {
+      $('[name="NoEbook"]').val(data);
+    },
+    error: function (jqXHR, textStatus, errorThrown)
+    {
+      alert('Gagal Mendapatkan Kode');
+    }
+  });
   save_method = 'add';
   $('#form')[0].reset(); // reset form on modals
   $('.form-group').removeClass('has-error'); // clear error class
   $('#modal_form').modal('show'); // show bootstrap modal
-  $('.modal-title').text('Tambah Anggota'); // Set Title to Bootstrap modal title
-  $('.induk').prop('readonly',false);
-  $('#target').attr('src','../../assets/img/profile_pic/no-image.png');
+  $('.modal-title').text('Tambah E-book'); // Set Title to Bootstrap modal title
+  $('#target').attr('src','../../assets/eBook/Cover/Default-Cover.png');
 }
 
-function edit_anggota(NoAnggota)
+function edit_ebook(NoEbook)
 {
     save_method = 'update';
     $('#form')[0].reset(); // reset form on modals
     $('.form-group').removeClass('has-error'); // clear error class
     $('.help-block').empty(); // clear error string
-    $('.induk').prop('readonly',true);
 
     //Ajax Load data from ajax
     $.ajax({
-        url : "<?php echo site_url('Petugas/DataAnggota_Petugas/ajax_edit')?>/" + NoAnggota,
+        url : "<?php echo site_url('Petugas/Ebook_Petugas/ajax_edit')?>/" + NoEbook,
         type: "GET",
         dataType: "JSON",
         success: function(data)
         {
             console.log(data);
-            $('[name="NoAnggota"]').val(data[0].no_anggota);
-            $('[name="Nama"]').val(data[0].nama_anggota);
-            $('[name="Tempat"]').val(data[0].tempat_lahir);
-            $('[name="Tanggal"]').val(data[0].tanggal_lahir);
-            $('[name="Alamat"]').val(data[0].alamat_anggota);
-            $('[name="Agama"]').val(data[0].agama_anggota);
-            $('[name="Jkel"]').val(data[0].jkel_anggota);
-            $('#target').attr('src','../../assets/img/profile_pic/'+data[0].foto_anggota);
+            $('[name="NoEbook"]').val(data[0].id_ebook);
+            $('[name="Judul"]').val(data[0].judul_ebook);
+            $('[name="Pengarang"]').val(data[0].pengarang);
+            $('[name="Penerbit"]').val(data[0].penerbit);
+            $('[name="Kategori"]').val(data[0].kategori_ebook);
+            $('#target').attr('src','../../assets/eBook/Cover/'+data[0].cover_ebook);
             $('#modal_form').modal('show'); // show bootstrap modal when complete loaded
-            $('.modal-title').text('Edit Data Anggota'); // Set title to Bootstrap modal title
+            $('.modal-title').text('Edit Data E-book'); // Set title to Bootstrap modal title
 
         },
         error: function (jqXHR, textStatus, errorThrown)
@@ -184,9 +190,9 @@ function save()
   var url;
 
   if(save_method == 'add') {
-    url = "<?php echo site_url('Petugas/DataAnggota_Petugas/ajax_add')?>";
-  } else {
-    url = "<?php echo site_url('Petugas/DataAnggota_Petugas/ajax_update')?>";
+    url = "<?php echo site_url('Petugas/Ebook_Petugas/ajax_add')?>";
+  } else if(save_method == 'update'){
+    url = "<?php echo site_url('Petugas/Ebook_Petugas/ajax_update')?>";
   }
 
   // ajax adding data to database
@@ -209,17 +215,17 @@ function save()
         reload_table();
       }
 
-      if (url == "<?php echo site_url('Petugas/DataAnggota_Petugas/ajax_add')?>"){
+      if (url == "<?php echo site_url('Petugas/Ebook_Petugas/ajax_add')?>"){
         Swal.fire({
           title: 'Berhasil',
-          text: "Data anggota berhasil ditambahkan!",
+          text: "E-book berhasil ditambahkan!",
           type: 'success',
           confirmButtonColor: '#5e72e4'
         });
-      }else if(url == "<?php echo site_url('Petugas/DataAnggota_Petugas/ajax_update')?>"){
+      }else if(url == "<?php echo site_url('Petugas/Ebook_Petugas/ajax_update')?>"){
         Swal.fire({
           title: 'Berhasil',
-          text: "Data anggota berhasil diupdate!",
+          text: "Data E-book berhasil diupdate!",
           type: 'success',
           confirmButtonColor: '#5e72e4'
         });
@@ -233,7 +239,7 @@ function save()
     {
       Swal.fire({
         title: 'Gagal',
-        text: "Gagal update / tambah anggota!",
+        text: "Gagal update / tambah E-book!",
         type: 'error',
         confirmButtonColor: '#5e72e4'
       });
@@ -244,10 +250,10 @@ function save()
   });
 }
 
-function hapus_anggota(NoAnggota)
+function hapus_ebook(NoEbook)
 {
   Swal.fire({
-    title: 'Yakin hapus data ini??',
+    title: 'Yakin hapus E-book ini??',
     text: "Data yang dihapus tidak dapat dikembalikan!",
     type: 'warning',
     showCancelButton: true,
@@ -258,7 +264,7 @@ function hapus_anggota(NoAnggota)
     preConfirm: function(){
       return new Promise(function(resolve){
         $.ajax({
-          url : "<?php echo site_url('Petugas/DataAnggota_Petugas/ajax_delete')?>/"+NoAnggota,
+          url : "<?php echo site_url('Petugas/Ebook_Petugas/ajax_delete')?>/"+NoEbook,
           type: "POST",
           dataType: "JSON",
           success: function(data)
@@ -266,7 +272,7 @@ function hapus_anggota(NoAnggota)
             //if success reload ajax table
             Swal.fire({
               title: 'Berhasil',
-              text: "Data berhasil dihapus!",
+              text: "E-book berhasil dihapus!",
               type: 'success',
               confirmButtonColor: '#5e72e4'
             });
@@ -277,7 +283,7 @@ function hapus_anggota(NoAnggota)
           {
             Swal.fire({
               title: 'Gagal',
-              text: "Data gagal dihapus!",
+              text: "E-book gagal dihapus!",
               type: 'error',
               confirmButtonColor: '#5e72e4'
             });
@@ -299,11 +305,12 @@ function showImage(src, target) {
 }
 
 function putImage() {
-  var src = document.getElementById("file");
+  var src = document.getElementById("sampul");
   var target = document.getElementById("target");
   showImage(src, target);
 }
 </script>
+</html>
 
 <!--MODAL-->
 <div class="modal fade" id="modal_form" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
@@ -320,66 +327,60 @@ function putImage() {
           <div class="row">
             <div class="col-md-5">
               <div class="form-group">
-                <label for="induk" class="form-control-label">Nomor Anggota</label>
-                <input class="form-control induk" type="text" name="NoAnggota" placeholder="Nomor Anggota">
+                <label for="induk" class="form-control-label">Nomor E-book</label>
+                <input class="form-control induk" type="text" name="NoEbook" placeholder="Nomor E-book" readonly>
               </div>
             </div>
             <div class="col-md-7">
               <div class="form-group">
-                <label for="nama" class="form-control-label">Nama Anggota</label>
-                <input class="form-control" type="text" name="Nama" placeholder="Nama Anggota">
+                <label for="judul" class="form-control-label">Judul Buku</label>
+                <input class="form-control" type="text" name="Judul" placeholder="Judul">
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
               <div class="form-group">
-                <label for="tempat" class="form-control-label">Tempat Lahir</label>
-                <input class="form-control" type="text" name="Tempat" placeholder="Tempat Lahir">
+                <label for="pengarang" class="form-control-label">Pengarang</label>
+                <input class="form-control" type="text" name="Pengarang" placeholder="Pengarang">
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
               <div class="form-group">
-                <label for="tanggal" class="form-control-label">Tanggal Lahir</label>
-                <input class="form-control" type="date" name="Tanggal" placeholder="Tanggal Lahir">
+                <label for="penerbit" class="form-control-label">Penerbit</label>
+                <input class="form-control" type="text" name="Penerbit" placeholder="Penerbit">
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
               <div class="form-group">
-                <label for="alamat" class="form-control-label">Alamat</label>
-                <input class="form-control" type="text" name="Alamat" placeholder="Alamat">
+                <label for="kategori" class="form-control-label">Kategori</label>
+                <select name="Kategori" class="form-control">
+                  <option value="">--Pilih Kategori--</option>
+                  <option value="Karya Umum">Karya Umum</option>
+                  <option value="Filsafat Psikologi">Filsafat Psikologi</option>
+                  <option value="Agama">Agama</option>
+                  <option value="Ilmu Sosial">Ilmu Sosial</option>
+                  <option value="Bahasa">Bahasa</option>
+                  <option value="Ilmu-ilmu & Matematika">Ilmu-ilmu & Matematika</option>
+                  <option value="Teknologi & Ilmu Terapan">Teknologi & Ilmu Terapan</option>
+                  <option value="Kesenian, Hiburan & Olahraga">Kesenian, Hiburan & Olahraga</option>
+                  <option value="Kesusastraan">Kesusastraan</option>
+                  <option value="Sejarah Geografi">Sejarah Geografi</option>
+                </select>
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-6">
               <div class="form-group">
-                <label for="agama" class="form-control-label">Agama</label>
-                <select name="Agama" class="form-control">
-                  <option value="">--Pilih Agama--</option>
-                  <option value="Islam">Islam</option>
-                  <option value="Kristen Protestan">Kristen Protestan</option>
-                  <option value="Katolik">Katolik</option>
-                  <option value="Hindu">Hindu</option>
-                  <option value="Buddha">Buddha</option>
-                  <option value="Konghucu">Konghucu</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label for="jkel" class="form-control-label">Jenis Kelamin</label>
-                <select name="Jkel" class="form-control">
-                  <option value="">--Jenis Kelamin--</option>
-                  <option value="Laki-laki">Laki-laki</option>
-                  <option value="Perempuan">Perempuan</option>
-                </select>
+                <label for="file" class="form-control-label">File E-book</label>
+                <input type="file" class="form-control" name="ebook" id="ebook">
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label for="file" class="form-control-label">Foto <font color="red"><i>(File foto maks. 4Mb)</i></font></label>
-                <input type="file" class="form-control" name="file" id="file" onchange="putImage()">
+                <label for="file" class="form-control-label">Sampul E-book <font color="red"><i>(File sampul maks. 4Mb)</i></font></label>
+                <input type="file" class="form-control" name="sampul" id="sampul" onchange="putImage()">
               </div>
             </div>
           </div>
@@ -387,7 +388,7 @@ function putImage() {
             <div class="col-md-6"></div>
             <div class="col-md-6">
               <div class="form-group" align="center">
-                <img id="target" class="rounded-circle" height="150px" width="150px">
+                <img id="target" class="rounded" height="200px" width="174px">
               </div>
             </div>
           </div>
@@ -401,4 +402,3 @@ function putImage() {
   </div>
 </div>
 <!--End Of Modal-->
-</html>

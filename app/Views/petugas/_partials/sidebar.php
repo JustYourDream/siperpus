@@ -38,12 +38,17 @@
         </ul>
         <!--Master-->
         <hr class="my-3">
-        <h6 class="navbar-heading p-0 text-muted">Master</h6>
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="databuku_petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/databuku_petugas')?>">
               <i class="ni ni-books text-orange"></i>
               <span class="nav-link-text">Data Buku</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="ebook_petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/ebook_petugas')?>">
+              <i class="fas fa-book-open text-green"></i>
+              <span class="nav-link-text">Data E-book</span>
             </a>
           </li>
           <li class="nav-item">
@@ -67,7 +72,6 @@
         </ul>
         <!-- Divider -->
         <hr class="my-3">
-        <h6 class="navbar-heading p-0 text-muted">Laporan</h6>
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link" href="../../pages/widgets.html">
@@ -78,8 +82,6 @@
         </ul>
         <!-- Divider -->
         <hr class="my-3">
-        <!-- Heading -->
-        <h6 class="navbar-heading p-0 text-muted">Akun</h6>
         <!-- Navigation -->
         <ul class="navbar-nav mb-md-3">
           <li class="nav-item">

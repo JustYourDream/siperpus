@@ -188,22 +188,30 @@
       <h2>Buku Digital</h2>
     </div>
     <div class="row">
-      <div class="card col-3" style="width: 18rem;">
-        <img class="card-img-top" src="#" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+      <?php
+        $db = \Config\Database::connect();
+        $builder = $db->table('data_ebook');
+        $query = $builder->get(8);
+        $result = $query->getResult();
+
+        foreach ($result as $row){
+
+      ?>
+      <div class="col-lg-3 col-md-3 col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <a href="<?= base_url('assets/eBook/PDF/'.$row->file_ebook); ?>" target="_blank" style="margin-bottom: 0px;" class="thumbnail">
+              <img src="<?= base_url('assets/eBook/Cover/'.$row->cover_ebook); ?>" style="height: auto; width: 100%;">
+            </a>
+          </div>
+          <div class="panel-footer">
+            <?= $row->judul_ebook; ?>
+          </div>
         </div>
       </div>
-      <div class="card col-3" style="width: 18rem;">
-        <img class="card-img-top" src="#" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
+      <?php
+      }
+      ?>
     </div>
   </div>
 </div>

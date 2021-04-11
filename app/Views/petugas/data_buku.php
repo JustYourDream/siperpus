@@ -208,14 +208,14 @@ function save()
         reload_table();
       }
 
-      if (url = "<?php echo site_url('Petugas/DataBuku_Petugas/ajax_add')?>"){
+      if (url == "<?php echo site_url('Petugas/DataBuku_Petugas/ajax_add')?>"){
         Swal.fire({
           title: 'Berhasil',
           text: "Data buku berhasil ditambahkan!",
           type: 'success',
           confirmButtonColor: '#5e72e4'
         });
-      }else if(url = "<?php echo site_url('Petugas/DataBuku_Petugas/ajax_update')?>"){
+      }else if(url == "<?php echo site_url('Petugas/DataBuku_Petugas/ajax_update')?>"){
         Swal.fire({
           title: 'Berhasil',
           text: "Data buku berhasil diupdate!",
