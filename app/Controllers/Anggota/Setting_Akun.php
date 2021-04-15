@@ -1,43 +1,49 @@
 <?php
 
-namespace App\Controllers\Petugas;
+namespace App\Controllers\Anggota;
 use CodeIgniter\Controller;
-use App\Models\PetugasModel;
+use App\Models\AnggotaModel;
 use App\Models\UsersModel;
+use Config\Services;
 
-class Akun_Petugas extends Controller
+class Setting_Akun extends Controller
 {
 	public function index()
 	{
-		return view('petugas/setting_akun');
+		return view('anggota/setting_akun');
 	}
 	public function showdata(){
+		$request = Services::request();
 		$id = session()->get('id');
-    $petugas = new PetugasModel();
-    $data = $petugas->petugas_id($id);
-		echo json_encode($data);
+    $anggota = new AnggotaModel($request);
+    $lists = $anggota->get_by_id($id);
+    echo json_encode($lists);
 	}
 	public function update_akun()
   {
 		//Tabel Petugas
-		$petugas = new PetugasModel();
+		$request = Services::request();
+		$anggota = new AnggotaModel($request);
     $data = array(
-    	'nama_petugas' => $this->request->getPost('nama'),
-			'jabatan_petugas' => $this->request->getPost('role'),
-			'no_telp_petugas' => $this->request->getPost('telp'),
-			'alamat_petugas' => $this->request->getPost('address'),
+    	'nama_anggota' => $this->request->getPost('nama'),
+			'tempat_lahir' => $this->request->getPost('tempat'),
+			'tanggal_lahir' => $this->request->getPost('tanggal'),
+			'alamat_anggota' => $this->request->getPost('alamat'),
+			'agama_anggota' => $this->request->getPost('agama'),
+			'jkel_anggota' => $this->request->getPost('jkel'),
     );
-    $petugas->akun_update(array('id_petugas' => $this->request->getPost('id')), $data);
+    $anggota->update_anggota(array('no_anggota' => $this->request->getPost('id')), $data);
 
 		//Tabel Pengguna
 		$data1 = array(
 			'nama' => $this->request->getPost('nama'),
 		);
-		$petugas->akun_login_update(array('id' => $this->request->getPost('id')), $data1);
+		$anggota->update_akun_anggota(array('id' => $this->request->getPost('id')), $data1);
 		echo json_encode(array("status" => TRUE));
   }
 	public function ganti_pass(){
-		$pengguna = new PetugasModel();
+		$request = Services::request();
+		$anggota = new AnggotaModel($request);
 		$user = new UsersModel();
 		$id = session()->get('id');
 		$currpass= implode(" ",$user->select('password')->where(['id' => $id])->first());
@@ -48,7 +54,7 @@ class Akun_Petugas extends Controller
 		);
 
 		if(md5($this->request->getPost('old')) == $currpass){
-			$pengguna->ganti_pw($id, $data2);
+			$anggota->update_pw($id, $data2);
 			session()->setFlashdata('success',
 							 '<span class="alert-text"><strong>Sukses!</strong> Password berhasil diubah</span>
 			 				 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -66,7 +72,8 @@ class Akun_Petugas extends Controller
 	}
 	public function upload_foto() {
 		helper(['form', 'url']);
-		$petugas = new PetugasModel();
+		$request = Services::request();
+		$anggota = new AnggotaModel($request);
 		$id = session()->get('id');
 		if ($this->request->getMethod() !== 'post') {
 			return redirect()->back();
@@ -90,13 +97,13 @@ class Akun_Petugas extends Controller
 
 			//Generate nama file
 			$random = date('s');
-			$nama_foto_before = implode(" ",$petugas->select('foto_petugas')->where(['id_petugas' => $id])->first());
+			$nama_foto_before = implode(" ",$anggota->select('foto_anggota')->where(['no_anggota' => $id])->first());
 			$nama_foto_baru = $id."-PIC-".$random;
 
 			//Hapus Foto Sebelumnya
 			$target_foto = "../public/assets/img/profile_pic/{$nama_foto_before}";
 			if(is_file($target_foto) == TRUE){
-				if(!($nama_foto_before == "DEFAULT-PIC")){
+				if(!($nama_foto_before == "FEMALE-PIC" || $nama_foto_before == "MALE-PIC")){
 					unlink($target_foto);
 				}
 			}
@@ -108,9 +115,9 @@ class Akun_Petugas extends Controller
 			$cropped_img = \Config\Services::image()->withFile('../public/assets/img/profile_pic/'.$nama_foto_baru)->fit(512,512, 'center')->save('../public/assets/img/profile_pic/'.$nama_foto_baru);
 
 			$data = array(
-				'foto_petugas' => $nama_foto_baru,
+				'foto_anggota' => $nama_foto_baru,
 			);
-			$petugas->simpan_gambar(array('id_petugas' => $id), $data);
+			$anggota->update_anggota(array('no_anggota' => $id), $data);
 			return redirect()->back()->with('success', '<span class="alert-text"><strong>Sukses!</strong> Foto profil berhasil diubah</span>
 																									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 																									  <span aria-hidden="true">&times;</span>
@@ -118,25 +125,35 @@ class Akun_Petugas extends Controller
 		}
 	}
 	public function hapus_foto(){
-		$petugas = new PetugasModel();
+		$request = Services::request();
+		$anggota = new AnggotaModel($request);
 		$id = session()->get('id');
-		$data = array(
-			'foto_petugas' => "DEFAULT-PIC",
-		);
+		$gender = implode(" ",$anggota->select('jkel_anggota')->where(['no_anggota' => $id])->first());
+		$data = null;
+
+		if($gender == "Laki-laki"){
+			$data = array(
+				'foto_anggota' => "MALE-PIC",
+			);
+		} elseif ($gender == "Perempuan") {
+			$data = array(
+				'foto_anggota' => "FEMALE-PIC",
+			);
+		}
 
 		//Generate nama file
-		$random = date('s');
-		$nama_foto_before = implode(" ",$petugas->select('foto_petugas')->where(['id_petugas' => $id])->first());
-		$nama_foto_baru = $id."-PIC-".$random;
+		$nama_foto_before = implode(" ",$anggota->select('foto_anggota')->where(['no_anggota' => $id])->first());
 
 		//Hapus Foto Sebelumnya
 		$target_foto = "../public/assets/img/profile_pic/{$nama_foto_before}";
 		if(is_file($target_foto) == TRUE){
-			if(!($nama_foto_before == "DEFAULT-PIC")){
+			if(!($nama_foto_before == "FEMALE-PIC" || $nama_foto_before == "MALE-PIC")){
 				unlink($target_foto);
 			}
 		}
-		$petugas->simpan_gambar(array('id_petugas' => $id), $data);
+
+		$anggota->update_anggota(array('no_anggota' => $id), $data);
+
 		return redirect()->back()->with('success', '<span class="alert-text"><strong>Sukses!</strong> Berhasil hapus foto</span>
 																								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 																									<span aria-hidden="true">&times;</span>

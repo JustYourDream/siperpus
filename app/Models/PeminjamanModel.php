@@ -55,6 +55,15 @@ class PeminjamanModel extends Model {
     return $query->getResult();
   }
 
+  function get_datatables_anggota(){
+    $this->_get_datatables_query();
+    if($this->request->getPost('length') != -1)
+    $this->dt->limit($this->request->getPost('length'), $this->request->getPost('start'));
+    $id = session()->get('id');
+    $query = $this->dt->where('id_anggota', $id)->get();
+    return $query->getResult();
+  }
+
   function count_filtered(){
     $this->_get_datatables_query();
     return $this->dt->countAllResults();

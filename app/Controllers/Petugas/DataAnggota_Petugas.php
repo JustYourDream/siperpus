@@ -95,8 +95,9 @@ class DataAnggota_Petugas extends Controller{
     }
     else{
       //Generate nama file
+      $random = date('s');
       $file = $this->request->getFile('file');
-      $foto = $request->getPost('NoAnggota')."-PIC";
+      $foto = $request->getPost('NoAnggota')."-PIC-".$random;
       $file->move(WRITEPATH . '../public/assets/img/profile_pic/',$foto);
 
       //Crop image
@@ -155,13 +156,17 @@ class DataAnggota_Petugas extends Controller{
     }
     else{
       //Generate nama file
+      $random = date('s');
+			$nama_foto_before = implode(" ",$anggota->select('foto_anggota')->where(['no_anggota' => $request->getPost('NoAnggota')])->first());
       $file = $this->request->getFile('file');
-      $foto = $request->getPost('NoAnggota')."-PIC";
+      $foto = $request->getPost('NoAnggota')."-PIC-".$random;
 
       //Hapus Foto Sebelumnya
-			$target_foto = "../public/assets/img/profile_pic/{$foto}";
+			$target_foto = "../public/assets/img/profile_pic/{$nama_foto_before}";
 			if(is_file($target_foto) == TRUE){
-				unlink($target_foto);
+				if(!($nama_foto_before == "FEMALE-PIC" || $nama_foto_before == "MALE-PIC")){
+					unlink($target_foto);
+				}
 			}
 
       $file->move(WRITEPATH . '../public/assets/img/profile_pic/',$foto);
@@ -201,7 +206,8 @@ class DataAnggota_Petugas extends Controller{
     unlink($target_qr);
 
     //Hapus Foto
-    $foto = implode(" ",$anggota->select('no_anggota')->where(['no_anggota' => $id])->first()).'-PIC';
+    $random = date('s');
+    $foto = implode(" ",$anggota->select('no_anggota')->where(['no_anggota' => $id])->first()).'-PIC-'.$random;
     $target_foto = "../public/assets/img/profile_pic/{$foto}";
     if(is_file($target_foto) == TRUE){
       unlink($target_foto);

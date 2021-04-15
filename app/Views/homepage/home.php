@@ -53,7 +53,7 @@
         <li><a href="#portfolio" class="page-scroll">E-Book</a></li>
         <li><a href="#testimonials" class="page-scroll">Cari Buku</a></li>
         <li><a href="#team" class="page-scroll">Pengembang</a></li>
-        <li><a href="../login/" class="page-scroll">Masuk</a></li>
+        <li><a href="../login/" target="_blank" class="page-scroll">Masuk</a></li>
       </ul>
     </div>
     <!-- /.navbar-collapse -->
@@ -81,21 +81,21 @@
       <h2>Layanan</h2>
     </div>
     <div class="row">
-      <div class="col-xs-6 col-md-3"> <i class="fa fa-comments-o"></i>
-        <h3>Lorem ipsum</h3>
-        <p>Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque etiam.</p>
+      <div class="col-xs-6 col-md-3"> <i class="fa fa-book"></i>
+        <h3>Baca Buku</h3>
+        <p>SIPERPUS menyediakan buku digital yang dapat dibaca kapanpun dan dimanapun.</p>
       </div>
-      <div class="col-xs-6 col-md-3"> <i class="fa fa-bullhorn"></i>
-        <h3>Dolor sit amet</h3>
-        <p>Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque.</p>
+      <div class="col-xs-6 col-md-3"> <i class="fa fa-cart-arrow-down"></i>
+        <h3>Pinjam Buku</h3>
+        <p>Anggota perpustakaan dapat melakukan peminjaman buku secara online.</p>
       </div>
-      <div class="col-xs-6 col-md-3"> <i class="fa fa-group"></i>
-        <h3>Tempus eleifend</h3>
-        <p>Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque etiam.</p>
+      <div class="col-xs-6 col-md-3"> <i class="fa fa-search"></i>
+        <h3>Pencarian Buku</h3>
+        <p>Siswa-siswi dapat mencari buku yang tersedia melalui SIPERPUS.</p>
       </div>
-      <div class="col-xs-6 col-md-3"> <i class="fa fa-magic"></i>
-        <h3>Pellentesque</h3>
-        <p>Lorem ipsum dolor sit amet placerat facilisis felis mi in tempus eleifend pellentesque natoque.</p>
+      <div class="col-xs-6 col-md-3"> <i class="fa fa-info"></i>
+        <h3>Informasi Perpustakaan</h3>
+        <p>SIPERPUS menyediakan berbagai macam informasi mengenai perpustakaan.</p>
       </div>
     </div>
   </div>
@@ -141,39 +141,62 @@
       <h2>Data Perpustakaan</h2>
     </div>
     <div class="row">
-      <div class="col-md-3"> <i class="fa timer count-title count-number" data-to="1505" data-speed="2000"></i>
+      <?php
+        $db = \Config\Database::connect();
+
+        //QUERY
+        $query_buku = $db->table('data_buku')->selectCount('no_induk');
+        $query_eksemplar = $db->table('data_buku')->selectSum('eksemplar_buku')->get();
+        $query_ebook = $db->table('data_ebook')->selectCount('id_ebook');
+        $query_anggota = $db->table('data_anggota')->selectCount('no_anggota');
+        $query_peminjaman = $db->table('data_peminjaman')->selectCount('id_peminjaman');
+        $query_pengembalian = $db->table('data_pengembalian')->selectCount('id_peminjaman');
+        $query_pengunjung = $db->table('data_pengunjung')->selectCount('no_anggota');
+
+        //Result
+        $jml_buku = $query_buku->countAllResults();
+        $jml_eksemplar = $query_eksemplar->getResult();
+        $jml_ebook = $query_ebook->countAllResults();
+        $jml_anggota = $query_anggota->countAllResults();
+        $jml_peminjaman = $query_peminjaman->countAllResults();
+        $jml_pengembalian = $query_pengembalian->countAllResults();
+        $jml_pengunjung = $query_pengunjung->countAllResults();
+      ?>
+      <div class="col-md-3"> <i class="fa timer count-title count-number" data-to="<?= $jml_buku; ?>" data-speed="2000"></i>
         <div class="service-desc">
           <h3>JUDUL</h3>
         </div>
       </div>
-      <div class="col-md-3"> <i class="fa timer count-title count-number" data-to="2209" data-speed="2000"></i>
+      <?php foreach ($jml_eksemplar as $value): ?>
+      <div class="col-md-3"> <i class="fa timer count-title count-number" data-to="<?= $value->eksemplar_buku; ?>" data-speed="2000"></i>
         <div class="service-desc">
           <h3>EKSEMPLAR</h3>
         </div>
       </div>
-      <div class="col-md-3"> <i class="fa timer count-title count-number" data-to="150" data-speed="2000"></i>
+      <?php endforeach; ?>
+      <div class="col-md-3"> <i class="fa timer count-title count-number" data-to="<?= $jml_ebook; ?>" data-speed="2000"></i>
         <div class="service-desc">
           <h3>BUKU DIGITAL</h3>
         </div>
       </div>
-      <div class="col-md-3"> <i class="fa timer count-title count-number" data-to="909" data-speed="2000"></i>
+      <div class="col-md-3"> <i class="fa timer count-title count-number" data-to="<?= $jml_anggota; ?>" data-speed="2000"></i>
         <div class="service-desc">
           <h3>ANGGOTA</h3>
         </div>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-4"> <i class="fa timer count-title count-number" data-to="12069" data-speed="2000"></i>
+      <div class="col-md-4"> <i class="fa timer count-title count-number" data-to="<?= $jml_peminjaman; ?>" data-speed="2000"></i>
         <div class="service-desc">
           <h3>PEMINJAMAN</h3>
         </div>
       </div>
-      <div class="col-md-4"> <i class="fa timer count-title count-number" data-to="12100" data-speed="2000"></i>
+      <div class="col-md-4"> <i class="fa timer count-title count-number" data-to="<?= $jml_pengembalian; ?>" data-speed="2000"></i>
         <div class="service-desc">
           <h3>PENGEMBALIAN</h3>
         </div>
       </div>
-      <div class="col-md-4"> <i class="fa timer count-title count-number" data-to="17806" data-speed="2000"></i>
+      <div class="col-md-4"> <i class="fa timer count-title count-number" data-to="<?= $jml_pengunjung; ?>" data-speed="2000"></i>
         <div class="service-desc">
           <h3>PENGUNJUNG</h3>
         </div>
@@ -189,7 +212,6 @@
     </div>
     <div class="row">
       <?php
-        $db = \Config\Database::connect();
         $builder = $db->table('data_ebook');
         $query = $builder->get(8);
         $result = $query->getResult();
@@ -200,11 +222,11 @@
       <div class="col-lg-3 col-md-3 col-sm-6">
         <div class="panel panel-default">
           <div class="panel-body">
-            <a href="<?= base_url('assets/eBook/PDF/'.$row->file_ebook); ?>" target="_blank" style="margin-bottom: 0px;" class="thumbnail">
+            <a href="<?= base_url('assets/eBook/PDF/'.$row->file_ebook); ?>" target="_blank" style="margin-bottom: 0px;" class="thumbnail" title="<?= $row->judul_ebook; ?>">
               <img src="<?= base_url('assets/eBook/Cover/'.$row->cover_ebook); ?>" style="height: auto; width: 100%;">
             </a>
           </div>
-          <div class="panel-footer">
+          <div class="panel-footer" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
             <?= $row->judul_ebook; ?>
           </div>
         </div>
@@ -220,11 +242,24 @@
   <div class="container">
     <div class="section-title text-center">
       <h2>Cari Buku</h2>
-      <p>Cari buku yang ingin anda pinjam.</p>
     </div>
     <div class="row" align="center">
-      <input type="text" class="custom-input" placeholder="MASUKKAN JUDUL BUKU"></input>&nbsp;
-      <a href="#features" class="btn btn-custom btn-lg">CARI</a>
+      <div class="col-md-12">
+        <div class="input-group">
+          <input type="text" class="form-control custom-input" placeholder="CARI BUKU YANG INGIN ANDA BACA" id="input_buku">
+          <div class="input-group-btn">
+            <button class="btn btn-custom" type="button" onclick="cari_buku(document.getElementById('input_buku').value)">
+              <span class="fa fa-search"></span> CARI
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="padding-top: 20px;">
+      <div class="col-sm-12" id="result">
+
+      </div>
+    </div>
   </div>
 </div>
 <!-- Team Section -->
@@ -336,7 +371,7 @@
     <p>&copy; <?php echo date("Y");?> SMK Negeri 1 Ampelgading. Design by <a href="http://www.templatewire.com" rel="nofollow">TemplateWire </a>| Made by Alfian Maulana</p>
   </div>
 </div>
-<script type="text/javascript" src="<?= base_url('../home_page/js/jquery.1.11.1.js') ?>"></script>
+<script type="text/javascript" src="<?= base_url('../home_page/js/jquery.3.6.0.js') ?>"></script>
 <script type="text/javascript" src="<?= base_url('../home_page/js/bootstrap.js') ?>"></script>
 <script type="text/javascript" src="<?= base_url('../home_page/js/SmoothScroll.js') ?>"></script>
 <script type="text/javascript" src="<?= base_url('../home_page/js/nivo-lightbox.js') ?>"></script>
@@ -344,5 +379,26 @@
 <script type="text/javascript" src="<?= base_url('../home_page/js/contact_me.js') ?>"></script>
 <script type="text/javascript" src="<?= base_url('../home_page/js/main.js') ?>"></script>
 <script type="text/javascript" src="<?= base_url('../home_page/js/counter.js') ?>"></script>
+<script>
+  $(document).ready(function(){
+    $('#tabelBuku').hide();
+  });
+
+  function cari_buku(search){
+    $('#tabelBuku').show();
+    $.ajax({
+        url: "<?php echo site_url('Home/cari_buku')?>/"+search,
+        type: "POST",
+        data: "{}",
+        success: function(data){
+          $('#result').html(data);
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            alert('Error get data from ajax');
+        }
+    });
+  }
+</script>
 </body>
 </html>

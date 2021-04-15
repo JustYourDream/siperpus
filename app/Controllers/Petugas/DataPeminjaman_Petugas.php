@@ -33,17 +33,17 @@ class DataPeminjaman_Petugas extends Controller{
         $row[] = $list->id_anggota;
         $row[] = $list->status;
         if($list->status == "Dipinjam"){
-          $row[] = '<button class="btn btn-sm btn-primary btn-block" style="background-color: grey; border-color: grey;" title="Confirm" disabled><i class="fas fa-thumbs-up"></i> Konfirmasi</button>
+          $row[] = '<button class="btn btn-sm btn-primary btn-block" style="background-color: grey; border-color: grey; pointer-events: none;" title="Confirm"><i class="fas fa-thumbs-up"></i> Konfirmasi</button>
                     <a class="btn btn-sm btn-success btn-block" href="javascript:void(0)" title="Back" onclick="dikembalikan('."'".$list->id_peminjaman."'".','."'".$list->id_buku."'".')"><i class="fas fa-check-double"></i> Kembali</a>
                     <a class="btn btn-sm btn-danger btn-block" href="javascript:void(0)" title="Del" onclick="hapus_peminjaman('."'".$list->id_peminjaman."'".','."'".$list->id_buku."'".')"><i class="fas fa-trash-alt"></i> Hapus</a>';
         }else if($list->status == "Dikembalikan"){
-          $row[] = '<button class="btn btn-sm btn-primary btn-block" style="background-color: grey; border-color: grey;" title="Confirm" disabled><i class="fas fa-thumbs-up"></i> Konfirmasi</button>
-                    <button class="btn btn-sm btn-success btn-block" style="background-color: grey; border-color: grey;" title="Back" disabled><i class="fas fa-check-double"></i> Kembali</button>
+          $row[] = '<button class="btn btn-sm btn-primary btn-block" style="background-color: grey; border-color: grey; pointer-events: none;" title="Confirm"><i class="fas fa-thumbs-up"></i> Konfirmasi</button>
+                    <button class="btn btn-sm btn-success btn-block" style="background-color: grey; border-color: grey; pointer-events: none;" title="Back"><i class="fas fa-check-double"></i> Kembali</button>
                     <a class="btn btn-sm btn-danger btn-block" href="javascript:void(0)" title="Del" onclick="hapus_peminjaman('."'".$list->id_peminjaman."'".','."'".$list->id_buku."'".')"><i class="fas fa-trash-alt"></i> Hapus</a>';
         }
         else if($list->status == "Menunggu"){
           $row[] = '<a class="btn btn-sm btn-primary btn-block" href="javascript:void(0)" title="Confirm" onclick="konfirmasi_pinjam('."'".$list->id_peminjaman."'".')"><i class="fas fa-thumbs-up"></i> Konfirmasi</a>
-                    <button class="btn btn-sm btn-success btn-block" style="background-color: grey; border-color: grey;" title="Back disabled" ><i class="fas fa-check-double"></i> Kembali</button>
+                    <button class="btn btn-sm btn-success btn-block" style="background-color: grey; border-color: grey; pointer-events: none;" title="Back"><i class="fas fa-check-double"></i> Kembali</button>
                     <a class="btn btn-sm btn-danger btn-block" href="javascript:void(0)" title="Del" onclick="hapus_peminjaman('."'".$list->id_peminjaman."'".','."'".$list->id_buku."'".')"><i class="fas fa-trash-alt"></i> Hapus</a>';
         }
 

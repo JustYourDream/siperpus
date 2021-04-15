@@ -100,6 +100,14 @@ class AnggotaModel extends Model {
     $builder->update($data, $where);
   }
 
+  public function update_pw($id, $data){
+    $db = \Config\Database::connect();
+    $builder = $db->table('pengguna');
+    $builder->update($data2, array('id' => $id));
+    $query = $builder->get();
+    return $query->getResult();
+  }
+
   public function delete_by_id($id)
   {
     $query = $this->dt->delete(array('no_anggota' => $id));
