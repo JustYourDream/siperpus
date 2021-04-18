@@ -37,7 +37,6 @@
             </div>
             <div class="col-lg-6 col-5 text-right">
               <button class="btn btn-sm btn-secondary" onclick="tambah_anggota()"><i class="fas fa-plus"></i> Tambah</button>
-              <a href="#" class="btn btn-sm btn-secondary"><i class="fas fa-print"></i> Cetak</a>
             </div>
           </div>
         </div>
@@ -50,7 +49,15 @@
           <div class="card">
             <!-- Card header -->
             <div class="card-header">
-              <h3 class="mb-0"><i class="fas fa-users"></i> Data Anggota</h3>
+              <div class="row">
+                <div class="col-sm-6">
+                  <h3 class="mb-0"><i class="fas fa-users"></i> Data Anggota</h3>
+                </div>
+                <div class="col-sm-6 text-right">
+                  <a href="<?php echo base_url('Petugas/DataAnggota_Petugas/cetak_id')?>" target="_blank" class="btn btn-sm btn-default" id="cetak"><i class="fas fa-id-card"></i> Cetak KTA</a>
+                  <a href="<?php echo base_url('Petugas/DataAnggota_Petugas/cetak_list')?>" target="_blank" class="btn btn-sm btn-default" id="cetak_list"><i class="fas fa-print"></i> Cetak List</a>
+                </div>
+              </div>
             </div>
             <div class="table-responsive py-4">
               <table class="table table-flush" id="myTable">
@@ -60,8 +67,8 @@
                     <th>No. Anggota</th>
                     <th>Foto</th>
                     <th>Nama</th>
-                    <th>Tempat Lahir</th>
-                    <th>Tanggal Lahir</th>
+                    <th>TTL</th>
+                    <th>Jurusan</th>
                     <th>Alamat</th>
                     <th>Agama</th>
                     <th>Jenis Kelamin</th>
@@ -75,8 +82,8 @@
                     <th>No. Anggota</th>
                     <th>Foto</th>
                     <th>Nama</th>
-                    <th>Tempat Lahir</th>
-                    <th>Tanggal Lahir</th>
+                    <th>TTL</th>
+                    <th>Jurusan</th>
                     <th>Alamat</th>
                     <th>Agama</th>
                     <th>Jenis Kelamin</th>
@@ -162,6 +169,7 @@ function edit_anggota(NoAnggota)
             $('[name="Nama"]').val(data[0].nama_anggota);
             $('[name="Tempat"]').val(data[0].tempat_lahir);
             $('[name="Tanggal"]').val(data[0].tanggal_lahir);
+            $('[name="Jurusan"]').val(data[0].jurusan_anggota);
             $('[name="Alamat"]').val(data[0].alamat_anggota);
             $('[name="Agama"]').val(data[0].agama_anggota);
             $('[name="Jkel"]').val(data[0].jkel_anggota);
@@ -346,12 +354,29 @@ function putImage() {
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label for="alamat" class="form-control-label">Alamat</label>
-                <input class="form-control" type="text" name="Alamat" placeholder="Alamat">
+                <label for="jurusan" class="form-control-label">Jurusan</label>
+                <select name="Jurusan" class="form-control">
+                  <option value="">--Pilih Jurusan--</option>
+                  <option value="Desain Pemodelan dan Informasi Bangunan">Desain Pemodelan dan Informasi Bangunan</option>
+                  <option value="Teknik Instalasi Tenaga Listrik">Teknik Instalasi Tenaga Listrik</option>
+                  <option value="Teknik Pemesinan">Teknik Pemesinan</option>
+                  <option value="Teknik Pengelasan">Teknik Pengelasan</option>
+                  <option value="Teknik Kendaraan Ringan Otomotif">Teknik Kendaraan Ringan Otomotif</option>
+                  <option value="Teknik Audio Video">Teknik Audio Video</option>
+                  <option value="Teknik Elektronika Industri">Teknik Elektronika Industri</option>
+                  <option value="Teknik Komputer dan Jaringan">Teknik Komputer dan Jaringan</option>
+                  <option value="Tata Busana">Tata Busana</option>
+                </select>
               </div>
             </div>
           </div>
           <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="alamat" class="form-control-label">Alamat</label>
+                <input class="form-control" type="text" name="Alamat" placeholder="Alamat">
+              </div>
+            </div>
             <div class="col-md-3">
               <div class="form-group">
                 <label for="agama" class="form-control-label">Agama</label>
@@ -376,15 +401,14 @@ function putImage() {
                 </select>
               </div>
             </div>
+          </div>
+          <div class="row">
             <div class="col-md-6">
               <div class="form-group">
                 <label for="file" class="form-control-label">Foto <font color="red"><i>(File foto maks. 4Mb)</i></font></label>
                 <input type="file" class="form-control" name="file" id="file" onchange="putImage()">
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6"></div>
             <div class="col-md-6">
               <div class="form-group" align="center">
                 <img id="target" class="rounded-circle" height="150px" width="150px">

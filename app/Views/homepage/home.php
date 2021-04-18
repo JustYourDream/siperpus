@@ -208,7 +208,7 @@
 <div id="portfolio" class="text-center">
   <div class="container">
     <div class="section-title">
-      <h2>Buku Digital</h2>
+      <h2>Baca E-book</h2>
     </div>
     <div class="row">
       <?php
@@ -234,6 +234,11 @@
       <?php
       }
       ?>
+    </div>
+    <div class="row" style="margin: 20px;">
+      <div class="col-sm-12 text-center">
+        <a href="/ebook" class="btn btn-custom btn-lg">LIHAT LEBIH BANYAK</a>
+      </div>
     </div>
   </div>
 </div>

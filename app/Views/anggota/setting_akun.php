@@ -35,13 +35,13 @@
               <h6 class="h2 text-white d-inline-block mb-0">Pengaturan Akun</h6>
               <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                  <li class="breadcrumb-item"><a href="<?php echo base_url('petugas/dashboard_petugas')?>"><i class="fas fa-home"></i></a></li>
-                  <li class="breadcrumb-item"><a href="<?php echo base_url('petugas/akun_petugas')?>">Pengaturan Akun</a></li>
+                  <li class="breadcrumb-item"><a href="<?php echo base_url('anggota/dashboard_anggota')?>"><i class="fas fa-home"></i></a></li>
+                  <li class="breadcrumb-item"><a href="<?php echo base_url('anggota/setting_akun')?>">Pengaturan Akun</a></li>
                 </ol>
               </nav>
             </div>
             <div class="col-lg-6 col-5 text-right">
-              <a href="#" class="btn btn-sm btn-secondary"><i class="ni ni-paper-diploma"></i> Cetak</a>
+              <a href="<?= base_url('Anggota/Setting_Akun/cetak_id_satuan').'/'.session()->get('id'); ?>" target="_blank" class="btn btn-sm btn-secondary"><i class="ni ni-paper-diploma"></i> Cetak</a>
             </div>
           </div>
         </div>
@@ -255,20 +255,22 @@
         $('#btnSave').text('Simpan Perubahan'); //change button text
         $('#btnSave').attr('disabled',false); //set button enable
         $('#account').load("/anggota/setting_akun #account"); //Reload topnav
-        Swal.fire(
-          'Berhasil',
-          'Data berhasil diupdate!',
-          'success'
-        );
+        Swal.fire({
+          title: 'Berhasil',
+          text: "Data berhasil diupdate!",
+          type: 'success',
+          confirmButtonColor: '#5e72e4'
+        });
 
       },
       error: function (jqXHR, textStatus, errorThrown)
       {
-        Swal.fire(
-          'Gagal',
-          'Data gagal diupdate!',
-          'error'
-        );
+        Swal.fire({
+          title: 'Gagal',
+          text: "Data gagal diupdate!",
+          type: 'error',
+          confirmButtonColor: '#5e72e4'
+        });
         $('#btnSave').text('Simpan Perubahan'); //change button text
         $('#btnSave').attr('disabled',false); //set button enable
 

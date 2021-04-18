@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers\Petugas;
 require ('../vendor/autoload.php');
+use Mpdf\Mpdf;
 use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
@@ -30,20 +31,22 @@ class DataAnggota_Petugas extends Controller{
       foreach ($lists as $list) {
         $qr = base_url('assets/qr_anggota/'.$list->qr_anggota);
         $foto = base_url('assets/img/profile_pic/'.$list->foto_anggota);
+        $url_cetak = base_url('Petugas/DataAnggota_Petugas/cetak_id_satuan/'.$list->no_anggota);
         $no++;
         $row = [];
         $row[] = $no;
         $row[] = $list->no_anggota;
         $row[] = '<img src="'."".$foto."".'" width="100px" height="100px">';
         $row[] = $list->nama_anggota;
-        $row[] = $list->tempat_lahir;
-        $row[] = $list->tanggal_lahir;
+        $row[] = $list->tempat_lahir.', '.date('d-m-Y',strtotime($list->tanggal_lahir));
+        $row[] = $list->jurusan_anggota;
         $row[] = $list->alamat_anggota;
         $row[] = $list->agama_anggota;
         $row[] = $list->jkel_anggota;
         $row[] = '<img src="'."".$qr."".'" width="50px" height="50px">';
-        $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Edit" onclick="edit_anggota('."'".$list->no_anggota."'".')"><i class="ni ni-active-40"></i> Ubah</a>
-        <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="hapus_anggota('."'".$list->no_anggota."'".')"><i class="ni ni-scissors"></i> Hapus</a>';
+        $row[] = '<a class="btn btn-sm btn-primary btn-block" href="javascript:void(0)" title="Edit" onclick="edit_anggota('."'".$list->no_anggota."'".')"><i class="ni ni-active-40"></i> Ubah</a>
+                  <a class="btn btn-sm btn-danger btn-block" href="javascript:void(0)" title="Hapus" onclick="hapus_anggota('."'".$list->no_anggota."'".')"><i class="ni ni-scissors"></i> Hapus</a>
+                  <a class="btn btn-sm btn-default btn-block" href="'.$url_cetak.'" title="Cetak" target="_blank"><i class="ni ni-credit-card"></i> Cetak</a>';
         $data[] = $row;
       }
 
@@ -109,6 +112,7 @@ class DataAnggota_Petugas extends Controller{
       'nama_anggota' => $request->getPost('Nama'),
       'tempat_lahir' => $request->getPost('Tempat'),
       'tanggal_lahir' => $request->getPost('Tanggal'),
+      'jurusan_anggota' => $request->getPost('Jurusan'),
       'alamat_anggota' => $request->getPost('Alamat'),
       'agama_anggota' => $request->getPost('Agama'),
       'jkel_anggota' => $request->getPost('Jkel'),
@@ -179,6 +183,7 @@ class DataAnggota_Petugas extends Controller{
       'nama_anggota' => $request->getPost('Nama'),
       'tempat_lahir' => $request->getPost('Tempat'),
       'tanggal_lahir' => $request->getPost('Tanggal'),
+      'jurusan_anggota' => $request->getPost('Jurusan'),
       'alamat_anggota' => $request->getPost('Alamat'),
       'agama_anggota' => $request->getPost('Agama'),
       'jkel_anggota' => $request->getPost('Jkel'),
@@ -216,6 +221,365 @@ class DataAnggota_Petugas extends Controller{
     $anggota->delete_by_id($id);
     $anggota->delete_akun($id);
     echo json_encode(array("status" => TRUE));
+  }
+
+  public function cetak_id(){
+    $request = Services::request();
+    $anggota = new AnggotaModel($request);
+    $hasil = $anggota->get();
+
+    $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'orientation' => 'L']);
+
+    foreach ($hasil->getResult('array') as $row) {
+      $foto = base_url('assets/img/profile_pic/'.$row['foto_anggota']);
+      $qr = base_url('assets/qr_anggota/'.$row['qr_anggota']);
+      $cover = base_url('assets/img/template_id/cover.jpg');
+      $logo = base_url('assets/img/template_id/logo.png');
+      $tgl = $row['tanggal_lahir'];
+      $tgl_convert = date('d-m-Y', strtotime($tgl));
+      $mpdf->WriteHTML('
+          <style>
+            .title{
+              text-align: center;
+              font-size: 13px;
+            }
+            .idCard{
+              width: 380px;
+              height: 210px;
+              background-image: url("'.$cover.'");
+              padding:10px;
+              float: left;
+              margin: 5px;
+              border: 1px solid black;
+              border-radius: 10px;
+            }
+            .alert{
+              font-size: 11px;
+            }
+          </style>
+
+          <div class="idCard">
+            <table style="width: 100%; font-size: 12px" cellpadding="0" cellspacing="3">
+              <tr>
+                <td rowspan="3"><img src="'.$logo.'" height"60px" width="60px"></td>
+                <td class="title" colspan="3">KARTU PERPUSTAKAAN</td>
+              </tr>
+              <tr>
+                <td class="title" colspan="3"><b>"INTI GADING"</b></td>
+              </tr>
+              <tr>
+                <td class="title" colspan="3" style="border-bottom: 2px solid black;">SMK NEGERI 1 AMPELGADING</td>
+              </tr>
+              <!-- Content -->
+              <tr></tr>
+              <tr>
+                <td rowspan="7" width="90px"><img src="'.$foto.'" height="80px" width="80px"></td>
+                <td width="80px">Nama</td>
+                <td width="20px">:</td>
+                <td>'.$row['nama_anggota'].'</td>
+              </tr>
+              <tr>
+                <td>No. Anggota</td>
+                <td>:</td>
+                <td>'.$row['no_anggota'].'</td>
+              </tr>
+              <tr>
+                <td>Jurusan</td>
+                <td>:</td>
+                <td>'.$row['jurusan_anggota'].'</td>
+              </tr>
+              <tr>
+                <td>TTL</td>
+                <td>:</td>
+                <td>'.$row['tempat_lahir'].', '.$tgl_convert.'</td>
+              </tr>
+              <tr>
+                <td>Alamat</td>
+                <td>:</td>
+                <td>'.$row['alamat_anggota'].'</td>
+              </tr>
+              <tr>
+                <td>Agama</td>
+                <td>:</td>
+                <td>'.$row['agama_anggota'].'</td>
+              </tr>
+              <tr>
+                <td>Kelamin</td>
+                <td>:</td>
+                <td>'.$row['jkel_anggota'].'</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="idCard">
+            <table style="width: 100%;" cellpadding="0" cellspacing="3">
+              <tr>
+                <td colspan="2" class="title">PERATURAN PERPUSTAKAAN</td>
+              </tr>
+              <tr>
+                <td colspan="2" class="title" style="border-bottom: 2px solid black">"INTI GADING" SMK NEGERI 1 AMPELGADING</td>
+              </tr>
+              <tr>
+                <td class="alert">1. </td>
+                <td class="alert">Kartu ini digunakan untuk melakukan peminjaman buku</td>
+              </tr>
+              <tr>
+                <td class="alert">2. </td>
+                <td class="alert">Penyalahgunaan kartu ini akan dikenakan sanksi sesuai pelanggaran</td>
+              </tr>
+              <tr>
+                <td class="alert">3. </td>
+                <td class="alert">Jika kartu ini hilang atau rusak akan dikenakan biaya penggantian</td>
+              </tr>
+              <tr>
+                <td class="alert">4. </td>
+                <td class="alert">Kartu ini berlaku sejak menjadi siswa sampai selesai atau lulus</td>
+              </tr>
+              <tr>
+                <td class="alert">5. </td>
+                <td class="alert">Apabila kartu ini hilang/rusak, segera lapor ke petugas perpustakaan</td>
+              </tr>
+              <tr>
+                <td colspan="2" style="text-align: right;"><img src="'.$qr.'" height="75px" width="75px"></td>
+              </tr>
+            </table>
+          </div>
+          ');
+    }
+
+    $mpdf->Output('Kartu_Anggota.pdf','I');
+    exit;
+  }
+
+  public function cetak_id_satuan($id){
+    $request = Services::request();
+    $anggota = new AnggotaModel($request);
+    $hasil = $anggota->where(['no_anggota' => $id])->get();
+
+    $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'orientation' => 'L']);
+
+    foreach ($hasil->getResult('array') as $row) {
+      $foto = base_url('assets/img/profile_pic/'.$row['foto_anggota']);
+      $qr = base_url('assets/qr_anggota/'.$row['qr_anggota']);
+      $cover = base_url('assets/img/template_id/cover.jpg');
+      $logo = base_url('assets/img/template_id/logo.png');
+      $tgl = $row['tanggal_lahir'];
+      $tgl_convert = date('d-m-Y', strtotime($tgl));
+      $mpdf->WriteHTML('
+          <style>
+            .title{
+              text-align: center;
+              font-size: 13px;
+            }
+            .idCard{
+              width: 380px;
+              height: 210px;
+              background-image: url("'.$cover.'");
+              padding:10px;
+              float: left;
+              margin: 5px;
+              border: 1px solid black;
+              border-radius: 10px;
+            }
+            .alert{
+              font-size: 11px;
+            }
+          </style>
+
+          <div class="idCard">
+            <table style="width: 100%; font-size: 12px" cellpadding="0" cellspacing="3">
+              <tr>
+                <td rowspan="3"><img src="'.$logo.'" height"60px" width="60px"></td>
+                <td class="title" colspan="3">KARTU PERPUSTAKAAN</td>
+              </tr>
+              <tr>
+                <td class="title" colspan="3"><b>"INTI GADING"</b></td>
+              </tr>
+              <tr>
+                <td class="title" colspan="3" style="border-bottom: 2px solid black;">SMK NEGERI 1 AMPELGADING</td>
+              </tr>
+              <!-- Content -->
+              <tr></tr>
+              <tr>
+                <td rowspan="7" width="90px"><img src="'.$foto.'" height="80px" width="80px"></td>
+                <td width="80px">Nama</td>
+                <td width="20px">:</td>
+                <td>'.$row['nama_anggota'].'</td>
+              </tr>
+              <tr>
+                <td>No. Anggota</td>
+                <td>:</td>
+                <td>'.$row['no_anggota'].'</td>
+              </tr>
+              <tr>
+                <td>Jurusan</td>
+                <td>:</td>
+                <td>'.$row['jurusan_anggota'].'</td>
+              </tr>
+              <tr>
+                <td>TTL</td>
+                <td>:</td>
+                <td>'.$row['tempat_lahir'].', '.$tgl_convert.'</td>
+              </tr>
+              <tr>
+                <td>Alamat</td>
+                <td>:</td>
+                <td>'.$row['alamat_anggota'].'</td>
+              </tr>
+              <tr>
+                <td>Agama</td>
+                <td>:</td>
+                <td>'.$row['agama_anggota'].'</td>
+              </tr>
+              <tr>
+                <td>Kelamin</td>
+                <td>:</td>
+                <td>'.$row['jkel_anggota'].'</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="idCard">
+            <table style="width: 100%;" cellpadding="0" cellspacing="3">
+              <tr>
+                <td colspan="2" class="title">PERATURAN PERPUSTAKAAN</td>
+              </tr>
+              <tr>
+                <td colspan="2" class="title" style="border-bottom: 2px solid black">"INTI GADING" SMK NEGERI 1 AMPELGADING</td>
+              </tr>
+              <tr>
+                <td class="alert">1. </td>
+                <td class="alert">Kartu ini digunakan untuk melakukan peminjaman buku</td>
+              </tr>
+              <tr>
+                <td class="alert">2. </td>
+                <td class="alert">Penyalahgunaan kartu ini akan dikenakan sanksi sesuai pelanggaran</td>
+              </tr>
+              <tr>
+                <td class="alert">3. </td>
+                <td class="alert">Jika kartu ini hilang atau rusak akan dikenakan biaya penggantian</td>
+              </tr>
+              <tr>
+                <td class="alert">4. </td>
+                <td class="alert">Kartu ini berlaku sejak menjadi siswa sampai selesai atau lulus</td>
+              </tr>
+              <tr>
+                <td class="alert">5. </td>
+                <td class="alert">Apabila kartu ini hilang/rusak, segera lapor ke petugas perpustakaan</td>
+              </tr>
+              <tr>
+                <td colspan="2" style="text-align: right;"><img src="'.$qr.'" height="75px" width="75px"></td>
+              </tr>
+            </table>
+          </div>
+          ');
+    }
+
+    $mpdf->Output('Kartu_Anggota_'.$id.'.pdf','I');
+    exit;
+  }
+
+  public function cetak_list(){
+    $request = Services::request();
+    $anggota = new AnggotaModel($request);
+    $hasil = $anggota->get();
+    $table = '';
+    $no = 1;
+
+    $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'format' => 'A4-L']);
+
+    foreach ($hasil->getResult('array') as $row) {
+      $tgl = $row['tanggal_lahir'];
+      $tgl_convert = date('d-m-Y', strtotime($tgl));
+      $table .='<tr>
+                  <td align="center">'.$no++.'</td>
+                  <td>'.$row['no_anggota'].'</td>
+                  <td>'.$row['nama_anggota'].'</td>
+                  <td>'.$row['jurusan_anggota'].'</td>
+                  <td>'.$row['tempat_lahir'].', '.$tgl_convert.'</td>
+                  <td>'.$row['alamat_anggota'].'</td>
+                  <td>'.$row['agama_anggota'].'</td>
+                  <td>'.$row['jkel_anggota'].'</td>
+                </tr>';
+    }
+
+    $mpdf->WriteHTML('
+    <style>
+      .title{
+        text-align: center;
+      }
+      .ttd{
+        text-align: center;
+      }
+    </style>
+    <div style="text-align: center;">
+      <hr><width="100" height="75"></hr>
+      <h1><font size="5" face="times new roman">PERPUSTAKAAN "INTI GADING"</font></h1>
+      <b><font size="4" face="Courier New">SMK NEGERI 1 AMPELGADING</font></b><br/>
+      <b>Jl. Raya Ujunggede (Pantura), Ampelgading, Kabupaten Pemalang, 52364<b><br/><br/>
+      <hr><width="100" height="75"></hr>
+    </div>
+    <div style="margin-top: 10px;">
+      <table style="margin-bottom: 20px;">
+        <tr>
+          <td>Nomor</td>
+          <td>:</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/</td>
+        </tr>
+        <tr>
+          <td>Lamp.</td>
+          <td>:</td>
+          <td> -</td>
+        </tr>
+        <tr>
+          <td>Hal</td>
+          <td>:</td>
+          <td> Data Anggota Perpustakaan "Inti Gading"</td>
+        </tr>
+      </table>
+      <p>Diberitahukan dengan hormat bahwa di bawah ini adalah data anggota perpustakaan "Inti Gading" :</p>
+      <table border="1" cellspacing="0" cellpadding="5" width="100%">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>No Anggota</th>
+            <th>Nama</th>
+            <th>Jurusan</th>
+            <th>Tempat & Tanggal Lahir</th>
+            <th>Alamat</th>
+            <th>Agama</th>
+            <th>Jenis Kelamin</th>
+          </tr>
+        </thead>
+        <tbody>
+            '.$table.'
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top: 20px;">
+      <table width="100%">
+        <tr>
+          <td rowspan="5" width="75%"></td>
+          <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
+        </tr>
+        <tr>
+          <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
+        </tr>
+        <tr>
+          <td height="80px"></td>
+        </tr>
+        <tr>
+          <td class="ttd"><b><u>Alfian Maulana</u></b></td>
+        </tr>
+        <tr>
+          <td class="ttd">NIP : 18.110.0018</td>
+        </tr>
+      </table>
+    </div>
+    ');
+
+    $mpdf->Output('Daftar_Anggota.pdf','I');
+    exit;
   }
 }
 

@@ -35,9 +35,6 @@
                 </ol>
               </nav>
             </div>
-            <div class="col-lg-6 col-5 text-right">
-              <button class="btn btn-sm btn-secondary"><i class="fas fa-print"></i> Cetak</button>
-            </div>
           </div>
         </div>
       </div>

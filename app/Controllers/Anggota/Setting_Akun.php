@@ -4,6 +4,7 @@ namespace App\Controllers\Anggota;
 use CodeIgniter\Controller;
 use App\Models\AnggotaModel;
 use App\Models\UsersModel;
+use Mpdf\Mpdf;
 use Config\Services;
 
 class Setting_Akun extends Controller
@@ -159,4 +160,131 @@ class Setting_Akun extends Controller
 																									<span aria-hidden="true">&times;</span>
 																								</button>');
 	}
+	public function cetak_id_satuan($id){
+    $request = Services::request();
+    $anggota = new AnggotaModel($request);
+    $hasil = $anggota->where(['no_anggota' => $id])->get();
+
+    $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'orientation' => 'L']);
+
+    foreach ($hasil->getResult('array') as $row) {
+      $foto = base_url('assets/img/profile_pic/'.$row['foto_anggota']);
+      $qr = base_url('assets/qr_anggota/'.$row['qr_anggota']);
+      $cover = base_url('assets/img/template_id/cover.jpg');
+      $logo = base_url('assets/img/template_id/logo.png');
+      $tgl = $row['tanggal_lahir'];
+      $tgl_convert = date('d-m-Y', strtotime($tgl));
+      $mpdf->WriteHTML('
+          <style>
+            .title{
+              text-align: center;
+              font-size: 13px;
+            }
+            .idCard{
+              width: 380px;
+              height: 210px;
+              background-image: url("'.$cover.'");
+              padding:10px;
+              float: left;
+              margin: 5px;
+              border: 1px solid black;
+              border-radius: 10px;
+            }
+            .alert{
+              font-size: 11px;
+            }
+          </style>
+
+          <div class="idCard">
+            <table style="width: 100%; font-size: 12px" cellpadding="0" cellspacing="3">
+              <tr>
+                <td rowspan="3"><img src="'.$logo.'" height"60px" width="60px"></td>
+                <td class="title" colspan="3">KARTU PERPUSTAKAAN</td>
+              </tr>
+              <tr>
+                <td class="title" colspan="3"><b>"INTI GADING"</b></td>
+              </tr>
+              <tr>
+                <td class="title" colspan="3" style="border-bottom: 2px solid black;">SMK NEGERI 1 AMPELGADING</td>
+              </tr>
+              <!-- Content -->
+              <tr></tr>
+              <tr>
+                <td rowspan="7" width="90px"><img src="'.$foto.'" height="80px" width="80px"></td>
+                <td width="80px">Nama</td>
+                <td width="20px">:</td>
+                <td>'.$row['nama_anggota'].'</td>
+              </tr>
+              <tr>
+                <td>No. Anggota</td>
+                <td>:</td>
+                <td>'.$row['no_anggota'].'</td>
+              </tr>
+              <tr>
+                <td>Jurusan</td>
+                <td>:</td>
+                <td>'.$row['jurusan_anggota'].'</td>
+              </tr>
+              <tr>
+                <td>TTL</td>
+                <td>:</td>
+                <td>'.$row['tempat_lahir'].', '.$tgl_convert.'</td>
+              </tr>
+              <tr>
+                <td>Alamat</td>
+                <td>:</td>
+                <td>'.$row['alamat_anggota'].'</td>
+              </tr>
+              <tr>
+                <td>Agama</td>
+                <td>:</td>
+                <td>'.$row['agama_anggota'].'</td>
+              </tr>
+              <tr>
+                <td>Kelamin</td>
+                <td>:</td>
+                <td>'.$row['jkel_anggota'].'</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="idCard">
+            <table style="width: 100%;" cellpadding="0" cellspacing="3">
+              <tr>
+                <td colspan="2" class="title">PERATURAN PERPUSTAKAAN</td>
+              </tr>
+              <tr>
+                <td colspan="2" class="title" style="border-bottom: 2px solid black">"INTI GADING" SMK NEGERI 1 AMPELGADING</td>
+              </tr>
+              <tr>
+                <td class="alert">1. </td>
+                <td class="alert">Kartu ini digunakan untuk melakukan peminjaman buku</td>
+              </tr>
+              <tr>
+                <td class="alert">2. </td>
+                <td class="alert">Penyalahgunaan kartu ini akan dikenakan sanksi sesuai pelanggaran</td>
+              </tr>
+              <tr>
+                <td class="alert">3. </td>
+                <td class="alert">Jika kartu ini hilang atau rusak akan dikenakan biaya penggantian</td>
+              </tr>
+              <tr>
+                <td class="alert">4. </td>
+                <td class="alert">Kartu ini berlaku sejak menjadi siswa sampai selesai atau lulus</td>
+              </tr>
+              <tr>
+                <td class="alert">5. </td>
+                <td class="alert">Apabila kartu ini hilang/rusak, segera lapor ke petugas perpustakaan</td>
+              </tr>
+              <tr>
+                <td colspan="2" style="text-align: right;"><img src="'.$qr.'" height="75px" width="75px"></td>
+              </tr>
+            </table>
+          </div>
+          ');
+    }
+
+    $mpdf->Output('Kartu_Anggota_'.$id.'.pdf','I');
+    exit;
+  }
 }

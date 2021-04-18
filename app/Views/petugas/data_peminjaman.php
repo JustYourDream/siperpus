@@ -37,7 +37,6 @@
             </div>
             <div class="col-lg-6 col-5 text-right">
               <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#modal_form" onclick="id_otomatis()"><i class="fas fa-plus"></i> Tambah</button>
-              <button class="btn btn-sm btn-secondary"><i class="fas fa-print"></i> Cetak</button>
             </div>
           </div>
         </div>

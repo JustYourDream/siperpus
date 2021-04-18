@@ -40,9 +40,6 @@
                 </ol>
               </nav>
             </div>
-            <div class="col-lg-6 col-5 text-right">
-              <a href="#" class="btn btn-sm btn-secondary"><i class="ni ni-paper-diploma"></i> Cetak</a>
-            </div>
           </div>
         </div>
       </div>
@@ -217,20 +214,22 @@
         $('#btnSave').text('Simpan Perubahan'); //change button text
         $('#btnSave').attr('disabled',false); //set button enable
         $('#account').load("http://siperpus.amga/petugas/akun_petugas #account"); //Reload topnav
-        Swal.fire(
-          'Berhasil',
-          'Data berhasil diupdate!',
-          'success'
-        );
+        Swal.fire({
+          title: 'Berhasil',
+          text: "Data berhasil diupdate!",
+          type: 'success',
+          confirmButtonColor: '#5e72e4'
+        });
 
       },
       error: function (jqXHR, textStatus, errorThrown)
       {
-        Swal.fire(
-          'Gagal',
-          'Data gagal diupdate!',
-          'error'
-        );
+        Swal.fire({
+          title: 'Gagal',
+          text: "Data gagal diupdate!",
+          type: 'error',
+          confirmButtonColor: '#5e72e4'
+        });
         $('#btnSave').text('Simpan Perubahan'); //change button text
         $('#btnSave').attr('disabled',false); //set button enable
 

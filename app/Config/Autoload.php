@@ -62,5 +62,7 @@ class Autoload extends AutoloadConfig
 	 *
 	 * @var array<string, string>
 	 */
-	public $classmap = [];
+	public $classmap = [
+		'Mpdf' => __DIR__ . '/vendor/autoload.php', //library mPDF
+	];
 }

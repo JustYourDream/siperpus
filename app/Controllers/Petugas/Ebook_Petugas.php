@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers\Petugas;
 require ('../vendor/autoload.php');
+use Mpdf\Mpdf;
 use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
@@ -257,6 +258,103 @@ class Ebook_Petugas extends Controller{
 
     $ebook->delete_by_id($id);
     echo json_encode(array("status" => TRUE));
+  }
+
+  public function cetak_list(){
+    $request = Services::request();
+    $ebook = new EbookModel($request);
+    $hasil = $ebook->get();
+    $table = '';
+    $no = 1;
+
+    $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'format' => 'A4-L']);
+
+    foreach ($hasil->getResult('array') as $row) {
+      $table .='<tr>
+                  <td align="center">'.$no++.'</td>
+                  <td>'.$row['id_ebook'].'</td>
+                  <td>'.$row['judul_ebook'].'</td>
+                  <td>'.$row['pengarang'].'</td>
+                  <td>'.$row['penerbit'].'</td>
+                  <td>'.$row['kategori_ebook'].'</td>
+                </tr>';
+    }
+
+    $mpdf->WriteHTML('
+    <style>
+      .title{
+        text-align: center;
+      }
+      .ttd{
+        text-align: center;
+      }
+    </style>
+    <div style="text-align: center;">
+      <hr><width="100" height="75"></hr>
+      <h1><font size="5" face="times new roman">PERPUSTAKAAN "INTI GADING"</font></h1>
+      <b><font size="4" face="Courier New">SMK NEGERI 1 AMPELGADING</font></b><br/>
+      <b>Jl. Raya Ujunggede (Pantura), Ampelgading, Kabupaten Pemalang, 52364<b><br/><br/>
+      <hr><width="100" height="75"></hr>
+    </div>
+    <div style="margin-top: 10px;">
+      <table style="margin-bottom: 20px;">
+        <tr>
+          <td>Nomor</td>
+          <td>:</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/</td>
+        </tr>
+        <tr>
+          <td>Lamp.</td>
+          <td>:</td>
+          <td> -</td>
+        </tr>
+        <tr>
+          <td>Hal</td>
+          <td>:</td>
+          <td> Data Buku Digital Perpustakaan "Inti Gading"</td>
+        </tr>
+      </table>
+      <p>Diberitahukan dengan hormat bahwa di bawah ini adalah data buku digital perpustakaan "Inti Gading" :</p>
+      <table border="1" cellspacing="0" cellpadding="5" width="100%">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>No. Ebook</th>
+            <th>Judul</th>
+            <th>Pengarang</th>
+            <th>Penerbit</th>
+            <th>Kategori</th>
+          </tr>
+        </thead>
+        <tbody>
+            '.$table.'
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top: 20px;">
+      <table width="100%">
+        <tr>
+          <td rowspan="5" width="75%"></td>
+          <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
+        </tr>
+        <tr>
+          <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
+        </tr>
+        <tr>
+          <td height="80px"></td>
+        </tr>
+        <tr>
+          <td class="ttd"><b><u>Alfian Maulana</u></b></td>
+        </tr>
+        <tr>
+          <td class="ttd">NIP : 18.110.0018</td>
+        </tr>
+      </table>
+    </div>
+    ');
+
+    $mpdf->Output('Daftar_Ebook.pdf','I');
+    exit;
   }
 }
 

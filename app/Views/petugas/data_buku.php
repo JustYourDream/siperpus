@@ -37,7 +37,6 @@
             </div>
             <div class="col-lg-6 col-5 text-right">
               <button class="btn btn-sm btn-secondary" onclick="tambah_buku()"><i class="fas fa-plus"></i> Tambah</button>
-              <a href="#" class="btn btn-sm btn-secondary"><i class="fas fa-print"></i> Cetak</a>
             </div>
           </div>
         </div>
@@ -50,7 +49,14 @@
           <div class="card">
             <!-- Card header -->
             <div class="card-header">
-              <h3 class="mb-0"><i class="fas fa-book"></i> Data Buku</h3>
+              <div class="row">
+                <div class="col-sm-6">
+                  <h3 class="mb-0"><i class="fas fa-book"></i> Data Buku</h3>
+                </div>
+                <div class="col-sm-6 text-right">
+                  <a href="<?php echo base_url('Petugas/DataBuku_Petugas/cetak_list')?>" target="_blank" class="btn btn-sm btn-default" id="cetak_list"><i class="fas fa-print"></i> Cetak List</a>
+                </div>
+              </div>
             </div>
             <div class="table-responsive py-4">
               <table class="table table-flush" id="myTable">

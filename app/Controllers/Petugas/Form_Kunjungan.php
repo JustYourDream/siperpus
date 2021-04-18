@@ -31,6 +31,7 @@ class Form_Kunjungan extends Controller
 		$anggota = new AnggotaModel($request);
 
 		$namaAnggota = implode(" ", $anggota->select('nama_anggota')->where(['no_anggota' => $insertedId])->first());
+		$jurusanAnggota = implode(" ", $anggota->select('jurusan_anggota')->where(['no_anggota' => $insertedId])->first());
 		$dateNow = date('Y-m-d');
 		$no = implode(" ",$kunjungan->selectMax('no')->first());
 
@@ -45,6 +46,7 @@ class Form_Kunjungan extends Controller
 			'no' => $no_urut,
 			'no_anggota' => $insertedId,
 			'nama' => $namaAnggota,
+			'jurusan_anggota' => $jurusanAnggota,
 			'tanggal_kunjungan' => $dateNow
 		);
 
