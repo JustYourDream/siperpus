@@ -3,9 +3,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
   <meta name="author" content="Creative Tim">
-  <title>SIPERPUS | Sistem Informasi Perpustakaan</title>
+  <title>SIPERPUS | <?php $uri = service('uri'); if($uri->getSegment(2)=="dashboard_anggota"){echo 'Dashboard';}
+                                                 if($uri->getSegment(2)=="pinjam_buku"){echo 'Pinjam Buku';}
+                                                 if($uri->getSegment(2)=="baca_buku"){echo 'Baca Buku';}
+                                                 if($uri->getSegment(2)=="info_peminjaman"){echo 'Informasi Peminjaman';}
+                                                 if($uri->getSegment(2)=="info_pengembalian"){echo 'Informasi Pengembalian';}
+                                                 if($uri->getSegment(2)=="setting_akun"){echo 'Pengaturan Akun';}
+  ?></title>
   <!-- Favicon -->
-  <link rel="icon" href="<?= base_url('../../assets/img/brand/favicon.png')?>" type="image/png">
+  <link rel="icon" href="<?= base_url('../login_page/images/icons/favicon.ico') ?>" type="image/png">
   <!-- Fonts -->
   <link rel="stylesheet" href="<?= base_url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700')?>">
   <!-- Icons -->

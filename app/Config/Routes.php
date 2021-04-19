@@ -43,6 +43,7 @@ $routes->get('petugas/ebook_petugas', 'Petugas/Ebook_Petugas::index',['filter' =
 $routes->get('petugas/dataanggota_petugas', 'Petugas/DataAnggota_Petugas::index',['filter' => 'auth']);
 $routes->get('petugas/datapeminjaman_petugas','Petugas/DataPeminjaman_Petugas::index',['filter' => 'auth']);
 $routes->get('petugas/datapengembalian_petugas','Petugas/DataPengembalian_Petugas::index',['filter' => 'auth']);
+$routes->get('petugas/laporan_petugas','Petugas/Laporan_Petugas::index',['filter' => 'auth']);
 $routes->get('petugas/akun_petugas','Petugas/Akun_Petugas::index',['filter' => 'auth']);
 $routes->get('petugas/id_card','Petugas/Id_Card::index',['filter' => 'auth']);
 

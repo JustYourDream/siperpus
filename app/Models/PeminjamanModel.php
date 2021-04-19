@@ -7,8 +7,8 @@ use CodeIgniter\Model;
 class PeminjamanModel extends Model {
 
   protected $table = "data_peminjaman";
-  protected $column_order = array('id_peminjaman','tanggal_pinjam','tanggal_kembali','id_buku','jml_pinjam','id_anggota','status');
-  protected $column_search = array('id_peminjaman','tanggal_pinjam','tanggal_kembali','id_buku','jml_pinjam','id_anggota','status');
+  protected $column_order = array('id_peminjaman','tanggal_pinjam','tanggal_kembali','id_buku','jml_pinjam','no_anggota','status');
+  protected $column_search = array('id_peminjaman','id_buku','no_anggota','status');
   protected $order = array('id_peminjaman' => 'asc');
   protected $request;
   protected $db;
@@ -60,7 +60,7 @@ class PeminjamanModel extends Model {
     if($this->request->getPost('length') != -1)
     $this->dt->limit($this->request->getPost('length'), $this->request->getPost('start'));
     $id = session()->get('id');
-    $query = $this->dt->where('id_anggota', $id)->get();
+    $query = $this->dt->where('no_anggota', $id)->get();
     return $query->getResult();
   }
 

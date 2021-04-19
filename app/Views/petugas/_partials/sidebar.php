@@ -74,7 +74,7 @@
         <hr class="my-3">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="../../pages/widgets.html">
+            <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="laporan_petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/laporan_petugas')?>">
               <i class="ni ni-single-copy-04 text-yellow"></i>
               <span class="nav-link-text">Buat Laporan</span>
             </a>

@@ -22,7 +22,7 @@
     <!-- Topnav -->
     <?php include("_partials/topnav.php") ?>
     <!-- Header -->
-    <div class="header bg-primary pb-6">
+    <div class="header bg-gradient-primary pb-6">
       <div class="container-fluid">
         <div class="header-body">
           <div class="row align-items-center py-4">
@@ -61,7 +61,7 @@
                     <th>Tgl. Kembali</th>
                     <th>ID Buku</th>
                     <th>Jml. Buku</th>
-                    <th>ID Anggota</th>
+                    <th>No. Anggota</th>
                     <th>Status</th>
                     <th>Aksi</th>
                   </tr>
@@ -74,7 +74,7 @@
                     <th>Tgl. Kembali</th>
                     <th>ID Buku</th>
                     <th>Jml. Buku</th>
-                    <th>ID Anggota</th>
+                    <th>No. Anggota</th>
                     <th>Status</th>
                     <th>Aksi</th>
                   </tr>

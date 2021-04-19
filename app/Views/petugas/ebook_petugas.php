@@ -22,7 +22,7 @@
     <!-- Topnav -->
     <?php include("_partials/topnav.php") ?>
     <!-- Header -->
-    <div class="header bg-primary pb-6">
+    <div class="header bg-gradient-primary pb-6">
       <div class="container-fluid">
         <div class="header-body">
           <div class="row align-items-center py-4">
@@ -371,7 +371,7 @@ function putImage() {
                   <option value="Teknologi & Ilmu Terapan">Teknologi & Ilmu Terapan</option>
                   <option value="Kesenian, Hiburan & Olahraga">Kesenian, Hiburan & Olahraga</option>
                   <option value="Kesusastraan">Kesusastraan</option>
-                  <option value="Sejarah Geografi">Sejarah Geografi</option>
+                  <option value="Sejarah Biografi">Sejarah Biografi</option>
                 </select>
               </div>
             </div>

@@ -30,7 +30,7 @@ class Info_Peminjaman extends Controller{
         $row[] = $list->tanggal_kembali;
         $row[] = $list->id_buku;
         $row[] = $list->jml_pinjam;
-        $row[] = $list->id_anggota;
+        $row[] = $list->no_anggota;
         if ($list->status == "Dikembalikan"){
           $row[] = '<button class="btn btn-sm btn-success btn-block" style="pointer-events: none;">Dikembalikan</button>';
         }elseif ($list->status == "Menunggu") {

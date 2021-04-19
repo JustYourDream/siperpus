@@ -34,8 +34,7 @@ class DataBuku_Anggota extends Controller{
         $row[] = $list->eksemplar_buku;
         $row[] = $list->no_rak;
         $row[] = $list->kategori_buku;
-        $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Pinjam" onclick="pinjam_buku('."'".$list->no_induk."'".')"><i class="fas fa-shopping-cart"></i> Pinjam</a>
-        <a class="btn btn-sm btn-success" href="javascript:void(0)" title="Kutip" onclick="kutip_buku('."'".$list->no_induk."'".')"><i class="fas fa-paperclip"></i> Kutip</a>';
+        $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Pinjam" onclick="pinjam_buku('."'".$list->no_induk."'".')"><i class="fas fa-shopping-cart"></i> Pinjam</a>';
         $data[] = $row;
       }
 
@@ -80,7 +79,7 @@ class DataBuku_Anggota extends Controller{
       'tanggal_kembali' => $request->getPost('kembali'),
       'id_buku' => $request->getPost('buku'),
       'jml_pinjam' => $request->getPost('jml'),
-      'id_anggota' => $request->getPost('anggota'),
+      'no_anggota' => $request->getPost('anggota'),
       'status' => $status,
     );
     $insert = $pinjam->save_pinjam($data);

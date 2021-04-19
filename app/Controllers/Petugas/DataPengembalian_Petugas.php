@@ -26,7 +26,7 @@ class DataPengembalian_Petugas extends Controller{
         $row[] = $list->id_peminjaman;
         $row[] = $list->tanggal_pinjam;
         $row[] = $list->tanggal_kembali;
-        $row[] = $list->id_anggota;
+        $row[] = $list->no_anggota;
         $row[] = $list->tgl_dikembalikan;
         $row[] = "Rp ".number_format($list->denda,0,',','.');
         $row[] = $list->status_pembayaran;

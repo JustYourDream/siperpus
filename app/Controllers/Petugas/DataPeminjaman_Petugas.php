@@ -30,7 +30,7 @@ class DataPeminjaman_Petugas extends Controller{
         $row[] = $list->tanggal_kembali;
         $row[] = $list->id_buku;
         $row[] = $list->jml_pinjam;
-        $row[] = $list->id_anggota;
+        $row[] = $list->no_anggota;
         $row[] = $list->status;
         if($list->status == "Dipinjam"){
           $row[] = '<button class="btn btn-sm btn-primary btn-block" style="background-color: grey; border-color: grey; pointer-events: none;" title="Confirm"><i class="fas fa-thumbs-up"></i> Konfirmasi</button>
@@ -83,7 +83,7 @@ class DataPeminjaman_Petugas extends Controller{
       'tanggal_kembali' => $request->getPost('kembali'),
       'id_buku' => $request->getPost('buku'),
       'jml_pinjam' => $request->getPost('jml'),
-      'id_anggota' => $request->getPost('anggota'),
+      'no_anggota' => $request->getPost('anggota'),
       'status' => $status,
     );
     $insert = $pinjam->save_pinjam($data);
@@ -155,7 +155,7 @@ class DataPeminjaman_Petugas extends Controller{
 
     //Insert Ke Tabel kembali
     $tgl_pinjam = implode(" ", $pinjam->select('tanggal_pinjam')->where(['id_peminjaman' => $id])->first());
-    $id_anggota = implode(" ", $pinjam->select('id_anggota')->where(['id_peminjaman' => $id])->first());
+    $id_anggota = implode(" ", $pinjam->select('no_anggota')->where(['id_peminjaman' => $id])->first());
     $tgl_kembali = implode(" ", $pinjam->select('tanggal_kembali')->where(['id_peminjaman' => $id])->first());
     $date_kembali = date_create(date("Y-m-d",strtotime($tgl_kembali)));
     $tgl_sekarang = date_create(date("Y-m-d",strtotime(date("Y-m-d"))));
@@ -168,7 +168,7 @@ class DataPeminjaman_Petugas extends Controller{
         'id_peminjaman' => $id,
         'tanggal_pinjam' => $tgl_pinjam,
         'tanggal_kembali' => $tgl_kembali,
-        'id_anggota' => $id_anggota,
+        'no_anggota' => $id_anggota,
         'tgl_dikembalikan' => $date_sekarang,
         'denda' => "0",
         'status_pembayaran' => "Tidak Ada",
@@ -179,7 +179,7 @@ class DataPeminjaman_Petugas extends Controller{
         'id_peminjaman' => $id,
         'tanggal_pinjam' => $tgl_pinjam,
         'tanggal_kembali' => $tgl_kembali,
-        'id_anggota' => $id_anggota,
+        'no_anggota' => $id_anggota,
         'tgl_dikembalikan' => $date_sekarang,
         'denda' => $denda,
         'status_pembayaran' => "Belum Dibayar",
