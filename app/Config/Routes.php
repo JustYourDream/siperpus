@@ -45,7 +45,6 @@ $routes->get('petugas/datapeminjaman_petugas','Petugas/DataPeminjaman_Petugas::i
 $routes->get('petugas/datapengembalian_petugas','Petugas/DataPengembalian_Petugas::index',['filter' => 'auth']);
 $routes->get('petugas/laporan_petugas','Petugas/Laporan_Petugas::index',['filter' => 'auth']);
 $routes->get('petugas/akun_petugas','Petugas/Akun_Petugas::index',['filter' => 'auth']);
-$routes->get('petugas/id_card','Petugas/Id_Card::index',['filter' => 'auth']);
 
 //Anggota
 $routes->get('anggota/dashboard_anggota', 'Anggota/Dashboard_Anggota::index',['filter' => 'auth_anggota']);

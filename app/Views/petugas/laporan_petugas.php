@@ -49,7 +49,7 @@
               <h3 class="mb-0"><i class="fas fa-sticky-note"></i> Rekap Penambahan Bulanan</h3>
             </div>
             <div class="card-body">
-              <form action="<?php echo base_url('Petugas/Laporan_Petugas/penambahan_bulanan')?>" id="peminjaman_bulanan" method="POST" target="_blank">
+              <form action="<?php echo base_url('Petugas/Laporan_Petugas/penambahan_bulanan')?>" id="penambahan_bulanan" method="POST" target="_blank">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
@@ -97,7 +97,7 @@
               <h3 class="mb-0"><i class="fas fa-sticky-note"></i> Rekap Peminjaman Bulanan</h3>
             </div>
             <div class="card-body">
-              <form action="#" id="form">
+              <form action="<?php echo base_url('Petugas/Laporan_Petugas/peminjaman_bulanan')?>" id="peminjaman_bulanan" method="POST" target="_blank">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
@@ -147,7 +147,7 @@
               <h3 class="mb-0"><i class="fas fa-copy"></i> Rekap Keseluruhan Bulanan</h3>
             </div>
             <div class="card-body">
-              <form action="#" id="form">
+              <form action="<?php echo base_url('Petugas/Laporan_Petugas/keseluruhan_bulanan')?>" id="keseluruhan_bulanan" method="POST" target="_blank">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
@@ -172,7 +172,7 @@
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="year" class="form-control-label">Tahun</label>
-                      <input class="form-control" placeholder="Tahun" type="text" name="yearAll" maxlength="4">
+                      <input class="form-control" placeholder="Tahun" type="text" name="years" maxlength="4">
                     </div>
                   </div>
                   <div class="col-md-2">
@@ -195,7 +195,7 @@
               <h3 class="mb-0"><i class="fas fa-copy"></i> Rekap Keseluruhan Tahunan</h3>
             </div>
             <div class="card-body">
-              <form action="#" id="form">
+              <form action="<?php echo base_url('Petugas/Laporan_Petugas/keseluruhan_tahunan')?>" id="keseluruhan_tahunan" method="POST" target="_blank">
                 <div class="row">
                   <div class="col-md-10">
                     <div class="form-group">
