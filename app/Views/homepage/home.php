@@ -315,32 +315,12 @@
   <div class="container">
     <div class="col-md-8">
       <div class="row">
-        <div class="section-title">
-          <h2>Jangkau Kami</h2>
-          <p>Isi form di bawah ini untuk mengirimi kami e-mail dan kami akan membalas sesegera mungkin.</p>
+        <div class="section-title" style="margin-bottom: 20px;">
+          <h2>Peta Lokasi</h2>
         </div>
-        <form name="sentMessage" id="contactForm" novalidate>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <input type="text" id="name" class="form-control" placeholder="Name" required="required">
-                <p class="help-block text-danger"></p>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <input type="email" id="email" class="form-control" placeholder="Email" required="required">
-                <p class="help-block text-danger"></p>
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <textarea name="message" id="message" class="form-control" rows="4" placeholder="Message" required></textarea>
-            <p class="help-block text-danger"></p>
-          </div>
-          <div id="success"></div>
-          <button type="submit" class="btn btn-custom btn-lg">Kirim</button>
-        </form>
+        <div class="col-md-12" style="padding: 0px; margin: 0px;">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15843.632271806318!2d109.5058772!3d-6.9015971!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x7407a1161ae1c108!2sSMK%20Negeri%201%20Ampelgading!5e0!3m2!1sen!2ssg!4v1618946616118!5m2!1sen!2ssg" width="100%" height="280" style="border:0; border-radius: 10px;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
       </div>
     </div>
     <div class="col-md-3 col-md-offset-1 contact-info">

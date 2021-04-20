@@ -19,6 +19,7 @@
 <script src="<?= base_url('../../assets/vendor/datatables.net-buttons/js/buttons.html5.min.js') ?>"></script>
 <script src="<?= base_url('../../assets/vendor/datatables.net-buttons/js/buttons.flash.min.js') ?>"></script>
 <script src="<?= base_url('../../assets/vendor/datatables.net-buttons/js/buttons.print.min.js') ?>"></script>
+<script src="<?= base_url('../../assets/vendor/datatables.net-buttons/js/buttons.colVis.min.js') ?>"></script>
 <script src="<?= base_url('../../assets/vendor/datatables.net-select/js/dataTables.select.min.js') ?>"></script>
 <script src="<?= base_url('../../assets/vendor/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') ?>"></script>
 <!-- Argon JS -->
