@@ -147,6 +147,7 @@ class DataBuku_Petugas extends Controller{
     $no = 1;
 
     $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'format' => [210, 330], 'orientation' => 'L']);
+    $mpdf->curlAllowUnsafeSslRequests = true;
 
     foreach ($hasil->getResult('array') as $row) {
       $table .='<tr>
@@ -251,6 +252,7 @@ class DataBuku_Petugas extends Controller{
     $table = '';
 
     $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'orientation' => 'P', 'format' => [210,330]]);
+    $mpdf->curlAllowUnsafeSslRequests = true;
 
     foreach ($hasil->getResult('array') as $row) {
       $qr = base_url('assets/qr_code/'.$row['qr_code']);

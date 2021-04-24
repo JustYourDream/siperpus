@@ -268,6 +268,7 @@ class Ebook_Petugas extends Controller{
     $no = 1;
 
     $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'format' => 'A4-L']);
+    $mpdf->curlAllowUnsafeSslRequests = true;
 
     foreach ($hasil->getResult('array') as $row) {
       $table .='<tr>

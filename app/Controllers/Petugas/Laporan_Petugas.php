@@ -19,6 +19,8 @@ class Laporan_Petugas extends Controller
 		$buku = new InsertBukuModel($request);
 
     $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'orientation' => 'P', 'format' => [210,330]]);
+    $mpdf->curlAllowUnsafeSslRequests = true;
+
 		$bulan = $request->getPost('Bulan');
 		$tahun = $request->getPost('year');
 		$date_awal = $tahun.'-'.$bulan.'-'.'1';
@@ -217,6 +219,8 @@ class Laporan_Petugas extends Controller
 		$buku = new InsertBukuModel($request);
 
     $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'orientation' => 'P', 'format' => [210,330]]);
+    $mpdf->curlAllowUnsafeSslRequests = true;
+
 		$bulan = $request->getPost('monthRent');
 		$tahun = $request->getPost('yearRent');
 		$date_awal = $tahun.'-'.$bulan.'-'.'1';
@@ -350,6 +354,8 @@ class Laporan_Petugas extends Controller
 		$buku = new InsertBukuModel($request);
 
     $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'orientation' => 'P', 'format' => [210,330]]);
+    $mpdf->curlAllowUnsafeSslRequests = true;
+
 		$bulan = $request->getPost('monthAll');
 		$tahun = $request->getPost('years');
 		$date_awal = $tahun.'-'.$bulan.'-'.'1';
@@ -560,6 +566,8 @@ class Laporan_Petugas extends Controller
 		$buku = new InsertBukuModel($request);
 
     $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'orientation' => 'P', 'format' => [210,330]]);
+    $mpdf->curlAllowUnsafeSslRequests = true;
+    
 		$tahun = $request->getPost('yearAll');
 
 		$mpdf->WriteHTML('

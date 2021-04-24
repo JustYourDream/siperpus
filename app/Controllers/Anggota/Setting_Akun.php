@@ -166,6 +166,7 @@ class Setting_Akun extends Controller
     $hasil = $anggota->where(['no_anggota' => $id])->get();
 
     $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'orientation' => 'L']);
+    $mpdf->curlAllowUnsafeSslRequests = true;
 
     foreach ($hasil->getResult('array') as $row) {
       $foto = base_url('assets/img/profile_pic/'.$row['foto_anggota']);

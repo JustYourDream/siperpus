@@ -229,6 +229,7 @@ class DataAnggota_Petugas extends Controller{
     $hasil = $anggota->get();
 
     $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'orientation' => 'L']);
+    $mpdf->curlAllowUnsafeSslRequests = true;
 
     foreach ($hasil->getResult('array') as $row) {
       $foto = base_url('assets/img/profile_pic/'.$row['foto_anggota']);
@@ -357,6 +358,7 @@ class DataAnggota_Petugas extends Controller{
     $hasil = $anggota->where(['no_anggota' => $id])->get();
 
     $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'orientation' => 'L']);
+    $mpdf->curlAllowUnsafeSslRequests = true;
 
     foreach ($hasil->getResult('array') as $row) {
       $foto = base_url('assets/img/profile_pic/'.$row['foto_anggota']);
@@ -487,6 +489,7 @@ class DataAnggota_Petugas extends Controller{
     $no = 1;
 
     $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'format' => 'A4-L']);
+    $mpdf->curlAllowUnsafeSslRequests = true;
 
     foreach ($hasil->getResult('array') as $row) {
       $tgl = $row['tanggal_lahir'];
