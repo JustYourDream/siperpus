@@ -104,7 +104,7 @@ $(document).ready( function () {
     "serverSide": true,
     "order": [],
     "ajax": {
-        "url": "<?php echo base_url('Anggota/DataBuku_Anggota/ajax_list')?>",
+        "url": "<?php echo base_url('Anggota/Pinjam_Buku/ajax_list')?>",
         "type": "POST"
     },
     //optional
@@ -132,7 +132,7 @@ function reload_table()
 function pinjam_buku(NoInduk){
   $('#modal_form').modal('show');
   $.ajax({
-    url : "<?php echo site_url('Anggota/DataBuku_Anggota/id_otomatis')?>",
+    url : "<?php echo site_url('Anggota/Pinjam_Buku/id_otomatis')?>",
     type: "POST",
     data: $('#form').serialize(),
     dataType: "JSON",
@@ -147,7 +147,7 @@ function pinjam_buku(NoInduk){
   });
 
   $.ajax({
-      url : "<?php echo site_url('Anggota/DataBuku_Anggota/ajax_pinjam')?>/" + NoInduk,
+      url : "<?php echo site_url('Anggota/Pinjam_Buku/ajax_pinjam')?>/" + NoInduk,
       type: "GET",
       dataType: "JSON",
       success: function(data)
@@ -169,7 +169,7 @@ function simpan_pinjam(){
   $('#btnSave').attr('disabled',true); //set button disable
 
   $.ajax({
-    url : "<?php echo site_url('Anggota/DataBuku_Anggota/save_pinjam')?>",
+    url : "<?php echo site_url('Anggota/Pinjam_Buku/save_pinjam')?>",
     type: "POST",
     data: $('#form').serialize(),
     dataType: "JSON",
@@ -185,7 +185,7 @@ function simpan_pinjam(){
         reload_table();
         Swal.fire({
           title: 'Berhasil',
-          text: "Berhasil melakukan peminjaman, <br/>Segera konfirmasi peminjaman ke petugas!",
+          text: "Segera konfirmasi peminjaman ke petugas!",
           type: 'success',
           showCancelButton: true,
           cancelButtonText: 'Tutup',

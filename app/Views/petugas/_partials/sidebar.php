@@ -2,7 +2,7 @@
   <div class="scrollbar-inner">
     <!-- Brand -->
     <div class="sidenav-header d-flex align-items-center">
-      <a class="navbar-brand" href="../../pages/dashboards/dashboard.html">
+      <a class="navbar-brand" href="<?= base_url('/petugas/dashboard_petugas'); ?>">
         <img src="../../assets/img/brand/merk.png" class="navbar-brand-img" alt="...">
       </a>
       <div class="ml-auto">
@@ -22,17 +22,9 @@
         <!-- Nav items -->
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="dashboard_petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/dashboard_petugas')?>">
+            <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="dashboard_petugas" || $uri->getSegment(2)=="Dashboard_Petugas" || $uri->getSegment(1)=="login"){echo 'active';} ?>" href="<?php echo base_url('petugas/dashboard_petugas')?>">
               <i class="ni ni-basket text-purple"></i>
               <span class="nav-link-text">Dashboard</span>
-            </a>
-          </li>
-        </ul>
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="<?php echo base_url('petugas/form_kunjungan')?>" target="_blank">
-              <i class="ni ni-collection text-teal"></i>
-              <span class="nav-link-text">Form Kunjungan</span>
             </a>
           </li>
         </ul>
@@ -40,31 +32,37 @@
         <hr class="my-3">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="databuku_petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/databuku_petugas')?>">
+            <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="databuku_petugas" || $uri->getSegment(2)=="DataBuku_Petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/databuku_petugas')?>">
               <i class="ni ni-books text-orange"></i>
               <span class="nav-link-text">Data Buku</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="ebook_petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/ebook_petugas')?>">
+            <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="ebook_petugas" || $uri->getSegment(2)=="Ebook_Petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/ebook_petugas')?>">
               <i class="fas fa-book-open text-green"></i>
               <span class="nav-link-text">Data E-book</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="dataanggota_petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/dataanggota_petugas')?>">
+            <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="dataanggota_petugas" || $uri->getSegment(2)=="DataAnggota_Petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/dataanggota_petugas')?>">
               <i class="ni ni-single-02 text-pink"></i>
               <span class="nav-link-text">Data Anggota</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="datapeminjaman_petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/datapeminjaman_petugas')?>">
+            <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="datapengunjung_petugas" || $uri->getSegment(2)=="DataPengunjung_Petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/datapengunjung_petugas')?>">
+              <i class="fas fa-street-view text-orange"></i>
+              <span class="nav-link-text">Data Pengunjung</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="datapeminjaman_petugas" || $uri->getSegment(2)=="DataPeminjaman_Petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/datapeminjaman_petugas')?>">
               <i class="fas fa-upload text-green"></i>
               <span class="nav-link-text">Data Peminjaman</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="datapengembalian_petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/datapengembalian_petugas')?>">
+            <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="datapengembalian_petugas" || $uri->getSegment(2)=="DataPengembalian_Petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/datapengembalian_petugas')?>">
               <i class="fas fa-download text-teal"></i>
               <span class="nav-link-text">Data Pengembalian</span>
             </a>
@@ -74,7 +72,7 @@
         <hr class="my-3">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="laporan_petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/laporan_petugas')?>">
+            <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="laporan_petugas" || $uri->getSegment(2)=="Laporan_Petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/laporan_petugas')?>">
               <i class="ni ni-single-copy-04 text-yellow"></i>
               <span class="nav-link-text">Buat Laporan</span>
             </a>
@@ -85,7 +83,7 @@
         <!-- Navigation -->
         <ul class="navbar-nav mb-md-3">
           <li class="nav-item">
-            <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="akun_petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/akun_petugas')?>">
+            <a class="nav-link <?php $uri = service('uri'); if($uri->getSegment(2)=="akun_petugas" || $uri->getSegment(2)=="Akun_Petugas"){echo 'active';} ?>" href="<?php echo base_url('petugas/akun_petugas')?>">
               <i class="ni ni-settings"></i>
               <span class="nav-link-text">Pengaturan Akun</span>
             </a>

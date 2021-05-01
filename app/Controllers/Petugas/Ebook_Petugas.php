@@ -18,7 +18,17 @@ class Ebook_Petugas extends Controller{
 
   public function index()
   {
-    echo view('/petugas/ebook_petugas');
+    $data['title'] = 'Data E-book';
+    if(session()->get('logged_in') !== TRUE){
+			session()->setFlashdata('error', '<center>Silahkan login dulu!</center>');
+			return view('login/login');
+		}else{
+			if(session()->get('role') == "Petugas"){
+				return view('petugas/ebook_petugas', $data);
+			}else{
+				return view('access_denied');
+			}
+		}
   }
 
   public function ajax_list()
@@ -87,6 +97,8 @@ class Ebook_Petugas extends Controller{
     $writer = new PngWriter();
 
     $sampul = null;
+
+    $this->_validate();
 
     //Create QR code
     $qrCode = QrCode::create(''.$request->getPost('NoEbook').'')
@@ -164,6 +176,8 @@ class Ebook_Petugas extends Controller{
     $ebook = new EbookModel($request);
     $nama_ebook = null;
     $sampul = null;
+
+    $this->_validate();
 
     //Validasi File & Sampul
     $validate_file = $this->validate([
@@ -258,6 +272,38 @@ class Ebook_Petugas extends Controller{
 
     $ebook->delete_by_id($id);
     echo json_encode(array("status" => TRUE));
+  }
+
+  private function _validate(){
+    $data = array();
+    $data['error_string'] = array();
+    $data['inputerror'] = array();
+    $data['status'] = TRUE;
+
+    if($this->request->getPost('Penerbit') == ''){
+      $data['error_string'][] = 'Penerbit';
+      $data['inputerror'][] = 'Penerbit harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('Judul') == ''){
+      $data['error_string'][] = 'Judul';
+      $data['inputerror'][] = 'Judul harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('Pengarang') == ''){
+      $data['error_string'][] = 'Pengarang';
+      $data['inputerror'][] = 'Pengarang harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('Kategori') == ''){
+      $data['error_string'][] = 'Kategori';
+      $data['inputerror'][] = 'Kategori harus dipilih';
+      $data['status'] = FALSE;
+    }
+    if($data['status'] === FALSE){
+      echo json_encode($data);
+      exit();
+    }
   }
 
   public function cetak_list(){

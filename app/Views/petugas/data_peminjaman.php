@@ -272,7 +272,7 @@ function simpan_tambah(){
 function konfirmasi_pinjam(id)
 {
   Swal.fire({
-    title: 'Yakin konfirmasi peminjaman?',
+    title: 'Konfirmasi peminjaman?',
     text: "Pilihan yang dipilih tidak dapat dibatalkan!",
     type: 'warning',
     showCancelButton: true,
@@ -317,7 +317,7 @@ function konfirmasi_pinjam(id)
 function dikembalikan(id, induk)
 {
   Swal.fire({
-    title: 'Yakin konfirmasi pengembalian?',
+    title: 'Konfirmasi pengembalian?',
     text: "Pilihan yang dipilih tidak dapat dibatalkan!",
     type: 'warning',
     showCancelButton: true,
@@ -362,7 +362,7 @@ function dikembalikan(id, induk)
 function hapus_peminjaman(id, induk)
 {
   Swal.fire({
-    title: 'Yakin hapus data peminjaman?',
+    title: 'Hapus data peminjaman?',
     text: "Data yang dihapus tidak dapat dikembalikan!",
     type: 'warning',
     showCancelButton: true,

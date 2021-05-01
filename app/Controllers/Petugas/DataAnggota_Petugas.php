@@ -18,7 +18,17 @@ class DataAnggota_Petugas extends Controller{
 
   public function index()
   {
-    echo view('/petugas/data_anggota');
+    $data['title'] = 'Data Anggota';
+    if(session()->get('logged_in') !== TRUE){
+      session()->setFlashdata('error', '<center>Silahkan login dulu!</center>');
+      return view('login/login');
+    }else{
+      if(session()->get('role') == "Petugas"){
+        return view('petugas/data_anggota', $data);
+      }else{
+        return view('access_denied');
+      }
+    }
   }
   public function ajax_list()
   {
@@ -76,6 +86,8 @@ class DataAnggota_Petugas extends Controller{
     ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
     ->setForegroundColor(new Color(0, 0, 0))
     ->setBackgroundColor(new Color(255, 255, 255));
+
+    $this->_validate();
 
     //Save QR
     $result = $writer->write($qrCode);
@@ -146,6 +158,8 @@ class DataAnggota_Petugas extends Controller{
     $request = Services::request();
     $anggota = new AnggotaModel($request);
     $foto = null;
+
+    $this->_validate();
 
     $input = $this->validate([
       'file' => [
@@ -221,6 +235,58 @@ class DataAnggota_Petugas extends Controller{
     $anggota->delete_by_id($id);
     $anggota->delete_akun($id);
     echo json_encode(array("status" => TRUE));
+  }
+
+  private function _validate(){
+    $data = array();
+    $data['error_string'] = array();
+    $data['inputerror'] = array();
+    $data['status'] = TRUE;
+
+    if($this->request->getPost('NoAnggota') == ''){
+      $data['error_string'][] = 'NoAnggota';
+      $data['inputerror'][] = 'No Anggota harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('Nama') == ''){
+      $data['error_string'][] = 'Nama';
+      $data['inputerror'][] = 'Nama harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('Tempat') == ''){
+      $data['error_string'][] = 'Tempat';
+      $data['inputerror'][] = 'Tempat harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('Tanggal') == ''){
+      $data['error_string'][] = 'Tanggal';
+      $data['inputerror'][] = 'Tanggal harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('Jurusan') == ''){
+      $data['error_string'][] = 'Jurusan';
+      $data['inputerror'][] = 'Jurusan harus dipilih';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('Alamat') == ''){
+      $data['error_string'][] = 'Alamat';
+      $data['inputerror'][] = 'Alamat harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('Agama') == ''){
+      $data['error_string'][] = 'Agama';
+      $data['inputerror'][] = 'Agama harus dipilih';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('Jkel') == ''){
+      $data['error_string'][] = 'Jkel';
+      $data['inputerror'][] = 'Jenis Kelamin harus dipilih';
+      $data['status'] = FALSE;
+    }
+    if($data['status'] === FALSE){
+      echo json_encode($data);
+      exit();
+    }
   }
 
   public function cetak_id(){

@@ -10,7 +10,17 @@ class Info_Peminjaman extends Controller{
 
   public function index()
   {
-    echo view('/anggota/info_peminjaman');
+    $data['title'] = 'Info Peminjaman';
+    if(session()->get('logged_in') !== TRUE){
+			session()->setFlashdata('error', '<center>Silahkan login dulu!</center>');
+			return view('login/login');
+		}else{
+			if(session()->get('role') == "Anggota"){
+				return view('anggota/info_peminjaman', $data);
+			}else{
+				return view('access_denied');
+			}
+		}
   }
 
   public function ajax_list()

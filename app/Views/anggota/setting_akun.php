@@ -85,41 +85,49 @@
                   </div>
                 </div>
               <form action="#" id="form">
+                <style>
+                  .rounded-right{
+                      border-top-right-radius: .25rem !important;
+                      border-bottom-right-radius: .25rem !important;
+                  }
+                </style>
                 <div class="row">
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="no" class="form-control-label">Nomor Identitas</label>
-                      <div class="input-group input-group-merge">
+                      <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="fas fa-id-card"></i></span>
                         </div>
-                        <input class="form-control" placeholder="Nomor Identitas" type="text" name="id" readonly>
+                        <input class="form-control rounded-right" placeholder="Nomor Identitas" type="text" name="id" readonly>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="nama" class="form-control-label">Nama</label>
-                      <div class="input-group input-group-merge">
+                      <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        <input class="form-control" placeholder="Nama Lengkap" type="text" name="nama">
+                        <input class="form-control rounded-right" placeholder="Nama Lengkap" type="text" name="nama">
+                        <span class="invalid-feedback"></span>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="jkel" class="form-control-label">Jenis Kelamin</label>
-                      <div class="input-group input-group-merge">
+                      <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
                         </div>
-                        <select name="jkel" class="form-control">
+                        <select name="jkel" class="form-control rounded-right">
                           <option value="">--Jenis Kelamin--</option>
                           <option value="Laki-laki">Laki-laki</option>
                           <option value="Perempuan">Perempuan</option>
                         </select>
+                        <span class="invalid-feedback"></span>
                       </div>
                     </div>
                   </div>
@@ -128,33 +136,35 @@
                   <div class="col-md-2">
                     <div class="form-group">
                       <label for="tempat" class="form-control-label">Tempat Lahir</label>
-                      <div class="input-group input-group-merge">
+                      <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="fas fa-city"></i></span>
                         </div>
-                        <input class="form-control" placeholder="Tempat Lahir" type="text" name="tempat">
+                        <input class="form-control rounded-right" placeholder="Tempat Lahir" type="text" name="tempat">
+                        <span class="invalid-feedback"></span>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="tanggal" class="form-control-label">Tanggal Lahir</label>
-                      <div class="input-group input-group-merge">
+                      <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                         </div>
-                        <input class="form-control" type="date" name="tanggal">
+                        <input class="form-control rounded-right" type="date" name="tanggal">
+                        <span class="invalid-feedback"></span>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="agama" class="form-control-label">Agama</label>
-                      <div class="input-group input-group-merge">
+                      <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="fas fa-peace"></i></span>
                         </div>
-                        <select name="agama" class="form-control">
+                        <select name="agama" class="form-control rounded-right">
                           <option value="">--Pilih Agama--</option>
                           <option value="Islam">Islam</option>
                           <option value="Kristen Protestan">Kristen Protestan</option>
@@ -163,17 +173,19 @@
                           <option value="Buddha">Buddha</option>
                           <option value="Konghucu">Konghucu</option>
                         </select>
+                        <span class="invalid-feedback"></span>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="alamat" class="form-control-label">Alamat</label>
-                      <div class="input-group input-group-merge">
+                      <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="fas fa-map-marked-alt"></i></span>
                         </div>
-                        <input class="form-control" placeholder="Alamat" type="text" name="alamat">
+                        <input class="form-control rounded-right" placeholder="Alamat" type="text" name="alamat">
+                        <span class="invalid-feedback"></span>
                       </div>
                     </div>
                   </div>
@@ -251,17 +263,30 @@
       dataType: "JSON",
       success: function(data)
       {
-
-        $('#btnSave').text('Simpan Perubahan'); //change button text
+        if(data.status) //if success close modal and reload ajax table
+        {
+          $('#btnSave').text('Simpan Perubahan'); //change button text
+          $('#btnSave').attr('disabled',false); //set button enable
+          $('#account').load("http://siperpus.amga/anggota/setting_akun #account"); //Reload topnav
+          Swal.fire({
+            title: 'Berhasil',
+            text: "Data berhasil diupdate!",
+            type: 'success',
+            confirmButtonColor: '#5e72e4'
+          });
+          $('.form-control').removeClass('is-invalid');
+          $('.form-group').removeClass('has-danger');
+          $('.invalid-feedback').text('');
+        }else{
+          for (var i = 0; i < data.inputerror.length; i++)
+          {
+            $('[name="'+data.error_string[i]+'"]').addClass('is-invalid');
+            $('[name="'+data.error_string[i]+'"]').parent().parent().addClass('has-danger'); //select parent twice to select div form-group class and add has-error class
+            $('[name="'+data.error_string[i]+'"]').next().text(data.inputerror[i]); //select span help-block class set text error string
+          }
+        }
+        $('#btnSave').text('Simpan'); //change button text
         $('#btnSave').attr('disabled',false); //set button enable
-        $('#account').load("/anggota/setting_akun #account"); //Reload topnav
-        Swal.fire({
-          title: 'Berhasil',
-          text: "Data berhasil diupdate!",
-          type: 'success',
-          confirmButtonColor: '#5e72e4'
-        });
-
       },
       error: function (jqXHR, textStatus, errorThrown)
       {

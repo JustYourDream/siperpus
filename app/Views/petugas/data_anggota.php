@@ -50,10 +50,10 @@
             <!-- Card header -->
             <div class="card-header">
               <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-6 col-5">
                   <h3 class="mb-0"><i class="fas fa-users"></i> Data Anggota</h3>
                 </div>
-                <div class="col-sm-6 text-right">
+                <div class="col-sm-6 col-7 text-right">
                   <a href="<?php echo base_url('Petugas/DataAnggota_Petugas/cetak_id')?>" target="_blank" class="btn btn-sm btn-default" id="cetak"><i class="fas fa-id-card"></i> Cetak KTA</a>
                   <a href="<?php echo base_url('Petugas/DataAnggota_Petugas/cetak_list')?>" target="_blank" class="btn btn-sm btn-default" id="cetak_list"><i class="fas fa-print"></i> Cetak List</a>
                 </div>
@@ -142,7 +142,8 @@ function tambah_anggota()
 {
   save_method = 'add';
   $('#form')[0].reset(); // reset form on modals
-  $('.form-group').removeClass('has-error'); // clear error class
+  $('.form-control').removeClass('is-invalid');
+  $('.invalid-feedback').text('');
   $('#modal_form').modal('show'); // show bootstrap modal
   $('.modal-title').text('Tambah Anggota'); // Set Title to Bootstrap modal title
   $('.induk').prop('readonly',false);
@@ -153,8 +154,8 @@ function edit_anggota(NoAnggota)
 {
     save_method = 'update';
     $('#form')[0].reset(); // reset form on modals
-    $('.form-group').removeClass('has-error'); // clear error class
-    $('.help-block').empty(); // clear error string
+    $('.form-control').removeClass('is-invalid');
+    $('.invalid-feedback').text('');
     $('.induk').prop('readonly',true);
 
     //Ajax Load data from ajax
@@ -215,26 +216,32 @@ function save()
       {
         $('#modal_form').modal('hide');
         reload_table();
+
+        if (url == "<?php echo site_url('Petugas/DataAnggota_Petugas/ajax_add')?>"){
+          Swal.fire({
+            title: 'Berhasil',
+            text: "Data anggota berhasil ditambahkan!",
+            type: 'success',
+            confirmButtonColor: '#5e72e4'
+          });
+        }else if(url == "<?php echo site_url('Petugas/DataAnggota_Petugas/ajax_update')?>"){
+          Swal.fire({
+            title: 'Berhasil',
+            text: "Data anggota berhasil diupdate!",
+            type: 'success',
+            confirmButtonColor: '#5e72e4'
+          });
+        }
+      }else{
+        for (var i = 0; i < data.inputerror.length; i++)
+        {
+          $('[name="'+data.error_string[i]+'"]').addClass('is-invalid'); //select parent twice to select div form-group class and add has-error class
+          $('[name="'+data.error_string[i]+'"]').next().text(data.inputerror[i]); //select span help-block class set text error string
+        }
       }
 
-      if (url == "<?php echo site_url('Petugas/DataAnggota_Petugas/ajax_add')?>"){
-        Swal.fire({
-          title: 'Berhasil',
-          text: "Data anggota berhasil ditambahkan!",
-          type: 'success',
-          confirmButtonColor: '#5e72e4'
-        });
-      }else if(url == "<?php echo site_url('Petugas/DataAnggota_Petugas/ajax_update')?>"){
-        Swal.fire({
-          title: 'Berhasil',
-          text: "Data anggota berhasil diupdate!",
-          type: 'success',
-          confirmButtonColor: '#5e72e4'
-        });
-      }
       $('#btnSave').text('Simpan'); //change button text
       $('#btnSave').attr('disabled',false); //set button enable
-
 
     },
     error: function (jqXHR, textStatus, errorThrown)
@@ -255,7 +262,7 @@ function save()
 function hapus_anggota(NoAnggota)
 {
   Swal.fire({
-    title: 'Yakin hapus data ini??',
+    title: 'Hapus data anggota ini?',
     text: "Data yang dihapus tidak dapat dikembalikan!",
     type: 'warning',
     showCancelButton: true,
@@ -330,12 +337,14 @@ function putImage() {
               <div class="form-group">
                 <label for="induk" class="form-control-label">Nomor Anggota</label>
                 <input class="form-control induk" type="text" name="NoAnggota" placeholder="Nomor Anggota">
+                <span class="invalid-feedback"></span>
               </div>
             </div>
             <div class="col-md-7">
               <div class="form-group">
                 <label for="nama" class="form-control-label">Nama Anggota</label>
                 <input class="form-control" type="text" name="Nama" placeholder="Nama Anggota">
+                <span class="invalid-feedback"></span>
               </div>
             </div>
           </div>
@@ -344,12 +353,14 @@ function putImage() {
               <div class="form-group">
                 <label for="tempat" class="form-control-label">Tempat Lahir</label>
                 <input class="form-control" type="text" name="Tempat" placeholder="Tempat Lahir">
+                <span class="invalid-feedback"></span>
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
                 <label for="tanggal" class="form-control-label">Tanggal Lahir</label>
                 <input class="form-control" type="date" name="Tanggal" placeholder="Tanggal Lahir">
+                <span class="invalid-feedback"></span>
               </div>
             </div>
             <div class="col-md-6">
@@ -367,6 +378,7 @@ function putImage() {
                   <option value="Teknik Komputer dan Jaringan">Teknik Komputer dan Jaringan</option>
                   <option value="Tata Busana">Tata Busana</option>
                 </select>
+                <span class="invalid-feedback"></span>
               </div>
             </div>
           </div>
@@ -375,6 +387,7 @@ function putImage() {
               <div class="form-group">
                 <label for="alamat" class="form-control-label">Alamat</label>
                 <input class="form-control" type="text" name="Alamat" placeholder="Alamat">
+                <span class="invalid-feedback"></span>
               </div>
             </div>
             <div class="col-md-3">
@@ -389,6 +402,7 @@ function putImage() {
                   <option value="Buddha">Buddha</option>
                   <option value="Konghucu">Konghucu</option>
                 </select>
+                <span class="invalid-feedback"></span>
               </div>
             </div>
             <div class="col-md-3">
@@ -399,6 +413,7 @@ function putImage() {
                   <option value="Laki-laki">Laki-laki</option>
                   <option value="Perempuan">Perempuan</option>
                 </select>
+                <span class="invalid-feedback"></span>
               </div>
             </div>
           </div>

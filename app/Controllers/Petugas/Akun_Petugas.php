@@ -9,7 +9,17 @@ class Akun_Petugas extends Controller
 {
 	public function index()
 	{
-		return view('petugas/setting_akun');
+		$data['title'] = 'Pengaturan Akun';
+		if(session()->get('logged_in') !== TRUE){
+			session()->setFlashdata('error', '<center>Silahkan login dulu!</center>');
+			return view('login/login');
+		}else{
+			if(session()->get('role') == "Petugas"){
+				return view('petugas/setting_akun', $data);
+			}else{
+				return view('access_denied');
+			}
+		}
 	}
 	public function showdata(){
 		$id = session()->get('id');
@@ -21,6 +31,9 @@ class Akun_Petugas extends Controller
   {
 		//Tabel Petugas
 		$petugas = new PetugasModel();
+
+		$this->_validate();
+
     $data = array(
     	'nama_petugas' => $this->request->getPost('nama'),
 			'jabatan_petugas' => $this->request->getPost('role'),
@@ -142,4 +155,36 @@ class Akun_Petugas extends Controller
 																									<span aria-hidden="true">&times;</span>
 																								</button>');
 	}
+
+	private function _validate(){
+    $data = array();
+    $data['error_string'] = array();
+    $data['inputerror'] = array();
+    $data['status'] = TRUE;
+
+    if($this->request->getPost('telp') == ''){
+      $data['error_string'][] = 'telp';
+      $data['inputerror'][] = 'No Telepon harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('nama') == ''){
+      $data['error_string'][] = 'nama';
+      $data['inputerror'][] = 'Nama harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('role') == ''){
+      $data['error_string'][] = 'role';
+      $data['inputerror'][] = 'Jabatan harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('address') == ''){
+      $data['error_string'][] = 'address';
+      $data['inputerror'][] = 'Alamat harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($data['status'] === FALSE){
+      echo json_encode($data);
+      exit();
+    }
+  }
 }

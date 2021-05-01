@@ -7,7 +7,16 @@ class Login extends Controller
 {
     public function index()
     {
-        return view('login/login');
+        $data['title'] = 'Dashboard';
+        if(session()->get('logged_in') !== TRUE){
+          return view('login/login');
+        }else{
+          if(session()->get('role') == "Petugas"){
+            return view('petugas/petugas', $data);
+          }elseif(session()->get('role') == "Anggota"){
+            return view('anggota/dashboard', $data);
+          }
+        }
     }
     public function process()
     {

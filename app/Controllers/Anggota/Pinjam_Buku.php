@@ -5,11 +5,21 @@ use App\Models\ModelBuku;
 use App\Models\PeminjamanModel;
 use Config\Services;
 
-class DataBuku_Anggota extends Controller{
+class Pinjam_Buku extends Controller{
 
   public function index()
   {
-    echo view('/anggota/data_buku');
+    $data['title'] = 'Pinjam Buku';
+    if(session()->get('logged_in') !== TRUE){
+			session()->setFlashdata('error', '<center>Silahkan login dulu!</center>');
+			return view('login/login');
+		}else{
+			if(session()->get('role') == "Anggota"){
+				return view('anggota/data_buku', $data);
+			}else{
+				return view('access_denied');
+			}
+		}
   }
 
   public function ajax_list()
@@ -34,7 +44,11 @@ class DataBuku_Anggota extends Controller{
         $row[] = $list->eksemplar_buku;
         $row[] = $list->no_rak;
         $row[] = $list->kategori_buku;
-        $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Pinjam" onclick="pinjam_buku('."'".$list->no_induk."'".')"><i class="fas fa-shopping-cart"></i> Pinjam</a>';
+        if($list->eksemplar_buku == 0){
+          $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Pinjam" style="background-color: grey; border-color: grey; pointer-events: none;"><i class="fas fa-shopping-cart"></i> Pinjam</a>';
+        }elseif ($list->eksemplar_buku >= 1) {
+          $row[] = '<a class="btn btn-sm btn-primary" href="javascript:void(0)" title="Pinjam" onclick="pinjam_buku('."'".$list->no_induk."'".')"><i class="fas fa-shopping-cart"></i> Pinjam</a>';
+        }
         $data[] = $row;
       }
 

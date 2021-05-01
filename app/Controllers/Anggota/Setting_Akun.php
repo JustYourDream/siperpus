@@ -11,7 +11,17 @@ class Setting_Akun extends Controller
 {
 	public function index()
 	{
-		return view('anggota/setting_akun');
+		$data['title'] = 'Pengaturan Akun';
+		if(session()->get('logged_in') !== TRUE){
+			session()->setFlashdata('error', '<center>Silahkan login dulu!</center>');
+			return view('login/login');
+		}else{
+			if(session()->get('role') == "Anggota"){
+				return view('anggota/setting_akun', $data);
+			}else{
+				return view('access_denied');
+			}
+		}
 	}
 	public function showdata(){
 		$request = Services::request();
@@ -25,6 +35,8 @@ class Setting_Akun extends Controller
 		//Tabel Petugas
 		$request = Services::request();
 		$anggota = new AnggotaModel($request);
+		
+		$this->_validate();
     $data = array(
     	'nama_anggota' => $this->request->getPost('nama'),
 			'tempat_lahir' => $this->request->getPost('tempat'),
@@ -160,6 +172,49 @@ class Setting_Akun extends Controller
 																									<span aria-hidden="true">&times;</span>
 																								</button>');
 	}
+
+	private function _validate(){
+    $data = array();
+    $data['error_string'] = array();
+    $data['inputerror'] = array();
+    $data['status'] = TRUE;
+
+    if($this->request->getPost('jkel') == ''){
+      $data['error_string'][] = 'jkel';
+      $data['inputerror'][] = 'Jenis Kelamin harus dipilih';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('nama') == ''){
+      $data['error_string'][] = 'nama';
+      $data['inputerror'][] = 'Nama harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('tempat') == ''){
+      $data['error_string'][] = 'tempat';
+      $data['inputerror'][] = 'Tempat harus diisi';
+      $data['status'] = FALSE;
+    }
+		if($this->request->getPost('tanggal') == ''){
+      $data['error_string'][] = 'tanggal';
+      $data['inputerror'][] = 'Tanggal harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('alamat') == ''){
+      $data['error_string'][] = 'alamat';
+      $data['inputerror'][] = 'Alamat harus diisi';
+      $data['status'] = FALSE;
+    }
+		if($this->request->getPost('agama') == ''){
+      $data['error_string'][] = 'agama';
+      $data['inputerror'][] = 'Agama harus dipilih';
+      $data['status'] = FALSE;
+    }
+    if($data['status'] === FALSE){
+      echo json_encode($data);
+      exit();
+    }
+  }
+
 	public function cetak_id_satuan($id){
     $request = Services::request();
     $anggota = new AnggotaModel($request);

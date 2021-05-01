@@ -17,6 +17,7 @@ class Baca_Buku extends Controller
     $keyword            = $this->request->getGet('keyword');
 
     $data['keyword']    = $keyword;
+		$data['title'] 			= 'Baca Buku';
 
     // filter
     $like       = [];
@@ -30,6 +31,15 @@ class Baca_Buku extends Controller
 		$data['ebook'] = $ebook->select('*')->like($like)->orLike($or_like)->paginate(8, 'ebook');
 		$data['pager'] = $ebook->pager;
 
-		return view('anggota/baca_buku', $data);
+		if(session()->get('logged_in') !== TRUE){
+			session()->setFlashdata('error', '<center>Silahkan login dulu!</center>');
+			return view('login/login');
+		}else{
+			if(session()->get('role') == "Anggota"){
+				return view('anggota/baca_buku', $data);
+			}else{
+				return view('access_denied');
+			}
+		}
 	}
 }

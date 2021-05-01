@@ -10,7 +10,17 @@ class Laporan_Petugas extends Controller
 {
 	public function index()
 	{
-		return view('petugas/laporan_petugas');
+		$data['title'] = 'Buat Laporan';
+		if(session()->get('logged_in') !== TRUE){
+			session()->setFlashdata('error', '<center>Silahkan login dulu!</center>');
+			return view('login/login');
+		}else{
+			if(session()->get('role') == "Petugas"){
+				return view('petugas/laporan_petugas', $data);
+			}else{
+				return view('access_denied');
+			}
+		}
 	}
 	public function penambahan_bulanan()
 	{
@@ -567,7 +577,7 @@ class Laporan_Petugas extends Controller
 
     $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'orientation' => 'P', 'format' => [210,330]]);
     $mpdf->curlAllowUnsafeSslRequests = true;
-    
+
 		$tahun = $request->getPost('yearAll');
 
 		$mpdf->WriteHTML('

@@ -50,10 +50,10 @@
             <!-- Card header -->
             <div class="card-header">
               <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-6 col-7">
                   <h3 class="mb-0"><i class="fas fa-book"></i> Data Buku</h3>
                 </div>
-                <div class="col-sm-6 text-right">
+                <div class="col-sm-6 col-5 text-right">
                   <a href="<?php echo base_url('Petugas/DataBuku_Petugas/cetak_list')?>" target="_blank" class="btn btn-sm btn-default" id="cetak_list"><i class="fas fa-print"></i> Cetak List</a>
                 </div>
               </div>
@@ -139,8 +139,8 @@ function edit_buku(NoInduk)
 {
     save_method = 'update';
     $('#form')[0].reset(); // reset form on modals
-    $('.form-group').removeClass('has-error'); // clear error class
-    $('.help-block').empty(); // clear error string
+    $('.form-control').removeClass('is-invalid');
+    $('.invalid-feedback').text('');
     $('.induk').prop('readonly',true);
 
     //Ajax Load data from ajax
@@ -176,7 +176,8 @@ function tambah_buku()
 {
   save_method = 'add';
   $('#form')[0].reset(); // reset form on modals
-  $('.form-group').removeClass('has-error'); // clear error class
+  $('.form-control').removeClass('is-invalid');
+  $('.invalid-feedback').text('');
   $('#modal_form').modal('show'); // show bootstrap modal
   $('.modal-title').text('Tambah Buku'); // Set Title to Bootstrap modal title
   $('.induk').prop('readonly',false);
@@ -212,23 +213,30 @@ function save()
       {
         $('#modal_form').modal('hide');
         reload_table();
+        if (url == "<?php echo site_url('Petugas/DataBuku_Petugas/ajax_add')?>"){
+          Swal.fire({
+            title: 'Berhasil',
+            text: "Data buku berhasil ditambahkan!",
+            type: 'success',
+            confirmButtonColor: '#5e72e4'
+          });
+        }else if(url == "<?php echo site_url('Petugas/DataBuku_Petugas/ajax_update')?>"){
+          Swal.fire({
+            title: 'Berhasil',
+            text: "Data buku berhasil diupdate!",
+            type: 'success',
+            confirmButtonColor: '#5e72e4'
+          });
+        }
+      }else{
+        for (var i = 0; i < data.inputerror.length; i++)
+        {
+          $('[name="'+data.error_string[i]+'"]').addClass('is-invalid'); //select parent twice to select div form-group class and add has-error class
+          $('[name="'+data.error_string[i]+'"]').next().text(data.inputerror[i]); //select span help-block class set text error string
+        }
       }
 
-      if (url == "<?php echo site_url('Petugas/DataBuku_Petugas/ajax_add')?>"){
-        Swal.fire({
-          title: 'Berhasil',
-          text: "Data buku berhasil ditambahkan!",
-          type: 'success',
-          confirmButtonColor: '#5e72e4'
-        });
-      }else if(url == "<?php echo site_url('Petugas/DataBuku_Petugas/ajax_update')?>"){
-        Swal.fire({
-          title: 'Berhasil',
-          text: "Data buku berhasil diupdate!",
-          type: 'success',
-          confirmButtonColor: '#5e72e4'
-        });
-      }
+
       $('#btnSave').text('Simpan'); //change button text
       $('#btnSave').attr('disabled',false); //set button enable
 
@@ -251,7 +259,7 @@ function save()
 function hapus_buku(NoInduk)
 {
   Swal.fire({
-    title: 'Yakin hapus data ini??',
+    title: 'Hapus data buku ini?',
     text: "Data yang dihapus tidak dapat dikembalikan!",
     type: 'warning',
     showCancelButton: true,
@@ -310,18 +318,21 @@ function hapus_buku(NoInduk)
               <div class="form-group">
                 <label for="induk" class="form-control-label">Nomor Induk</label>
                 <input class="form-control induk" type="text" name="NoInduk" placeholder="Nomor Induk">
+                <span class="invalid-feedback"></span>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label for="isbn" class="form-control-label">ISBN</label>
                 <input class="form-control" type="text" name="Isbn" placeholder="Nomor ISBN">
+                <span class="invalid-feedback"></span>
               </div>
             </div>
             <div class="col-md-5">
               <div class="form-group">
                 <label for="judul" class="form-control-label">Judul</label>
                 <input class="form-control" type="text" name="Judul" placeholder="Judul Buku">
+                <span class="invalid-feedback"></span>
               </div>
             </div>
           </div>
@@ -330,18 +341,21 @@ function hapus_buku(NoInduk)
               <div class="form-group">
                 <label for="pengarang" class="form-control-label">Pengarang</label>
                 <input class="form-control" type="text" name="Pengarang" placeholder="Nama Pengarang">
+                <span class="invalid-feedback"></span>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label for="kota" class="form-control-label">Kota Penerbitan</label>
                 <input class="form-control" type="text" name="KotaTerbit" placeholder="Kota Penerbitan Buku">
+                <span class="invalid-feedback"></span>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label for="penerbit" class="form-control-label">Penerbit</label>
                 <input class="form-control" type="text" name="Penerbit" placeholder="Nama Penerbit">
+                <span class="invalid-feedback"></span>
               </div>
             </div>
           </div>
@@ -350,18 +364,21 @@ function hapus_buku(NoInduk)
               <div class="form-group">
                 <label for="tahun_terbit" class="form-control-label">Tahun Terbit</label>
                 <input class="form-control" type="text" name="TahunTerbit" placeholder="Tahun Terbit Buku">
+                <span class="invalid-feedback"></span>
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
                 <label for="eksmplar" class="form-control-label">Jml. Eksemplar</label>
                 <input class="form-control" type="text" name="Eksemplar" placeholder="Jumlah Eksemplar">
+                <span class="invalid-feedback"></span>
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
                 <label for="rak" class="form-control-label">No. Rak</label>
                 <input class="form-control" type="text" name="Rak" placeholder="Nomor Rak Buku">
+                <span class="invalid-feedback"></span>
               </div>
             </div>
             <div class="col-md-3">
@@ -380,6 +397,7 @@ function hapus_buku(NoInduk)
                   <option value="Kesusastraan">Kesusastraan</option>
                   <option value="Sejarah Biografi">Sejarah Biografi</option>
                 </select>
+                <span class="invalid-feedback"></span>
               </div>
             </div>
           </div>

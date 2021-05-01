@@ -50,10 +50,10 @@
             <!-- Card header -->
             <div class="card-header">
               <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-6 col-7">
                   <h3 class="mb-0"><i class="fas fa-book-open"></i> Data E-book</h3>
                 </div>
-                <div class="col-sm-6 text-right">
+                <div class="col-sm-6 col-5 text-right">
                   <a href="<?php echo base_url('Petugas/Ebook_Petugas/cetak_list')?>" target="_blank" class="btn btn-sm btn-default" id="cetak_list"><i class="fas fa-print"></i> Cetak List</a>
                 </div>
               </div>
@@ -151,7 +151,8 @@ function tambah_ebook()
   });
   save_method = 'add';
   $('#form')[0].reset(); // reset form on modals
-  $('.form-group').removeClass('has-error'); // clear error class
+  $('.form-control').removeClass('is-invalid');
+  $('.invalid-feedback').text('');
   $('#modal_form').modal('show'); // show bootstrap modal
   $('.modal-title').text('Tambah E-book'); // Set Title to Bootstrap modal title
   $('#target').attr('src','../../assets/eBook/Cover/Default-Cover.png');
@@ -161,7 +162,8 @@ function edit_ebook(NoEbook)
 {
     save_method = 'update';
     $('#form')[0].reset(); // reset form on modals
-    $('.form-group').removeClass('has-error'); // clear error class
+    $('.form-control').removeClass('is-invalid');
+    $('.invalid-feedback').text('');
     $('.help-block').empty(); // clear error string
 
     //Ajax Load data from ajax
@@ -219,23 +221,30 @@ function save()
       {
         $('#modal_form').modal('hide');
         reload_table();
+
+        if (url == "<?php echo site_url('Petugas/Ebook_Petugas/ajax_add')?>"){
+          Swal.fire({
+            title: 'Berhasil',
+            text: "E-book berhasil ditambahkan!",
+            type: 'success',
+            confirmButtonColor: '#5e72e4'
+          });
+        }else if(url == "<?php echo site_url('Petugas/Ebook_Petugas/ajax_update')?>"){
+          Swal.fire({
+            title: 'Berhasil',
+            text: "Data E-book berhasil diupdate!",
+            type: 'success',
+            confirmButtonColor: '#5e72e4'
+          });
+        }
+      }else{
+        for (var i = 0; i < data.inputerror.length; i++)
+        {
+          $('[name="'+data.error_string[i]+'"]').addClass('is-invalid'); //select parent twice to select div form-group class and add has-error class
+          $('[name="'+data.error_string[i]+'"]').next().text(data.inputerror[i]); //select span help-block class set text error string
+        }
       }
 
-      if (url == "<?php echo site_url('Petugas/Ebook_Petugas/ajax_add')?>"){
-        Swal.fire({
-          title: 'Berhasil',
-          text: "E-book berhasil ditambahkan!",
-          type: 'success',
-          confirmButtonColor: '#5e72e4'
-        });
-      }else if(url == "<?php echo site_url('Petugas/Ebook_Petugas/ajax_update')?>"){
-        Swal.fire({
-          title: 'Berhasil',
-          text: "Data E-book berhasil diupdate!",
-          type: 'success',
-          confirmButtonColor: '#5e72e4'
-        });
-      }
       $('#btnSave').text('Simpan'); //change button text
       $('#btnSave').attr('disabled',false); //set button enable
 
@@ -259,7 +268,7 @@ function save()
 function hapus_ebook(NoEbook)
 {
   Swal.fire({
-    title: 'Yakin hapus E-book ini??',
+    title: 'Hapus data e-book ini?',
     text: "Data yang dihapus tidak dapat dikembalikan!",
     type: 'warning',
     showCancelButton: true,
@@ -341,6 +350,7 @@ function putImage() {
               <div class="form-group">
                 <label for="judul" class="form-control-label">Judul Buku</label>
                 <input class="form-control" type="text" name="Judul" placeholder="Judul">
+                <span class="invalid-feedback"></span>
               </div>
             </div>
           </div>
@@ -349,12 +359,14 @@ function putImage() {
               <div class="form-group">
                 <label for="pengarang" class="form-control-label">Pengarang</label>
                 <input class="form-control" type="text" name="Pengarang" placeholder="Pengarang">
+                <span class="invalid-feedback"></span>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label for="penerbit" class="form-control-label">Penerbit</label>
                 <input class="form-control" type="text" name="Penerbit" placeholder="Penerbit">
+                <span class="invalid-feedback"></span>
               </div>
             </div>
             <div class="col-md-4">
@@ -373,6 +385,7 @@ function putImage() {
                   <option value="Kesusastraan">Kesusastraan</option>
                   <option value="Sejarah Biografi">Sejarah Biografi</option>
                 </select>
+                <span class="invalid-feedback"></span>
               </div>
             </div>
           </div>

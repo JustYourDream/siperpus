@@ -36,6 +36,7 @@ $routes->get('/', 'Home::index');
 
 //Petugas
 $routes->get('petugas/dashboard_petugas', 'Petugas/Dashboard_Petugas::index',['filter' => 'auth']);
+$routes->get('petugas/datapengunjung_petugas','Petugas/DataPengunjung_Petugas::index',['filter' => 'auth']);
 $routes->get('petugas/form_kunjungan','Petugas/Form_Kunjungan::index',['filter' => 'auth']);
 $routes->get('petugas/form_kunjungan/sukses','Petugas/Form_Kunjungan::welcome',['filter' => 'auth']);
 $routes->get('petugas/databuku_petugas', 'Petugas/DataBuku_Petugas::index',['filter' => 'auth']);
@@ -47,12 +48,12 @@ $routes->get('petugas/laporan_petugas','Petugas/Laporan_Petugas::index',['filter
 $routes->get('petugas/akun_petugas','Petugas/Akun_Petugas::index',['filter' => 'auth']);
 
 //Anggota
-$routes->get('anggota/dashboard_anggota', 'Anggota/Dashboard_Anggota::index',['filter' => 'auth_anggota']);
-$routes->get('anggota/pinjam_buku', 'Anggota/DataBuku_Anggota::index',['filter' => 'auth_anggota']);
-$routes->get('anggota/baca_buku', 'Anggota/Baca_Buku::index',['filter' => 'auth_anggota']);
-$routes->get('anggota/info_peminjaman', 'Anggota/Info_Peminjaman::index',['filter' => 'auth_anggota']);
-$routes->get('anggota/info_pengembalian', 'Anggota/Info_Pengembalian::index',['filter' => 'auth_anggota']);
-$routes->get('anggota/setting_akun', 'Anggota/Setting_Akun::index',['filter' => 'auth_anggota']);
+$routes->get('anggota/dashboard_anggota', 'Anggota/Dashboard_Anggota::index',['filter' => 'auth']);
+$routes->get('anggota/pinjam_buku', 'Anggota/Pinjam_Buku::index',['filter' => 'auth']);
+$routes->get('anggota/baca_buku', 'Anggota/Baca_Buku::index',['filter' => 'auth']);
+$routes->get('anggota/info_peminjaman', 'Anggota/Info_Peminjaman::index',['filter' => 'auth']);
+$routes->get('anggota/info_pengembalian', 'Anggota/Info_Pengembalian::index',['filter' => 'auth']);
+$routes->get('anggota/setting_akun', 'Anggota/Setting_Akun::index',['filter' => 'auth']);
 
 
 /*

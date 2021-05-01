@@ -18,7 +18,17 @@ class DataBuku_Petugas extends Controller{
 
   public function index()
   {
-    echo view('/petugas/data_buku');
+    $data['title'] = 'Data Buku';
+    if(session()->get('logged_in') !== TRUE){
+			session()->setFlashdata('error', '<center>Silahkan login dulu!</center>');
+			return view('login/login');
+		}else{
+			if(session()->get('role') == "Petugas"){
+				return view('petugas/data_buku', $data);
+			}else{
+				return view('access_denied');
+			}
+		}
   }
 
   public function ajax_list()
@@ -68,6 +78,7 @@ class DataBuku_Petugas extends Controller{
 
     $writer = new PngWriter();
 
+    $this->_validate();
     // Create QR code
     $qrCode = QrCode::create(''.$request->getPost('NoInduk').'')
     ->setEncoding(new Encoding('UTF-8'))
@@ -77,9 +88,6 @@ class DataBuku_Petugas extends Controller{
     ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
     ->setForegroundColor(new Color(0, 0, 0))
     ->setBackgroundColor(new Color(255, 255, 255));
-
-    $result = $writer->write($qrCode);
-    $result->saveToFile('../public/assets/qr_code/'.$request->getPost('NoInduk').'-QR.png');
 
     $data = array(
       'no_induk' => $request->getPost('NoInduk'),
@@ -96,6 +104,8 @@ class DataBuku_Petugas extends Controller{
     );
 
     $insert = $buku->save_buku($data);
+    $result = $writer->write($qrCode);
+    $result->saveToFile('../public/assets/qr_code/'.$request->getPost('NoInduk').'-QR.png');
     echo json_encode(array("status" => TRUE));
   }
 
@@ -111,6 +121,7 @@ class DataBuku_Petugas extends Controller{
   {
     $request = Services::request();
     $buku = new ModelBuku($request);
+    $this->_validate();
     $data = array(
       'isbn' => $request->getPost('Isbn'),
       'judul_buku' => $request->getPost('Judul'),
@@ -138,6 +149,70 @@ class DataBuku_Petugas extends Controller{
     $lists = $buku->delete_by_id($id);
 
     echo json_encode(array("status" => TRUE));
+  }
+  private function _validate(){
+    $request = Services::request();
+    $buku = new ModelBuku($request);
+
+    $data = array();
+    $data['error_string'] = array();
+    $data['inputerror'] = array();
+    $data['status'] = TRUE;
+
+    if($this->request->getPost('NoInduk') == ''){
+      $data['error_string'][] = 'NoInduk';
+      $data['inputerror'][] = 'No Induk harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('Isbn') == ''){
+      $data['error_string'][] = 'Isbn';
+      $data['inputerror'][] = 'ISBN harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('Judul') == ''){
+      $data['error_string'][] = 'Judul';
+      $data['inputerror'][] = 'Judul harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('Pengarang') == ''){
+      $data['error_string'][] = 'Pengarang';
+      $data['inputerror'][] = 'Pengarang harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('KotaTerbit') == ''){
+      $data['error_string'][] = 'KotaTerbit';
+      $data['inputerror'][] = 'Kota Terbit harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('Penerbit') == ''){
+      $data['error_string'][] = 'Penerbit';
+      $data['inputerror'][] = 'Penerbit harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('TahunTerbit') == ''){
+      $data['error_string'][] = 'TahunTerbit';
+      $data['inputerror'][] = 'Tahun Terbit harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('Eksemplar') == ''){
+      $data['error_string'][] = 'Eksemplar';
+      $data['inputerror'][] = 'Eksemplar harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('Rak') == ''){
+      $data['error_string'][] = 'Rak';
+      $data['inputerror'][] = 'No rak harus diisi';
+      $data['status'] = FALSE;
+    }
+    if($this->request->getPost('Kategori') == ''){
+      $data['error_string'][] = 'Kategori';
+      $data['inputerror'][] = 'Kategori harus dipilih';
+      $data['status'] = FALSE;
+    }
+    if($data['status'] === FALSE){
+      echo json_encode($data);
+      exit();
+    }
   }
   public function cetak_list(){
     $request = Services::request();

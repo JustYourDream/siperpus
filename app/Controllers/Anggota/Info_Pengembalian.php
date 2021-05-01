@@ -8,7 +8,17 @@ class Info_Pengembalian extends Controller{
 
   public function index()
   {
-    echo view('/anggota/info_pengembalian');
+    $data['title'] = 'Info Pengembalian';
+    if(session()->get('logged_in') !== TRUE){
+			session()->setFlashdata('error', '<center>Silahkan login dulu!</center>');
+			return view('login/login');
+		}else{
+			if(session()->get('role') == "Anggota"){
+				return view('anggota/info_pengembalian', $data);
+			}else{
+				return view('access_denied');
+			}
+		}
   }
 
   public function ajax_list()

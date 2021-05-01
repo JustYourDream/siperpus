@@ -10,12 +10,32 @@ class Form_Kunjungan extends Controller
 {
 	public function index()
 	{
-		return view('petugas/form_kunjungan');
+		$data['title'] = 'Form Kunjungan';
+		if(session()->get('logged_in') !== TRUE){
+			session()->setFlashdata('error', '<center>Silahkan login dulu!</center>');
+			return view('login/login');
+		}else{
+			if(session()->get('role') == "Petugas"){
+				return view('petugas/form_kunjungan', $data);
+			}else{
+				return view('access_denied');
+			}
+		}
 	}
 
 	public function welcome()
 	{
-		return view('petugas/kunjungan_sukses');
+		$data['title'] = 'Kunjungan Sukses';
+		if(session()->get('logged_in') !== TRUE){
+			session()->setFlashdata('error', '<center>Silahkan login dulu!</center>');
+			return view('login/login');
+		}else{
+			if(session()->get('role') == "Petugas"){
+				return view('petugas/kunjungan_sukses', $data);
+			}else{
+				return view('access_denied');
+			}
+		}
 	}
 
 	public function absensi($id){
@@ -42,15 +62,15 @@ class Form_Kunjungan extends Controller
     }
 
 		$data = array(
-
 			'no' => $no_urut,
 			'no_anggota' => $insertedId,
 			'nama' => $namaAnggota,
 			'jurusan_anggota' => $jurusanAnggota,
-			'tanggal_kunjungan' => $dateNow
+			'tanggal_kunjungan' => $dateNow,
+			'title' => 'Kunjungan Sukses'
 		);
 
-		$insert = $kunjungan->save_kunjungan($data);
+		$insert = $kunjungan->save_kunjungan(array('no' => $no_urut, 'no_anggota' => $insertedId, 'nama' => $namaAnggota, 'jurusan_anggota' => $jurusanAnggota, 'tanggal_kunjungan' => $dateNow));
 		echo view('petugas/kunjungan_sukses', $data);
 	}
 }

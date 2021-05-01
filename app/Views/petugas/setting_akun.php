@@ -82,11 +82,17 @@
                   </div>
                 </div>
               <form action="#" id="form">
+                <style>
+                  .rounded-right{
+                      border-top-right-radius: .25rem !important;
+                      border-bottom-right-radius: .25rem !important;
+                  }
+                </style>
                 <div class="row">
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="no" class="form-control-label">Nomor Identitas</label>
-                      <div class="input-group input-group-merge">
+                      <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="fas fa-id-card"></i></span>
                         </div>
@@ -97,22 +103,24 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="nama" class="form-control-label">Nama</label>
-                      <div class="input-group input-group-merge">
+                      <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        <input class="form-control" placeholder="Nama Lengkap" type="text" name="nama">
+                        <input class="form-control rounded-right" placeholder="Nama Lengkap" type="text" name="nama">
+                        <span class="invalid-feedback"></span>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="jabatan" class="form-control-label">Jabatan</label>
-                      <div class="input-group input-group-merge">
+                      <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
                         </div>
-                        <input class="form-control" placeholder="Jabatan Pekerjaan" type="text" name="role">
+                        <input class="form-control rounded-right" placeholder="Jabatan Pekerjaan" type="text" name="role">
+                        <span class="invalid-feedback"></span>
                       </div>
                     </div>
                   </div>
@@ -121,22 +129,24 @@
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="telp" class="form-control-label">Nomor Telepon</label>
-                      <div class="input-group input-group-merge">
+                      <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="fas fa-phone"></i></span>
                         </div>
-                        <input class="form-control" placeholder="Nomor Telepon" type="text" name="telp">
+                        <input class="form-control rounded-right" placeholder="Nomor Telepon" type="text" name="telp">
+                        <span class="invalid-feedback"></span>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="alamat" class="form-control-label">Alamat</label>
-                      <div class="input-group input-group-merge">
+                      <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="fas fa-home"></i></span>
                         </div>
-                        <input class="form-control" placeholder="Alamat Rumah" type="text" name="address">
+                        <input class="form-control rounded-right" placeholder="Alamat Rumah" type="text" name="address">
+                        <span class="invalid-feedback"></span>
                       </div>
                     </div>
                   </div>
@@ -210,17 +220,30 @@
       dataType: "JSON",
       success: function(data)
       {
-
-        $('#btnSave').text('Simpan Perubahan'); //change button text
+        if(data.status) //if success close modal and reload ajax table
+        {
+          $('#btnSave').text('Simpan Perubahan'); //change button text
+          $('#btnSave').attr('disabled',false); //set button enable
+          $('#account').load("http://siperpus.amga/petugas/akun_petugas #account"); //Reload topnav
+          Swal.fire({
+            title: 'Berhasil',
+            text: "Data berhasil diupdate!",
+            type: 'success',
+            confirmButtonColor: '#5e72e4'
+          });
+          $('.form-control').removeClass('is-invalid');
+          $('.form-group').removeClass('has-danger');
+          $('.invalid-feedback').text('');
+        }else{
+          for (var i = 0; i < data.inputerror.length; i++)
+          {
+            $('[name="'+data.error_string[i]+'"]').addClass('is-invalid');
+            $('[name="'+data.error_string[i]+'"]').parent().parent().addClass('has-danger'); //select parent twice to select div form-group class and add has-error class
+            $('[name="'+data.error_string[i]+'"]').next().text(data.inputerror[i]); //select span help-block class set text error string
+          }
+        }
+        $('#btnSave').text('Simpan'); //change button text
         $('#btnSave').attr('disabled',false); //set button enable
-        $('#account').load("http://siperpus.amga/petugas/akun_petugas #account"); //Reload topnav
-        Swal.fire({
-          title: 'Berhasil',
-          text: "Data berhasil diupdate!",
-          type: 'success',
-          confirmButtonColor: '#5e72e4'
-        });
-
       },
       error: function (jqXHR, textStatus, errorThrown)
       {

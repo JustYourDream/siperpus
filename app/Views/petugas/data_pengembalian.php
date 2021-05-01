@@ -127,7 +127,7 @@ function reload_table()
 function konfirmasi_bayar(id)
 {
   Swal.fire({
-    title: 'Yakin konfirmasi pembayaran denda?',
+    title: 'Konfirmasi pembayaran denda?',
     text: "Pilihan yang dipilih tidak dapat dibatalkan!",
     type: 'warning',
     showCancelButton: true,
@@ -157,7 +157,7 @@ function konfirmasi_bayar(id)
           {
             Swal.fire({
               title: 'Gagal',
-              text: "Konfirmasi pembayaran gagal!",
+              text: "Konfirmasi pembayaran denda gagal!",
               type: 'error',
               confirmButtonColor: '#5e72e4'
             });
