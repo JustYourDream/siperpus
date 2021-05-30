@@ -248,6 +248,24 @@
             alert('Error get data from ajax');
         }
     });
+
+    $('#new_pw, #verif_pw').on('keyup', function(){
+      if($('#new_pw').val() == $('#verif_pw').val() && $('#new_pw').val() != ''){
+        $('#save_pw').attr('disabled', false);
+        $('#verif_pw').removeClass('is-invalid');
+        $('#verif_pw').addClass('is-valid');
+        $('#pw_feedback').removeClass('invalid-feedback');
+        $('#pw_feedback').addClass('valid-feedback');
+        $('#pw_feedback').text('Password Cocok');
+      }else{
+        $('#save_pw').attr('disabled', true);
+        $('#verif_pw').removeClass('is-valid');
+        $('#verif_pw').addClass('is-invalid');
+        $('#pw_feedback').removeClass('valid-feedback');
+        $('#pw_feedback').addClass('invalid-feedback');
+        $('#pw_feedback').text('Password Tidak Cocok');
+      }
+    });
   });
 
   function simpan_perubahan(){
@@ -317,6 +335,17 @@
     var target = document.getElementById("target");
     showImage(src, target);
   }
+
+  function resetForm(){
+    $('#form-modal')[0].reset();
+    $('#form-modal')[0].reset();
+    $('#save_pw').attr('disabled', true);
+    $('#verif_pw').removeClass('is-valid');
+    $('#verif_pw').removeClass('is-invalid');
+    $('#pw_feedback').removeClass('invalid-feedback');
+    $('#pw_feedback').removeClass('valid-feedback');
+    $('#pw_feedback').text('');
+  }
 </script>
 <!--MODAL-->
 <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
@@ -325,27 +354,34 @@
       <form id="form-modal" action="<?php echo site_url('Petugas/Akun_Petugas/ganti_pass')?>" method="post">
         <div class="modal-header">
           <h6 class="modal-title" id="modal-title-default">Form Ubah Password</h6>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="resetForm();">
             <span aria-hidden="true">×</span>
           </button>
         </div>
         <div class="modal-body form" style="padding-top:0px; padding-bottom:0px;">
           <div class="form-group">
             <label for="old" class="form-control-label">Password Lama</label>
-            <div class="input-group input-group-merge">
-              <input class="form-control" placeholder="Masukkan Password Lama" type="password" name="old">
+            <div class="input-group">
+              <input class="form-control rounded-right" placeholder="Masukkan Password Lama" type="password" name="old">
             </div>
           </div>
           <div class="form-group">
             <label for="new" class="form-control-label">Password Baru</label>
-            <div class="input-group input-group-merge">
-              <input class="form-control" placeholder="Masukkan Password Baru" type="password" name="new">
+            <div class="input-group">
+              <input class="form-control rounded-right" placeholder="Masukkan Password Baru" type="password" name="new" id="new_pw">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="verif" class="form-control-label">Konfirmasi Password Baru</label>
+            <div class="input-group">
+              <input class="form-control rounded-right" placeholder="Masukkan Ulang Password Baru" type="password" name="verif" id="verif_pw">
+              <span class="" id="pw_feedback"></span>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary">Ubah Password</button>
-          <button type="button" class="btn btn-link  ml-auto" data-dismiss="modal">Tutup</button>
+          <button class="btn btn-primary" id="save_pw" disabled>Ubah Password</button>
+          <button type="button" class="btn btn-link  ml-auto" data-dismiss="modal" onclick="resetForm();">Tutup</button>
         </div>
       </form>
     </div>
