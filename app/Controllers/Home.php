@@ -25,7 +25,7 @@ class Home extends BaseController
 			$buku->orLike('penerbit_buku', $query);
 			$buku->orLike('kategori_buku', $query);
 		}
-		$buku->orderBy('no_induk', 'DESC');
+		$buku->orderBy('no_induk', 'ASC');
 		$hasil = $buku->get();
 
 		$output = '';
@@ -44,17 +44,36 @@ class Home extends BaseController
   	';
 		if($buku->countAllResults() > 0)
 		{
-			foreach($hasil->getResult() as $row)
-			{
+			if($hasil->getResult() != NULL){
+				foreach($hasil->getResult() as $row)
+				{
+					if($row->eksemplar_buku == 0){
+						$output .= '
+						<tr>
+							<td>'.$row->no_induk.'</td>
+							<td>'.$row->judul_buku.'</td>
+							<td colspan="5" align="center"><span class="badge">Semua Stok Buku Sementara Sedang Dipinjam</span></td>
+						</tr>
+						';
+					}
+					else{
+						$output .= '
+						<tr>
+							<td>'.$row->no_induk.'</td>
+							<td>'.$row->judul_buku.'</td>
+							<td>'.$row->pengarang_buku.'</td>
+							<td>'.$row->penerbit_buku.'</td>
+							<td>'.$row->eksemplar_buku.'</td>
+							<td>'.$row->no_rak.'</td>
+							<td>'.$row->kategori_buku.'</td>
+						</tr>
+						';
+					}
+				}
+			}else{
 				$output .= '
 				<tr>
-					<td>'.$row->no_induk.'</td>
-					<td>'.$row->judul_buku.'</td>
-					<td>'.$row->pengarang_buku.'</td>
-					<td>'.$row->penerbit_buku.'</td>
-					<td>'.$row->eksemplar_buku.'</td>
-					<td>'.$row->no_rak.'</td>
-					<td>'.$row->kategori_buku.'</td>
+					<td colspan="7" align="center"><b>Data Buku Tidak Ditemukan</b></td>
 				</tr>
 				';
 			}

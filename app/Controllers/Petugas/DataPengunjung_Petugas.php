@@ -9,7 +9,15 @@ class DataPengunjung_Petugas extends Controller{
 
   public function index()
   {
+    $request = Services::request();
+    $pengunjung = new KunjunganModel($request);
+    $jurusan = $pengunjung->get_list_jurusan();
+    $tahun = $pengunjung->get_list_tahun();
+
+    $data['form_jurusan'] = $jurusan;
+    $data['form_tahun'] = $tahun;
     $data['title'] = 'Data Pengunjung';
+
     if(session()->get('logged_in') !== TRUE){
 			session()->setFlashdata('error', '<center>Silahkan login dulu!</center>');
 			return view('login/login');

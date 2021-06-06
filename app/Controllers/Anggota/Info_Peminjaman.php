@@ -42,11 +42,11 @@ class Info_Peminjaman extends Controller{
         $row[] = $list->jml_pinjam;
         $row[] = $list->no_anggota;
         if ($list->status == "Dikembalikan"){
-          $row[] = '<button class="btn btn-sm btn-success btn-block" style="pointer-events: none;">Dikembalikan</button>';
+          $row[] = '<span class="badge badge-success">Dikembalikan</span>';
         }elseif ($list->status == "Menunggu") {
-          $row[] = '<button class="btn btn-sm btn-warning btn-block" style="pointer-events: none;">Menunggu</button>';
+          $row[] = '<span class="badge badge-default">Menunggu</span>';
         }elseif ($list->status == "Dipinjam") {
-          $row[] = '<button class="btn btn-sm btn-info btn-block" style="pointer-events: none;">Dipinjam</button>';
+          $row[] = '<span class="badge badge-primary">Dipinjam</span>';
         }
         $data[] = $row;
       }

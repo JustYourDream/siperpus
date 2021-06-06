@@ -41,7 +41,11 @@ class Pinjam_Buku extends Controller{
         $row[] = $list->kota_dibuat;
         $row[] = $list->penerbit_buku;
         $row[] = $list->tahun_buku;
-        $row[] = $list->eksemplar_buku;
+        if($list->eksemplar_buku == 0){
+          $row[] = '<span class="badge badge-danger">Stok Kosong</span>';
+        }elseif ($list->eksemplar_buku >= 1) {
+          $row[] = $list->eksemplar_buku;
+        }
         $row[] = $list->no_rak;
         $row[] = $list->kategori_buku;
         if($list->eksemplar_buku == 0){

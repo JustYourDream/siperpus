@@ -40,11 +40,11 @@ class Info_Pengembalian extends Controller{
         $row[] = $list->tgl_dikembalikan;
         $row[] = "Rp ".number_format($list->denda,0,',','.');
         if($list->status_pembayaran == "Belum Dibayar"){
-          $row[] = '<a class="btn btn-sm btn-warning btn-block" style="pointer-events: none;"><i class="fas fa-cash-register"></i> Bayar Denda</a>';
+          $row[] = '<span class="badge badge-warning">Belum Dibayar</span>';
         }else if($list->status_pembayaran == "Dibayar"){
-          $row[] = '<button class="btn btn-sm btn-success btn-block" style="pointer-events: none;"><i class="fas fa-money-bill-wave"></i> Denda Dibayar</button>';
+          $row[] = '<span class="badge badge-success">Sudah Dibayar</span>';
         }else if($list->status_pembayaran == "Tidak Ada"){
-          $row[] = '<button class="btn btn-sm btn-primary btn-block" style="background-color: grey; border-color: grey; pointer-events: none;">Tidak Ada Denda</button>';
+          $row[] = '<span class="badge badge-primary">Tidak Ada Denda</span>';
         }
         $data[] = $row;
       }

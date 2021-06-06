@@ -74,15 +74,11 @@
                       <label for="jurusan" class="form-control-label">Jurusan</label>
                       <select name="Jurusan" class="form-control">
                         <option value="">--Pilih Jurusan--</option>
-                        <option value="Desain Pemodelan dan Informasi Bangunan">Desain Pemodelan dan Informasi Bangunan</option>
-                        <option value="Teknik Instalasi Tenaga Listrik">Teknik Instalasi Tenaga Listrik</option>
-                        <option value="Teknik Pemesinan">Teknik Pemesinan</option>
-                        <option value="Teknik Pengelasan">Teknik Pengelasan</option>
-                        <option value="Teknik Kendaraan Ringan Otomotif">Teknik Kendaraan Ringan Otomotif</option>
-                        <option value="Teknik Audio Video">Teknik Audio Video</option>
-                        <option value="Teknik Elektronika Industri">Teknik Elektronika Industri</option>
-                        <option value="Teknik Komputer dan Jaringan">Teknik Komputer dan Jaringan</option>
-                        <option value="Tata Busana">Tata Busana</option>
+                        <?php
+                          foreach ($form_jurusan as $jurusan) {
+                            echo "<option value='".$jurusan."'>".$jurusan."</option>";
+                          }
+                        ?>
                       </select>
                     </div>
                   </div>
@@ -109,7 +105,14 @@
                   <div class="col-md-2">
                     <div class="form-group">
                       <label for="year" class="form-control-label">Tahun</label>
-                      <input class="form-control" placeholder="Tahun" type="text" name="Tahun" maxlength="4">
+                      <select name="Tahun" class="form-control">
+                        <option value="">--Pilih Tahun--</option>
+                        <?php
+                          foreach ($form_tahun as $tahun) {
+                            echo "<option value='".$tahun."'>".$tahun."</option>";
+                          }
+                        ?>
+                      </select>
                     </div>
                   </div>
                   <div class="col-md-2">

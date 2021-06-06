@@ -8,7 +8,7 @@ class KunjunganModel extends Model {
 
   protected $table = "data_pengunjung";
   protected $column_order = array('no','no_anggota','nama','tanggal_kunjungan','jurusan_anggota');
-  protected $column_search = array('no_anggota','nama','jurusan_anggota');
+  protected $column_search = array('no_anggota','nama','jurusan_anggota','tanggal_kunjungan');
   protected $order = array('no_anggota' => 'asc');
   protected $request;
   protected $db;
@@ -63,6 +63,38 @@ class KunjunganModel extends Model {
   public function count_all(){
     $tbl_storage = $this->db->table($this->table);
     return $tbl_storage->countAllResults();
+  }
+
+  public function get_list_jurusan()
+  {
+    $db = \Config\Database::connect();
+    $builder = $db->table('data_pengunjung');
+    $builder->select('jurusan_anggota')->groupBy('jurusan_anggota')->orderBy('jurusan_anggota','asc');
+    $query = $builder->get();
+    $result = $query->getResult();
+
+    $jurusan = array();
+    foreach ($result as $row)
+    {
+      $jurusan[] = $row->jurusan_anggota;
+    }
+    return $jurusan;
+  }
+
+  public function get_list_tahun()
+  {
+    $db = \Config\Database::connect();
+    $builder = $db->table('data_pengunjung');
+    $builder->select('YEAR(tanggal_kunjungan) AS Tahun')->groupBy('YEAR(tanggal_kunjungan)')->orderBy('tanggal_kunjungan','asc');
+    $query = $builder->get();
+    $result = $query->getResult();
+
+    $tahun = array();
+    foreach ($result as $row)
+    {
+      $tahun[] = $row->Tahun;
+    }
+    return $tahun;
   }
 
   public function save_kunjungan($data)

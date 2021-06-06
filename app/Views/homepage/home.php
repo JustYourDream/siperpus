@@ -52,7 +52,7 @@
         <li><a href="#services" class="page-scroll">Data Perpustakaan</a></li>
         <li><a href="#portfolio" class="page-scroll">E-Book</a></li>
         <li><a href="#testimonials" class="page-scroll">Cari Buku</a></li>
-        <li><a href="#team" class="page-scroll">Pengembang</a></li>
+        <li><a href="#team" class="page-scroll">Kepengurusan</a></li>
         <li><a href="../login/" target="_blank" class="page-scroll">Masuk</a></li>
       </ul>
     </div>
@@ -271,15 +271,15 @@
 <div id="team" class="text-center">
   <div class="container">
     <div class="col-md-8 col-md-offset-2 section-title">
-      <h2>Tim Pengembang</h2>
-      <p>Aplikasi ini didukung dan dikembangkan oleh :</p>
+      <h2>Kepengurusan</h2>
+      <p>Struktur Kepengurusan Perpustakaan SMK N 1 Ampelgading</p>
     </div>
     <div id="row">
       <div class="col-md-3 col-sm-6 team">
         <div class="thumbnail"> <img src="../home_page/img/team/01.png" alt="..." class="team-img">
           <div class="caption">
             <h4>Eren Yeager</h4>
-            <p>Kepala Projek</p>
+            <p>Kepala Sekolah</p>
           </div>
         </div>
       </div>
@@ -287,7 +287,7 @@
         <div class="thumbnail"> <img src="../home_page/img/team/02.png" alt="..." class="team-img">
           <div class="caption">
             <h4>Grisha Yeager</h4>
-            <p>Pembimbing</p>
+            <p>Kepala Perpustakaan</p>
           </div>
         </div>
       </div>
@@ -295,7 +295,7 @@
         <div class="thumbnail"> <img src="../home_page/img/team/03.png" alt="..." class="team-img">
           <div class="caption">
             <h4>Historia Reiss</h4>
-            <p>Narasumber</p>
+            <p>Petugas Perpustakaan</p>
           </div>
         </div>
       </div>
@@ -303,7 +303,7 @@
         <div class="thumbnail"> <img src="../home_page/img/team/04.png" alt="..." class="team-img">
           <div class="caption">
             <h4>Zeke Yeager</h4>
-            <p>Full Stack Programmer</p>
+            <p>Petugas Perpustakaan</p>
           </div>
         </div>
       </div>
