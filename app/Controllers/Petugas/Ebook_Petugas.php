@@ -66,21 +66,6 @@ class Ebook_Petugas extends Controller{
     }
   }
 
-  public function id_otomatis(){
-    $request = Services::request();
-    $ebook = new EbookModel($request);
-    $id_prev = implode(" ",$ebook->selectMax('id_ebook')->first());
-
-    if($id_prev != null){
-      $no_urut = substr($id_prev, 3, 4);
-      $id_now = "EB".sprintf("%05d", $no_urut + 1);
-    }else if($id_prev == null){
-      $no_urut = 1;
-      $id_now = "EB".sprintf("%05d", $no_urut);
-    }
-    echo json_encode("$id_now");
-  }
-
   public function ajax_edit($id)
   {
     $request = Services::request();
@@ -137,7 +122,7 @@ class Ebook_Petugas extends Controller{
     }
     else{
       $ebook_file = $this->request->getFile('ebook');
-      $nama_ebook = $request->getPost('NoEbook')."-Ebook.pdf";
+      $nama_ebook = strtoupper($request->getPost('NoEbook'))."-Ebook.pdf";
       $ebook_file->move(WRITEPATH . '../public/assets/eBook/PDF/',$nama_ebook);
     }
 
@@ -147,7 +132,7 @@ class Ebook_Petugas extends Controller{
     else{
       //Generate nama file
       $cover = $this->request->getFile('sampul');
-      $sampul = $request->getPost('NoEbook')."-Cover";
+      $sampul = strtoupper($request->getPost('NoEbook'))."-Cover";
       $cover->move(WRITEPATH . '../public/assets/eBook/Cover/',$sampul);
 
       //Crop image
@@ -155,14 +140,14 @@ class Ebook_Petugas extends Controller{
     }
 
     $data = array(
-      'id_ebook' => $request->getPost('NoEbook'),
+      'id_ebook' => strtoupper($request->getPost('NoEbook')),
       'judul_ebook' => $request->getPost('Judul'),
       'pengarang' => $request->getPost('Pengarang'),
       'penerbit' => $request->getPost('Penerbit'),
       'kategori_ebook' => $request->getPost('Kategori'),
       'cover_ebook' => $sampul,
       'file_ebook' => $nama_ebook,
-      'qr_ebook' => ''.$request->getPost('NoEbook').'-QR.png',
+      'qr_ebook' => ''.strtoupper($request->getPost('NoEbook')).'-QR.png',
     );
 
     $insert = $ebook->save_ebook($data);
@@ -202,7 +187,7 @@ class Ebook_Petugas extends Controller{
     }
     else{
       $ebook_file = $this->request->getFile('ebook');
-      $nama_ebook = $request->getPost('NoEbook')."-Ebook.pdf";
+      $nama_ebook = strtoupper($request->getPost('NoEbook'))."-Ebook.pdf";
 
       //Hapus PDF Sebelumnya
 			$target_file = "../public/assets/eBook/PDF/{$nama_ebook}";
@@ -219,7 +204,7 @@ class Ebook_Petugas extends Controller{
     else{
       //Generate nama file
       $cover = $this->request->getFile('sampul');
-      $sampul = $request->getPost('NoEbook')."-Cover";
+      $sampul = strtoupper($request->getPost('NoEbook'))."-Cover";
 
       //Hapus Foto Sebelumnya
 			$target_cover = "../public/assets/eBook/Cover/{$sampul}";
@@ -280,6 +265,11 @@ class Ebook_Petugas extends Controller{
     $data['inputerror'] = array();
     $data['status'] = TRUE;
 
+    if($this->request->getPost('NoEbook') == ''){
+      $data['error_string'][] = 'NoEbook';
+      $data['inputerror'][] = 'No E-Book harus diisi';
+      $data['status'] = FALSE;
+    }
     if($this->request->getPost('Penerbit') == ''){
       $data['error_string'][] = 'Penerbit';
       $data['inputerror'][] = 'Penerbit harus diisi';
@@ -338,9 +328,29 @@ class Ebook_Petugas extends Controller{
     </style>
     <div style="text-align: center;">
       <hr><width="100" height="75"></hr>
-      <h1><font size="5" face="times new roman">PERPUSTAKAAN "INTI GADING"</font></h1>
-      <b><font size="4" face="Courier New">SMK NEGERI 1 AMPELGADING</font></b><br/>
-      <b>Jl. Raya Ujunggede (Pantura), Ampelgading, Kabupaten Pemalang, 52364<b><br/><br/>
+        <table width="100%" cellspacing="10px">
+          <tr>
+            <td rowspan="3" align="center">
+              <img src="'.base_url('assets/img/brand/amgalogo.png').'" height="100px" width="100px">
+            </td>
+            <td align="center">
+              <h1><font size="5" face="times new roman">PERPUSTAKAAN "INTI GADING"</font></h1>
+            </td>
+            <td rowspan="3" align="center">
+              <img src="'.base_url('assets/img/brand/pendidikan.png').'" height="100px" width="100px">
+            </td>
+          </tr>
+          <tr>
+            <td align="center">
+              <b><font size="6" face="Times New Roman">SMK NEGERI 1 AMPELGADING</font></b>
+            </td>
+          </tr>
+          <tr>
+            <td align="center">
+              <b>Jl. Raya Ujunggede (Pantura), Ampelgading, Kabupaten Pemalang, 52364<b>
+            </td>
+          </tr>
+        </table>
       <hr><width="100" height="75"></hr>
     </div>
     <div style="margin-top: 10px;">

@@ -1,16 +1,3 @@
-<!-- =========================================================
-* Argon Dashboard PRO v1.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-pro
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
- -->
 <!DOCTYPE html>
 <html>
 <?php include("_partials/head.php") ?>
@@ -103,12 +90,18 @@
                       </div>
                     </div>
                   </div>
-                  <?php foreach ($jml_eksemplar_perbulan as $value): ?>
+                  <?php foreach ($jml_eksemplar_perbulan as $value){
+                    if($value->eksemplar_buku == NULL){
+                      $value->eksemplar_buku = 0;
+                    }
+                  ?>
                   <p class="mt-3 mb-0 text-sm">
                     <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> <?= $value->eksemplar_buku ?></span>
                     <span class="text-nowrap">Penambahan bulan ini</span>
                   </p>
-                  <?php endforeach; ?>
+                  <?php
+                  }
+                  ?>
                 </div>
               </div>
             </div>

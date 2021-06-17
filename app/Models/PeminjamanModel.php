@@ -9,7 +9,7 @@ class PeminjamanModel extends Model {
   protected $table = "data_peminjaman";
   protected $column_order = array('id_peminjaman','tanggal_pinjam','tanggal_kembali','id_buku','jml_pinjam','no_anggota','status');
   protected $column_search = array('id_peminjaman','id_buku','no_anggota','status');
-  protected $order = array('id_peminjaman' => 'asc');
+  protected $order = array('id_peminjaman' => 'desc');
   protected $request;
   protected $db;
   protected $dt;

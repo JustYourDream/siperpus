@@ -250,9 +250,29 @@ class DataBuku_Petugas extends Controller{
     </style>
     <div style="text-align: center;">
       <hr><width="100" height="75"></hr>
-      <h1><font size="5" face="times new roman">PERPUSTAKAAN "INTI GADING"</font></h1>
-      <b><font size="4" face="Courier New">SMK NEGERI 1 AMPELGADING</font></b><br/>
-      <b>Jl. Raya Ujunggede (Pantura), Ampelgading, Kabupaten Pemalang, 52364<b><br/><br/>
+      <table width="100%" cellspacing="10px">
+        <tr>
+          <td rowspan="3" align="center">
+            <img src="'.base_url('assets/img/brand/amgalogo.png').'" height="100px" width="100px">
+          </td>
+          <td align="center">
+            <h1><font size="5" face="times new roman">PERPUSTAKAAN "INTI GADING"</font></h1>
+          </td>
+          <td rowspan="3" align="center">
+            <img src="'.base_url('assets/img/brand/pendidikan.png').'" height="100px" width="100px">
+          </td>
+        </tr>
+        <tr>
+          <td align="center">
+            <b><font size="6" face="Times New Roman">SMK NEGERI 1 AMPELGADING</font></b>
+          </td>
+        </tr>
+        <tr>
+          <td align="center">
+            <b>Jl. Raya Ujunggede (Pantura), Ampelgading, Kabupaten Pemalang, 52364<b>
+          </td>
+        </tr>
+      </table>
       <hr><width="100" height="75"></hr>
     </div>
     <div style="margin-top: 10px;">

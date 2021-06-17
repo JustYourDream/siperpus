@@ -78,7 +78,7 @@
       <div class="col-lg-3 col-md-3 col-sm-6">
         <div class="panel panel-default">
           <div class="panel-body">
-            <a href="<?= base_url('assets/eBook/PDF/'.$data['file_ebook']); ?>" target="_blank" style="margin-bottom: 0px;" class="thumbnail" title="<?= $data['judul_ebook']; ?>">
+            <a href="<?= base_url('assets/vendor/pdf.js/web/viewer.html?file=').base_url('assets/eBook/PDF/'.$data['file_ebook']); ?>" target="_blank" style="margin-bottom: 0px;" class="thumbnail" title="<?= $data['judul_ebook']; ?>">
               <img src="<?= base_url('assets/eBook/Cover/'.$data['cover_ebook']); ?>" style="height: auto; width: 100%;">
             </a>
           </div>

@@ -1,16 +1,3 @@
-<!-- =========================================================
-* Argon Dashboard PRO v1.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-pro
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
- -->
 <!DOCTYPE html>
 <html>
 <?php include("_partials/head.php") ?>
@@ -76,7 +63,7 @@
                       <img class="card-img-top" src="<?= base_url('assets/eBook/Cover/'.$data['cover_ebook']); ?>" alt="Card image cap">
                       <div class="card-body">
                         <h5 class="card-title" align="center" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><strong><?= $data['judul_ebook']; ?></strong></h5>
-                        <a href="<?= base_url('assets/eBook/PDF/'.$data['file_ebook']); ?>" target="_blank" class="btn btn-default btn-block" title="<?= $data['judul_ebook']; ?>">Baca</a>
+                        <a href="<?= base_url('assets/vendor/pdf.js/web/viewer.html?file=').base_url('assets/eBook/PDF/'.$data['file_ebook']); ?>" target="_blank" class="btn btn-default btn-block" title="<?= $data['judul_ebook']; ?>">Baca</a>
                       </div>
                     </div>
                   </div>

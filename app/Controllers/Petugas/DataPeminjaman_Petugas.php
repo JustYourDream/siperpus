@@ -34,7 +34,11 @@ class DataPeminjaman_Petugas extends Controller{
       foreach ($lists as $list) {
         $no++;
         $row = [];
-        $row[] = $no;
+        if($list->status == "Menunggu"){
+          $row[] = '<span class="badge badge-md badge-circle badge-floating badge-danger border-white">'.$no.'</span>';
+        }else{
+          $row[] = $no;
+        }
         $row[] = $list->id_peminjaman;
         $row[] = $list->tanggal_pinjam;
         $row[] = $list->tanggal_kembali;

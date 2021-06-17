@@ -74,9 +74,29 @@ class DataPengunjung_Petugas extends Controller{
 
     $header .= '<div style="text-align: center;">
                   <hr><width="100" height="75"></hr>
-                  <h1><font size="5" face="times new roman">PERPUSTAKAAN "INTI GADING"</font></h1>
-                  <b><font size="4" face="Courier New">SMK NEGERI 1 AMPELGADING</font></b><br/>
-                  <b>Jl. Raya Ujunggede (Pantura), Ampelgading, Kabupaten Pemalang, 52364<b><br/><br/>
+                  <table width="100%" cellspacing="10px">
+                    <tr>
+                      <td rowspan="3" align="center">
+                        <img src="'.base_url('assets/img/brand/amgalogo.png').'" height="80px" width="80px">
+                      </td>
+                      <td align="center">
+                        <h1><font size="4" face="times new roman">PERPUSTAKAAN "INTI GADING"</font></h1>
+                      </td>
+                      <td rowspan="3" align="center">
+                        <img src="'.base_url('assets/img/brand/pendidikan.png').'" height="80px" width="80px">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <b><font size="5" face="Times New Roman">SMK NEGERI 1 AMPELGADING</font></b>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center">
+                        <b><font size="2" face="Times New Roman">Jl. Raya Ujunggede (Pantura), Ampelgading, Kabupaten Pemalang, 52364</font><b>
+                      </td>
+                    </tr>
+                  </table>
                   <hr><width="100" height="75"></hr>
                 </div>';
 

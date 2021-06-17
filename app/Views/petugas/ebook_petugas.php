@@ -1,16 +1,3 @@
-<!-- =========================================================
-* Argon Dashboard PRO v1.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-pro
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
- -->
 <!DOCTYPE html>
 <html>
 <?php include("_partials/head.php") ?>
@@ -135,26 +122,13 @@ function reload_table()
 
 function tambah_ebook()
 {
-  $.ajax({
-    url : "<?php echo site_url('Petugas/Ebook_Petugas/id_otomatis')?>",
-    type: "POST",
-    data: $('#form').serialize(),
-    dataType: "JSON",
-    success: function(data)
-    {
-      $('[name="NoEbook"]').val(data);
-    },
-    error: function (jqXHR, textStatus, errorThrown)
-    {
-      alert('Gagal Mendapatkan Kode');
-    }
-  });
   save_method = 'add';
   $('#form')[0].reset(); // reset form on modals
   $('.form-control').removeClass('is-invalid');
   $('.invalid-feedback').text('');
   $('#modal_form').modal('show'); // show bootstrap modal
   $('.modal-title').text('Tambah E-book'); // Set Title to Bootstrap modal title
+  $('[name="NoEbook"]').attr('readonly', false);
   $('#target').attr('src','../../assets/eBook/Cover/Default-Cover.png');
 }
 
@@ -165,6 +139,7 @@ function edit_ebook(NoEbook)
     $('.form-control').removeClass('is-invalid');
     $('.invalid-feedback').text('');
     $('.help-block').empty(); // clear error string
+    $('[name="NoEbook"]').attr('readonly', true);
 
     //Ajax Load data from ajax
     $.ajax({
@@ -343,7 +318,8 @@ function putImage() {
             <div class="col-md-5">
               <div class="form-group">
                 <label for="induk" class="form-control-label">Nomor E-book</label>
-                <input class="form-control induk" type="text" name="NoEbook" placeholder="Nomor E-book" readonly>
+                <input class="form-control induk" type="text" name="NoEbook" placeholder="Nomor E-book">
+                <span class="invalid-feedback"></span>
               </div>
             </div>
             <div class="col-md-7">

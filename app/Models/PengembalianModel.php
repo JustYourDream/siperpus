@@ -9,7 +9,7 @@ class PengembalianModel extends Model {
   protected $table = "data_pengembalian";
   protected $column_order = array('id_peminjaman','tanggal_pinjam','tanggal_kembali','no_anggota','tgl_dikembalikan','denda','status_pembayaran');
   protected $column_search = array('id_peminjaman','tanggal_pinjam','tanggal_kembali','no_anggota','tgl_dikembalikan','status_pembayaran');
-  protected $order = array('id_peminjaman' => 'asc');
+  protected $order = array('id_peminjaman' => 'desc');
   protected $request;
   protected $db;
   protected $dt;
