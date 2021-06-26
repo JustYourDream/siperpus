@@ -204,6 +204,36 @@
           </div>
         </div>
       </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card">
+            <!-- Card header -->
+            <div class="card-header">
+              <h3 class="mb-0"><i class="fas fa-copy"></i> Rekap Denda Tahunan</h3>
+            </div>
+            <div class="card-body">
+              <form action="<?php echo base_url('Petugas/Laporan_Petugas/denda_tahunan')?>" id="denda_tahunan" method="POST" target="_blank">
+                <div class="row">
+                  <div class="col-md-10">
+                    <div class="form-group">
+                      <label for="year" class="form-control-label">Tahun</label>
+                      <input class="form-control" placeholder="Tahun" type="text" name="yearAll" maxlength="4">
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="simpan" class="form-control-label">&nbsp;</label>
+                      <div class="input-group input-group-merge">
+                        <button class="btn btn-primary" id="cetakKeseluruhan"><i class="fas fa-print"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- Footer -->
       <?php include("_partials/footer.php") ?>
     </div>

@@ -15,6 +15,8 @@ class Login extends Controller
             return view('petugas/petugas', $data);
           }elseif(session()->get('role') == "Anggota"){
             return view('anggota/dashboard', $data);
+          }elseif(session()->get('role') == "Ketua"){
+            return view('ketua/dashboard', $data);
           }
         }
     }
@@ -41,6 +43,8 @@ class Login extends Controller
                 return redirect()->to(base_url('petugas/dashboard_petugas'));
               }elseif ($role == "Anggota") {
                 return redirect()->to(base_url('anggota/dashboard_anggota'));
+              }elseif ($role == "Ketua") {
+                return redirect()->to(base_url('ketua/dashboard_ketua'));
               }
             } else {
                 session()->setFlashdata('error', '<center>Password Salah!</center>');

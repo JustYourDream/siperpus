@@ -22,8 +22,8 @@
               <h6 class="h2 text-white d-inline-block mb-0">Pengaturan Akun</h6>
               <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                  <li class="breadcrumb-item"><a href="<?php echo base_url('petugas/dashboard_petugas')?>"><i class="fas fa-home"></i></a></li>
-                  <li class="breadcrumb-item"><a href="<?php echo base_url('petugas/akun_petugas')?>">Pengaturan Akun</a></li>
+                  <li class="breadcrumb-item"><a href="<?php echo base_url('ketua/dashboard_ketua')?>"><i class="fas fa-home"></i></a></li>
+                  <li class="breadcrumb-item"><a href="<?php echo base_url('ketua/setting_akun')?>">Pengaturan Akun</a></li>
                 </ol>
               </nav>
             </div>
@@ -64,7 +64,7 @@
                       <button class="btn btn-block btn-default" data-toggle="modal" data-target="#modal_foto">Ubah Foto</button>
                     </div>
                     <div class="row">
-                      <a class="btn btn-block btn-danger" href="<?php echo base_url('Petugas/Akun_Petugas/hapus_foto')?>">Hapus Foto</a>
+                      <a class="btn btn-block btn-danger" href="<?php echo base_url('Ketua/Setting_Akun/hapus_foto')?>">Hapus Foto</a>
                     </div>
                   </div>
                 </div>
@@ -172,7 +172,7 @@
 <script>
   $(document).ready(function(){
     $.ajax({
-        url : "<?php echo site_url('Petugas/Akun_Petugas/showdata')?>",
+        url : "<?php echo site_url('Ketua/Setting_Akun/showdata')?>",
         type: "GET",
         dataType: "JSON",
         success: function(data)
@@ -218,7 +218,7 @@
 
     // ajax update data to database
     $.ajax({
-      url : "<?php echo site_url('Petugas/Akun_Petugas/update_akun')?>",
+      url : "<?php echo site_url('Ketua/Setting_Akun/update_akun')?>",
       type: "POST",
       data: $('#form').serialize(),
       dataType: "JSON",
@@ -228,7 +228,7 @@
         {
           $('#btnSave').text('Simpan Perubahan'); //change button text
           $('#btnSave').attr('disabled',false); //set button enable
-          $('#account').load("http://siperpus.amga/petugas/akun_petugas #account"); //Reload topnav
+          $('#account').load("http://siperpus.amga/ketua/setting_akun #account"); //Reload topnav
           Swal.fire({
             title: 'Berhasil',
             text: "Data berhasil diupdate!",
@@ -293,7 +293,7 @@
 <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
   <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
     <div class="modal-content">
-      <form id="form-modal" action="<?php echo site_url('Petugas/Akun_Petugas/ganti_pass')?>" method="post">
+      <form id="form-modal" action="<?php echo site_url('Ketua/Setting_Akun/ganti_pass')?>" method="post">
         <div class="modal-header">
           <h6 class="modal-title" id="modal-title-default">Form Ubah Password</h6>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="resetForm()">
@@ -335,7 +335,7 @@
 <div class="modal fade" id="modal_foto" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
   <div class="modal-dialog modal-xs modal-dialog-centered modal-" role="document">
     <div class="modal-content">
-      <form id="form_foto" action="<?php echo site_url('Petugas/Akun_Petugas/upload_foto')?>" method="post" enctype="multipart/form-data">
+      <form id="form_foto" action="<?php echo site_url('Ketua/Setting_Akun/upload_foto')?>" method="post" enctype="multipart/form-data">
         <div class="modal-header">
           <h6 class="modal-title" id="modal-title-default">Upload Foto Profil Baru</h6>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">

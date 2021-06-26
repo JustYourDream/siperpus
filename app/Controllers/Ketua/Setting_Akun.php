@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Controllers\Petugas;
+namespace App\Controllers\Ketua;
 use CodeIgniter\Controller;
 use App\Models\PetugasModel;
 use App\Models\UsersModel;
 use Config\Services;
 
-class Akun_Petugas extends Controller
+class Setting_Akun extends Controller
 {
 	public function index()
 	{
@@ -15,8 +15,8 @@ class Akun_Petugas extends Controller
 			session()->setFlashdata('error', '<center>Silahkan login dulu!</center>');
 			return view('login/login');
 		}else{
-			if(session()->get('role') == "Petugas"){
-				return view('petugas/setting_akun', $data);
+			if(session()->get('role') == "Ketua"){
+				return view('ketua/setting_akun', $data);
 			}else{
 				return view('access_denied');
 			}

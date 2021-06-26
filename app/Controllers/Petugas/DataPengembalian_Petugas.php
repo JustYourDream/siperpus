@@ -34,10 +34,10 @@ class DataPengembalian_Petugas extends Controller{
         $row = [];
         $row[] = $no;
         $row[] = $list->id_peminjaman;
-        $row[] = $list->tanggal_pinjam;
-        $row[] = $list->tanggal_kembali;
-        $row[] = $list->no_anggota;
-        $row[] = $list->tgl_dikembalikan;
+        $row[] = date("d-m-Y", strtotime($list->tanggal_pinjam));
+        $row[] = date("d-m-Y", strtotime($list->tanggal_kembali));
+        $row[] = '<a href="#modal_detail" data-toggle="modal" data-target="#modal_detail" onclick="showDetail('.$list->no_anggota.')">'.$list->no_anggota.'</a>';
+        $row[] = date("d-m-Y", strtotime($list->tgl_dikembalikan));
         $row[] = "Rp ".number_format($list->denda,0,',','.');
         $row[] = $list->status_pembayaran;
         if($list->status_pembayaran == "Belum Dibayar"){

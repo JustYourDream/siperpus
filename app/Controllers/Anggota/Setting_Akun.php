@@ -35,7 +35,7 @@ class Setting_Akun extends Controller
 		//Tabel Petugas
 		$request = Services::request();
 		$anggota = new AnggotaModel($request);
-		
+
 		$this->_validate();
     $data = array(
     	'nama_anggota' => $this->request->getPost('nama'),

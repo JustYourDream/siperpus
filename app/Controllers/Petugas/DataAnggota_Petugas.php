@@ -225,8 +225,7 @@ class DataAnggota_Petugas extends Controller{
     unlink($target_qr);
 
     //Hapus Foto
-    $random = date('s');
-    $foto = implode(" ",$anggota->select('no_anggota')->where(['no_anggota' => $id])->first()).'-PIC-'.$random;
+    $foto = implode(" ",$anggota->select('foto_anggota')->where(['no_anggota' => $id])->first());
     $target_foto = "../public/assets/img/profile_pic/{$foto}";
     if(is_file($target_foto) == TRUE){
       unlink($target_foto);

@@ -45,7 +45,7 @@ class DataPengunjung_Petugas extends Controller{
         $row[] = $list->no_anggota;
         $row[] = $list->nama;
         $row[] = $list->jurusan_anggota;
-        $row[] = $list->tanggal_kunjungan;
+        $row[] = date("d-m-Y", strtotime($list->tanggal_kunjungan));
         $data[] = $row;
       }
 

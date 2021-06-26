@@ -119,14 +119,27 @@ function cari_buku(buku)
     success: function(data)
     {
       if(data[0]){
-        Swal.fire({
-          title: 'Ditemukan',
-          text: "Data buku ditemukan!",
-          type: 'success',
-          confirmButtonColor: '#5e72e4'
-        });
-        $('#jml').val(data[0].eksemplar_buku);
-        $('#btnSave').attr('disabled',false);
+        if(data[0].eksemplar_buku != 0){
+          Swal.fire({
+            title: 'Ditemukan',
+            text: "Data buku ditemukan!",
+            type: 'success',
+            confirmButtonColor: '#5e72e4'
+          });
+          $('#jml').val(data[0].eksemplar_buku);
+          $('#btnSave').attr('disabled',false);
+        }
+        if(data[0].eksemplar_buku < 1){
+          Swal.fire({
+            title: 'Stok Kosong',
+            text: "Data buku ditemukan, namun buku habis dipinjam.",
+            type: 'warning',
+            confirmButtonColor: '#5e72e4'
+          });
+          $('#jml').val(null);
+          $('#buku').val(null);
+          $('#btnSave').attr('disabled',true);
+        }
       }
       if(!data[0]){
         Swal.fire({
@@ -390,7 +403,27 @@ function hapus_peminjaman(id, induk)
     allowOutsideClick: false
   });
 }
-
+function showDetail(NoAnggota){
+  $.ajax({
+    url : "<?php echo site_url('Petugas/DataPeminjaman_Petugas/cari_anggota')?>/" + NoAnggota,
+    type: "GET",
+    dataType: "JSON",
+    success: function(data)
+    {
+      var tgl_lahir = moment(data[0].tanggal_lahir).format('DD-MM-YYYY');
+      $('.NoAggota').text(data[0].no_anggota);
+      $('.Nama').text(data[0].nama_anggota);
+      $('.Jurusan').text(data[0].jurusan_anggota);
+      $('.Lahir').text(data[0].tempat_lahir+', '+tgl_lahir);
+      $('.Jkel').text(data[0].jkel_anggota);
+      $('.Alamat').text(data[0].alamat_anggota);
+    },
+    error: function (jqXHR, textStatus, errorThrown)
+    {
+      alert('Error get data!');
+    }
+  });
+}
 </script>
 <!--MODAL ADD-->
 <div class="modal fade" id="modal_form" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
@@ -466,5 +499,62 @@ function hapus_peminjaman(id, induk)
   </div>
 </div>
 <!--End Of Modal Add-->
+<!--MODAL Detail-->
+<div class="modal fade" id="modal_detail" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title" id="modal-title-default">Detail Peminjam</h6>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#form')[0].reset()">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body form" style="padding-top:0px; padding-bottom:0px;">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <table class="table" cellpadding="5" cellspacing="10">
+                <tr>
+                  <td width="160px"><b>No. Anggota</b></td>
+                  <td width="20px">:</td>
+                  <td class="NoAggota">
+                </tr>
+                <tr>
+                  <td><b>Nama</b></td>
+                  <td>:</td>
+                  <td class="Nama">
+                </tr>
+                <tr>
+                  <td><b>Jurusan</b></td>
+                  <td>:</td>
+                  <td class="Jurusan">
+                </tr>
+                <tr>
+                  <td><b>Tgl. Lahir</b></td>
+                  <td>:</td>
+                  <td class="Lahir">
+                </tr>
+                <tr>
+                  <td><b>Jns. Kelamin</b></td>
+                  <td>:</td>
+                  <td class="Jkel">
+                </tr>
+                <tr>
+                  <td><b>Alamat</b></td>
+                  <td>:</td>
+                  <td class="Alamat">
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-link  ml-auto" data-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End Of Modal Detail-->
 <?php include('_partials/modal_scan.php'); ?>
 </html>

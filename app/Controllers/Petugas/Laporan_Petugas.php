@@ -4,6 +4,7 @@ namespace App\Controllers\Petugas;
 use Mpdf\Mpdf;
 use CodeIgniter\Controller;
 use App\Models\InsertBukuModel;
+use App\Models\PengembalianModel;
 use Config\Services;
 
 class Laporan_Petugas extends Controller
@@ -857,6 +858,169 @@ class Laporan_Petugas extends Controller
 		');
 
     $mpdf->Output('Penambahan_Tahunan_('.$tahun.').pdf','I');
+    exit;
+	}
+	public function denda_tahunan()
+	{
+		$request = Services::request();
+		$db = \Config\Database::connect();
+		$kembali = new PengembalianModel($request);
+
+    $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'orientation' => 'P', 'format' => [210,330]]);
+    $mpdf->curlAllowUnsafeSslRequests = true;
+
+		$tahun = $request->getPost('yearAll');
+
+		$mpdf->WriteHTML('
+		<style>
+      .title{
+        text-align: center;
+      }
+      .ttd{
+        text-align: center;
+      }
+    </style>
+		<div style="text-align: center;">
+      <hr><width="100" height="75"></hr>
+			<table width="100%" cellspacing="10px">
+				<tr>
+					<td rowspan="3" align="center">
+						<img src="'.base_url('assets/img/brand/amgalogo.png').'" height="80px" width="80px">
+					</td>
+					<td align="center">
+						<h1><font size="4" face="times new roman">PERPUSTAKAAN "INTI GADING"</font></h1>
+					</td>
+					<td rowspan="3" align="center">
+						<img src="'.base_url('assets/img/brand/pendidikan.png').'" height="80px" width="80px">
+					</td>
+				</tr>
+				<tr>
+					<td align="center">
+						<b><font size="5" face="Times New Roman">SMK NEGERI 1 AMPELGADING</font></b>
+					</td>
+				</tr>
+				<tr>
+					<td align="center">
+						<b><font size="2" face="Times New Roman">Jl. Raya Ujunggede (Pantura), Ampelgading, Kabupaten Pemalang, 52364</font><b>
+					</td>
+				</tr>
+			</table>
+      <hr><width="100" height="75"></hr>
+    </div>
+		<div>
+		<table style="margin-bottom: 20px;">
+			<tr>
+				<td>Nomor</td>
+				<td>:</td>
+				<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/</td>
+			</tr>
+			<tr>
+				<td>Lamp.</td>
+				<td>:</td>
+				<td> -</td>
+			</tr>
+			<tr>
+				<td>Hal</td>
+				<td>:</td>
+				<td> Rekap Pendapatan Denda Tahunan</td>
+			</tr>
+		</table>
+		<p>Diberitahukan dengan hormat bahwa di bawah ini adalah laporan pendapatan denda tahun '.$tahun.' perpustakaan "Inti Gading" :</p>
+		<table border="1" cellspacing="0" cellpadding="5" width="100%">
+			<tr>
+				<td align="center" width="50px"><b>No.</b></td>
+				<td align="center" width="200px"><b>Bulan</b></td>
+				<td align="center"><b>Jumlah Denda</b></td>
+			</tr>
+			<tr>
+				<td align="center">1</td>
+				<td align="center">Januari</td>
+				<td align="center">Rp '.number_format(implode(" ",$kembali->select('COALESCE(SUM(denda),0)')->where(['MONTH(tgl_dikembalikan)' => '1'])->where('YEAR(tgl_dikembalikan) =', $tahun)->first()),0,',','.').'</td>
+			</tr>
+			<tr>
+				<td align="center">2</td>
+				<td align="center">Februari</td>
+				<td align="center">Rp '.number_format(implode(" ",$kembali->select('COALESCE(SUM(denda),0)')->where(['MONTH(tgl_dikembalikan)' => '2'])->where('YEAR(tgl_dikembalikan) =', $tahun)->first()),0,',','.').'</td>
+			</tr>
+			<tr>
+				<td align="center">3</td>
+				<td align="center">Maret</td>
+				<td align="center">Rp '.number_format(implode(" ",$kembali->select('COALESCE(SUM(denda),0)')->where(['MONTH(tgl_dikembalikan)' => '3'])->where('YEAR(tgl_dikembalikan) =', $tahun)->first()),0,',','.').'</td>
+			</tr>
+			<tr>
+				<td align="center">4</td>
+				<td align="center">April</td>
+				<td align="center">Rp '.number_format(implode(" ",$kembali->select('COALESCE(SUM(denda),0)')->where(['MONTH(tgl_dikembalikan)' => '4'])->where('YEAR(tgl_dikembalikan) =', $tahun)->first()),0,',','.').'</td>
+			</tr>
+			<tr>
+				<td align="center">5</td>
+				<td align="center">Mei</td>
+				<td align="center">Rp '.number_format(implode(" ",$kembali->select('COALESCE(SUM(denda),0)')->where(['MONTH(tgl_dikembalikan)' => '5'])->where('YEAR(tgl_dikembalikan) =', $tahun)->first()),0,',','.').'</td>
+			</tr>
+			<tr>
+				<td align="center">6</td>
+				<td align="center">Juni</td>
+				<td align="center">Rp '.number_format(implode(" ",$kembali->select('COALESCE(SUM(denda),0)')->where(['MONTH(tgl_dikembalikan)' => '6'])->where('YEAR(tgl_dikembalikan) =', $tahun)->first()),0,',','.').'</td>
+			</tr>
+			<tr>
+				<td align="center">7</td>
+				<td align="center">Juli</td>
+				<td align="center">Rp '.number_format(implode(" ",$kembali->select('COALESCE(SUM(denda),0)')->where(['MONTH(tgl_dikembalikan)' => '7'])->where('YEAR(tgl_dikembalikan) =', $tahun)->first()),0,',','.').'</td>
+			</tr>
+			<tr>
+				<td align="center">8</td>
+				<td align="center">Agustus</td>
+				<td align="center">Rp '.number_format(implode(" ",$kembali->select('COALESCE(SUM(denda),0)')->where(['MONTH(tgl_dikembalikan)' => '8'])->where('YEAR(tgl_dikembalikan) =', $tahun)->first()),0,',','.').'</td>
+			</tr>
+			<tr>
+				<td align="center">9</td>
+				<td align="center">September</td>
+				<td align="center">Rp '.number_format(implode(" ",$kembali->select('COALESCE(SUM(denda),0)')->where(['MONTH(tgl_dikembalikan)' => '9'])->where('YEAR(tgl_dikembalikan) =', $tahun)->first()),0,',','.').'</td>
+			</tr>
+			<tr>
+				<td align="center">10</td>
+				<td align="center">Oktober</td>
+				<td align="center">Rp '.number_format(implode(" ",$kembali->select('COALESCE(SUM(denda),0)')->where(['MONTH(tgl_dikembalikan)' => '10'])->where('YEAR(tgl_dikembalikan) =', $tahun)->first()),0,',','.').'</td>
+			</tr>
+			<tr>
+				<td align="center">11</td>
+				<td align="center">November</td>
+				<td align="center">Rp '.number_format(implode(" ",$kembali->select('COALESCE(SUM(denda),0)')->where(['MONTH(tgl_dikembalikan)' => '11'])->where('YEAR(tgl_dikembalikan) =', $tahun)->first()),0,',','.').'</td>
+			</tr>
+			<tr>
+				<td align="center">12</td>
+				<td align="center">Desember</td>
+				<td align="center">Rp '.number_format(implode(" ",$kembali->select('COALESCE(SUM(denda),0)')->where(['MONTH(tgl_dikembalikan)' => '12'])->where('YEAR(tgl_dikembalikan) =', $tahun)->first()),0,',','.').'</td>
+			</tr>
+			<tr>
+				<td align="center" colspan="2"><b>Total Pendapatan</b></td>
+				<td align="center"><b>Rp '.number_format(implode(" ",$kembali->select('COALESCE(SUM(denda),0)')->where('YEAR(tgl_dikembalikan) =', $tahun)->first()),0,',','.').'</b></td>
+			</tr>
+		</table>
+		</div>
+		<div style="margin-top: 40px;">
+      <table width="100%">
+        <tr>
+          <td rowspan="5" width="65%"></td>
+          <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
+        </tr>
+        <tr>
+          <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
+        </tr>
+        <tr>
+          <td height="80px"></td>
+        </tr>
+        <tr>
+          <td class="ttd"><b><u>Alfian Maulana</u></b></td>
+        </tr>
+        <tr>
+          <td class="ttd">NIP : 18.110.0018</td>
+        </tr>
+      </table>
+    </div>
+		');
+
+    $mpdf->Output('Denda_Tahunan_('.$tahun.').pdf','I');
     exit;
 	}
 }

@@ -40,11 +40,11 @@ class DataPeminjaman_Petugas extends Controller{
           $row[] = $no;
         }
         $row[] = $list->id_peminjaman;
-        $row[] = $list->tanggal_pinjam;
-        $row[] = $list->tanggal_kembali;
+        $row[] = date("d-m-Y", strtotime($list->tanggal_pinjam));
+        $row[] = date("d-m-Y", strtotime($list->tanggal_kembali));
         $row[] = $list->id_buku;
         $row[] = $list->jml_pinjam;
-        $row[] = $list->no_anggota;
+        $row[] = '<a href="#modal_detail" data-toggle="modal" data-target="#modal_detail" onclick="showDetail('.$list->no_anggota.')">'.$list->no_anggota.'</a>';
         $row[] = $list->status;
         if($list->status == "Dipinjam"){
           $row[] = '<button class="btn btn-sm btn-primary btn-block" style="background-color: grey; border-color: grey; pointer-events: none;" title="Confirm"><i class="fas fa-thumbs-up"></i> Konfirmasi</button>
