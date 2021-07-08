@@ -8,7 +8,7 @@ class PetugasModel extends Model{
   protected $table = "petugas";
   protected $column_order = array('id_petugas','nama_petugas','jabatan_petugas','no_telp_petugas','alamat_petugas','foto_petugas');
   protected $column_search = array('id_petugas','nama_petugas');
-  protected $order = array('id_petugas' => 'asc');
+  protected $order = array('nama_petugas' => 'asc');
   protected $request;
   protected $db;
   protected $dt;

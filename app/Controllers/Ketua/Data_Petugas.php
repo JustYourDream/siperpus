@@ -1,15 +1,6 @@
 <?php
 namespace App\Controllers\Ketua;
 require ('../vendor/autoload.php');
-use Mpdf\Mpdf;
-use Endroid\QrCode\Color\Color;
-use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Label\Label;
-use Endroid\QrCode\Logo\Logo;
-use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
-use Endroid\QrCode\Writer\PngWriter;
 use CodeIgniter\Controller;
 use App\Models\PetugasModel;
 use Config\Services;
@@ -44,7 +35,7 @@ class Data_Petugas extends Controller{
         $row = [];
         $row[] = $no;
         $row[] = $list->id_petugas;
-        $row[] = '<img src="'."".$foto."".'" width="100px" height="100px">';
+        $row[] = '<img src="'."".$foto."".'" width="100px" height="100px" class="rounded-circle">';
         $row[] = $list->nama_petugas;
         $row[] = $list->jabatan_petugas;
         $row[] = $list->no_telp_petugas;
@@ -189,7 +180,9 @@ class Data_Petugas extends Controller{
     $foto = implode(" ",$petugas->select('foto_petugas')->where(['id_petugas' => $id])->first());
     $target_foto = "../public/assets/img/profile_pic/{$foto}";
     if(is_file($target_foto) == TRUE){
-      unlink($target_foto);
+      if(!($foto == "DEFAULT-PIC")){
+        unlink($target_foto);
+      }
     }
 
     $petugas->delete_by_id($id);

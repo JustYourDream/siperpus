@@ -12,6 +12,7 @@ use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
 use Endroid\QrCode\Writer\PngWriter;
 use CodeIgniter\Controller;
 use App\Models\AnggotaModel;
+use App\Models\PetugasModel;
 use Config\Services;
 
 class DataAnggota_Petugas extends Controller{
@@ -87,10 +88,12 @@ class DataAnggota_Petugas extends Controller{
     ->setForegroundColor(new Color(0, 0, 0))
     ->setBackgroundColor(new Color(255, 255, 255));
 
+    $logo = Logo::create('../public/assets/img/brand/amgalogo.png')
+    ->setResizeToWidth(80);
     $this->_validate();
 
     //Save QR
-    $result = $writer->write($qrCode);
+    $result = $writer->write($qrCode, $logo);
     $result->saveToFile('../public/assets/qr_anggota/'.$request->getPost('NoAnggota').'-QR.png');
 
     $input = $this->validate([
@@ -228,7 +231,9 @@ class DataAnggota_Petugas extends Controller{
     $foto = implode(" ",$anggota->select('foto_anggota')->where(['no_anggota' => $id])->first());
     $target_foto = "../public/assets/img/profile_pic/{$foto}";
     if(is_file($target_foto) == TRUE){
-      unlink($target_foto);
+      if(!($foto == "FEMALE-PIC" || $foto == "MALE-PIC")){
+        unlink($target_foto);
+      }
     }
 
     $anggota->delete_by_id($id);
@@ -307,11 +312,11 @@ class DataAnggota_Petugas extends Controller{
           <style>
             .title{
               text-align: center;
-              font-size: 13px;
+              font-size: 10px;
             }
             .idCard{
-              width: 380px;
-              height: 210px;
+              width: 321px;
+              height: 207px;
               background-image: url("'.$cover.'");
               padding:10px;
               float: left;
@@ -320,12 +325,12 @@ class DataAnggota_Petugas extends Controller{
               border-radius: 10px;
             }
             .alert{
-              font-size: 11px;
+              font-size: 9.5px;
             }
           </style>
 
           <div class="idCard">
-            <table style="width: 100%; font-size: 12px" cellpadding="0" cellspacing="3">
+            <table style="width: 100%; font-size: 10px" cellpadding="0" cellspacing="3">
               <tr>
                 <td rowspan="3"><img src="'.$logo.'" height"60px" width="60px"></td>
                 <td class="title" colspan="3">KARTU PERPUSTAKAAN</td>
@@ -339,7 +344,7 @@ class DataAnggota_Petugas extends Controller{
               <!-- Content -->
               <tr></tr>
               <tr>
-                <td rowspan="7" width="90px"><img src="'.$foto.'" height="80px" width="80px"></td>
+                <td rowspan="7" width="90px"><img src="'.$foto.'" height="70px" width="70px"></td>
                 <td width="80px">Nama</td>
                 <td width="20px">:</td>
                 <td>'.$row['nama_anggota'].'</td>
@@ -406,7 +411,10 @@ class DataAnggota_Petugas extends Controller{
                 <td class="alert">Apabila kartu ini hilang/rusak, segera lapor ke petugas perpustakaan</td>
               </tr>
               <tr>
-                <td colspan="2" style="text-align: right;"><img src="'.$qr.'" height="75px" width="75px"></td>
+                <td colspan="2">&nbsp;</td>
+              </tr>
+              <tr>
+                <td colspan="2" style="text-align: right;"><img src="'.$qr.'" height="70px" width="70px"></td>
               </tr>
             </table>
           </div>
@@ -436,11 +444,11 @@ class DataAnggota_Petugas extends Controller{
           <style>
             .title{
               text-align: center;
-              font-size: 13px;
+              font-size: 10px;
             }
             .idCard{
-              width: 380px;
-              height: 210px;
+              width: 321px;
+              height: 207px;
               background-image: url("'.$cover.'");
               padding:10px;
               float: left;
@@ -449,12 +457,12 @@ class DataAnggota_Petugas extends Controller{
               border-radius: 10px;
             }
             .alert{
-              font-size: 11px;
+              font-size: 9.5px;
             }
           </style>
 
           <div class="idCard">
-            <table style="width: 100%; font-size: 12px" cellpadding="0" cellspacing="3">
+            <table style="width: 100%; font-size: 10px" cellpadding="0" cellspacing="3">
               <tr>
                 <td rowspan="3"><img src="'.$logo.'" height"60px" width="60px"></td>
                 <td class="title" colspan="3">KARTU PERPUSTAKAAN</td>
@@ -468,7 +476,7 @@ class DataAnggota_Petugas extends Controller{
               <!-- Content -->
               <tr></tr>
               <tr>
-                <td rowspan="7" width="90px"><img src="'.$foto.'" height="80px" width="80px"></td>
+                <td rowspan="7" width="90px"><img src="'.$foto.'" height="70px" width="70px"></td>
                 <td width="80px">Nama</td>
                 <td width="20px">:</td>
                 <td>'.$row['nama_anggota'].'</td>
@@ -535,7 +543,10 @@ class DataAnggota_Petugas extends Controller{
                 <td class="alert">Apabila kartu ini hilang/rusak, segera lapor ke petugas perpustakaan</td>
               </tr>
               <tr>
-                <td colspan="2" style="text-align: right;"><img src="'.$qr.'" height="75px" width="75px"></td>
+                <td colspan="2">&nbsp;</td>
+              </tr>
+              <tr>
+                <td colspan="2" style="text-align: right;"><img src="'.$qr.'" height="70px" width="70px"></td>
               </tr>
             </table>
           </div>
@@ -549,12 +560,37 @@ class DataAnggota_Petugas extends Controller{
   public function cetak_list(){
     $request = Services::request();
     $anggota = new AnggotaModel($request);
+    $petugas = new PetugasModel($request);
     $hasil = $anggota->get();
     $table = '';
+    $footer = '';
     $no = 1;
 
     $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'format' => 'A4-L']);
     $mpdf->curlAllowUnsafeSslRequests = true;
+
+		$nama_ketua = implode(" ",$petugas->select('nama_petugas')->where(['jabatan_petugas' => 'Ketua'])->first());
+		$id_ketua = implode(" ",$petugas->select('id_petugas')->where(['jabatan_petugas' => 'Ketua'])->first());
+		$footer .= '<div style="margin-top: 20px;">
+                  <table width="100%">
+                    <tr>
+                      <td rowspan="5" width="60%"></td>
+                      <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
+                    </tr>
+                    <tr>
+                      <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
+                    </tr>
+                    <tr>
+                      <td height="80px"></td>
+                    </tr>
+                    <tr>
+                      <td class="ttd"><b><u>'.$nama_ketua.'</u></b></td>
+                    </tr>
+                    <tr>
+                      <td class="ttd">NIP : '.$id_ketua.'</td>
+                    </tr>
+                  </table>
+                </div>';
 
     foreach ($hasil->getResult('array') as $row) {
       $tgl = $row['tanggal_lahir'];
@@ -644,26 +680,7 @@ class DataAnggota_Petugas extends Controller{
         </tbody>
       </table>
     </div>
-    <div style="margin-top: 20px;">
-      <table width="100%">
-        <tr>
-          <td rowspan="5" width="75%"></td>
-          <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
-        </tr>
-        <tr>
-          <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
-        </tr>
-        <tr>
-          <td height="80px"></td>
-        </tr>
-        <tr>
-          <td class="ttd"><b><u>Alfian Maulana</u></b></td>
-        </tr>
-        <tr>
-          <td class="ttd">NIP : 18.110.0018</td>
-        </tr>
-      </table>
-    </div>
+    '.$footer.'
     ');
 
     $mpdf->Output('Daftar_Anggota.pdf','I');

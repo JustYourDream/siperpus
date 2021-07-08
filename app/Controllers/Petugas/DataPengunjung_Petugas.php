@@ -2,6 +2,7 @@
 namespace App\Controllers\Petugas;
 use CodeIgniter\Controller;
 use App\Models\KunjunganModel;
+use App\Models\PetugasModel;
 use Mpdf\Mpdf;
 use Config\Services;
 
@@ -60,6 +61,7 @@ class DataPengunjung_Petugas extends Controller{
   public function cetak_data(){
     $request = Services::request();
     $pengunjung = new KunjunganModel($request);
+    $petugas = new PetugasModel($request);
     $table = '';
     $tabel_kunjungan = '';
     $header = '';
@@ -100,27 +102,28 @@ class DataPengunjung_Petugas extends Controller{
                   <hr><width="100" height="75"></hr>
                 </div>';
 
-    $footer .= '<div style="margin-top: 20px;">
-                  <table width="100%">
-                    <tr>
-                      <td rowspan="5" width="60%"></td>
-                      <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
-                    </tr>
-                    <tr>
-                      <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
-                    </tr>
-                    <tr>
-                      <td height="80px"></td>
-                    </tr>
-                    <tr>
-                      <td class="ttd"><b><u>Alfian Maulana</u></b></td>
-                    </tr>
-                    <tr>
-                      <td class="ttd">NIP : 18.110.0018</td>
-                    </tr>
-                  </table>
-                </div>';
-
+     $nama_ketua = implode(" ",$petugas->select('nama_petugas')->where(['jabatan_petugas' => 'Ketua'])->first());
+     $id_ketua = implode(" ",$petugas->select('id_petugas')->where(['jabatan_petugas' => 'Ketua'])->first());
+     $footer .= '<div style="margin-top: 20px;">
+                   <table width="100%">
+                     <tr>
+                       <td rowspan="5" width="60%"></td>
+                       <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
+                     </tr>
+                     <tr>
+                       <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
+                     </tr>
+                     <tr>
+                       <td height="80px"></td>
+                     </tr>
+                     <tr>
+                       <td class="ttd"><b><u>'.$nama_ketua.'</u></b></td>
+                     </tr>
+                     <tr>
+                       <td class="ttd">NIP : '.$id_ketua.'</td>
+                     </tr>
+                   </table>
+                 </div>';
     if($jurusan == NULL){
       $hasil = $pengunjung->where(['MONTH(tanggal_kunjungan)' => $bulan])->where(['YEAR(tanggal_kunjungan)' => $tahun])->get();
       foreach ($hasil->getResult('array') as $row) {

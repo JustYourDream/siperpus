@@ -78,7 +78,11 @@
                 <!-- Card body -->
                 <div class="card-body">
                   <div class="row">
-                    <?php foreach ($jml_eksemplar as $value): ?>
+                    <?php foreach ($jml_eksemplar as $value):
+                      if($value->eksemplar_buku == NULL){
+                        $value->eksemplar_buku = 0;
+                      }
+                    ?>
                     <div class="col">
                       <h5 class="card-title text-uppercase text-muted mb-0">Jumlah Eksemplar</h5>
                       <span class="h2 font-weight-bold mb-0"><?= $value->eksemplar_buku ?></span>

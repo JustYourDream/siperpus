@@ -9,7 +9,7 @@ class AnggotaModel extends Model {
   protected $table = "data_anggota";
   protected $column_order = array('no_anggota','nama_anggota','tempat_lahir','tanggal_lahir','jurusan_anggota','alamat_anggota','agama_anggota','jkel_anggota','foto_anggota','qr_anggota');
   protected $column_search = array('no_anggota','nama_anggota','jurusan_anggota');
-  protected $order = array('no_anggota' => 'asc');
+  protected $order = array('nama_anggota' => 'asc');
   protected $request;
   protected $db;
   protected $dt;

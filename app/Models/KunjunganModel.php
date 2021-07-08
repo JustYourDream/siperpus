@@ -9,7 +9,7 @@ class KunjunganModel extends Model {
   protected $table = "data_pengunjung";
   protected $column_order = array('no','no_anggota','nama','tanggal_kunjungan','jurusan_anggota');
   protected $column_search = array('no_anggota','nama','jurusan_anggota','tanggal_kunjungan');
-  protected $order = array('no_anggota' => 'asc');
+  protected $order = array('tanggal_kunjungan' => 'asc');
   protected $request;
   protected $db;
   protected $dt;

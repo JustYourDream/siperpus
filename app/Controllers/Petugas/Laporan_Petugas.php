@@ -5,6 +5,7 @@ use Mpdf\Mpdf;
 use CodeIgniter\Controller;
 use App\Models\InsertBukuModel;
 use App\Models\PengembalianModel;
+use App\Models\PetugasModel;
 use Config\Services;
 
 class Laporan_Petugas extends Controller
@@ -23,14 +24,41 @@ class Laporan_Petugas extends Controller
 			}
 		}
 	}
+
 	public function penambahan_bulanan()
 	{
 		$request = Services::request();
 		$db = \Config\Database::connect();
 		$buku = new InsertBukuModel($request);
+		$petugas = new PetugasModel($request);
+
+		$footer = '';
 
     $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'orientation' => 'P', 'format' => [210,330]]);
     $mpdf->curlAllowUnsafeSslRequests = true;
+
+		$nama_ketua = implode(" ",$petugas->select('nama_petugas')->where(['jabatan_petugas' => 'Ketua'])->first());
+		$id_ketua = implode(" ",$petugas->select('id_petugas')->where(['jabatan_petugas' => 'Ketua'])->first());
+		$footer .= '<div style="margin-top: 20px;">
+                  <table width="100%">
+                    <tr>
+                      <td rowspan="5" width="60%"></td>
+                      <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
+                    </tr>
+                    <tr>
+                      <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
+                    </tr>
+                    <tr>
+                      <td height="80px"></td>
+                    </tr>
+                    <tr>
+                      <td class="ttd"><b><u>'.$nama_ketua.'</u></b></td>
+                    </tr>
+                    <tr>
+                      <td class="ttd">NIP : '.$id_ketua.'</td>
+                    </tr>
+                  </table>
+                </div>';
 
 		$bulan = $request->getPost('Bulan');
 		$tahun = $request->getPost('year');
@@ -218,26 +246,7 @@ class Laporan_Petugas extends Controller
 			</tr>
 		</table>
 		</div>
-		<div style="margin-top: 40px;">
-      <table width="100%">
-        <tr>
-          <td rowspan="5" width="65%"></td>
-          <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
-        </tr>
-        <tr>
-          <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
-        </tr>
-        <tr>
-          <td height="80px"></td>
-        </tr>
-        <tr>
-          <td class="ttd"><b><u>Alfian Maulana</u></b></td>
-        </tr>
-        <tr>
-          <td class="ttd">NIP : 18.110.0018</td>
-        </tr>
-      </table>
-    </div>
+		'.$footer.'
 		');
 
     $mpdf->Output('Penambahan_Bulanan_('.$bulan.'-'.$tahun.').pdf','I');
@@ -248,9 +257,34 @@ class Laporan_Petugas extends Controller
 		$request = Services::request();
 		$db = \Config\Database::connect();
 		$buku = new InsertBukuModel($request);
+		$petugas = new PetugasModel($request);
 
     $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'orientation' => 'P', 'format' => [210,330]]);
     $mpdf->curlAllowUnsafeSslRequests = true;
+
+		$footer = '';
+		$nama_ketua = implode(" ",$petugas->select('nama_petugas')->where(['jabatan_petugas' => 'Ketua'])->first());
+		$id_ketua = implode(" ",$petugas->select('id_petugas')->where(['jabatan_petugas' => 'Ketua'])->first());
+		$footer .= '<div style="margin-top: 20px;">
+                  <table width="100%">
+                    <tr>
+                      <td rowspan="5" width="60%"></td>
+                      <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
+                    </tr>
+                    <tr>
+                      <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
+                    </tr>
+                    <tr>
+                      <td height="80px"></td>
+                    </tr>
+                    <tr>
+                      <td class="ttd"><b><u>'.$nama_ketua.'</u></b></td>
+                    </tr>
+                    <tr>
+                      <td class="ttd">NIP : '.$id_ketua.'</td>
+                    </tr>
+                  </table>
+                </div>';
 
 		$bulan = $request->getPost('monthRent');
 		$tahun = $request->getPost('yearRent');
@@ -373,26 +407,7 @@ class Laporan_Petugas extends Controller
 			</tr>
 		</table>
 		</div>
-		<div style="margin-top: 40px;">
-      <table width="100%">
-        <tr>
-          <td rowspan="5" width="65%"></td>
-          <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
-        </tr>
-        <tr>
-          <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
-        </tr>
-        <tr>
-          <td height="80px"></td>
-        </tr>
-        <tr>
-          <td class="ttd"><b><u>Alfian Maulana</u></b></td>
-        </tr>
-        <tr>
-          <td class="ttd">NIP : 18.110.0018</td>
-        </tr>
-      </table>
-    </div>
+		'.$footer.'
 		');
 
     $mpdf->Output('Peminjaman_Bulanan_('.$bulan.'-'.$tahun.').pdf','I');
@@ -403,9 +418,34 @@ class Laporan_Petugas extends Controller
 		$request = Services::request();
 		$db = \Config\Database::connect();
 		$buku = new InsertBukuModel($request);
+		$petugas = new PetugasModel($request);
 
     $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'orientation' => 'P', 'format' => [210,330]]);
     $mpdf->curlAllowUnsafeSslRequests = true;
+
+		$footer = '';
+		$nama_ketua = implode(" ",$petugas->select('nama_petugas')->where(['jabatan_petugas' => 'Ketua'])->first());
+		$id_ketua = implode(" ",$petugas->select('id_petugas')->where(['jabatan_petugas' => 'Ketua'])->first());
+		$footer .= '<div style="margin-top: 20px;">
+                  <table width="100%">
+                    <tr>
+                      <td rowspan="5" width="60%"></td>
+                      <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
+                    </tr>
+                    <tr>
+                      <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
+                    </tr>
+                    <tr>
+                      <td height="80px"></td>
+                    </tr>
+                    <tr>
+                      <td class="ttd"><b><u>'.$nama_ketua.'</u></b></td>
+                    </tr>
+                    <tr>
+                      <td class="ttd">NIP : '.$id_ketua.'</td>
+                    </tr>
+                  </table>
+                </div>';
 
 		$bulan = $request->getPost('monthAll');
 		$tahun = $request->getPost('years');
@@ -605,26 +645,7 @@ class Laporan_Petugas extends Controller
 			</tr>
 		</table>
 		</div>
-		<div style="margin-top: 40px;">
-      <table width="100%">
-        <tr>
-          <td rowspan="5" width="65%"></td>
-          <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
-        </tr>
-        <tr>
-          <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
-        </tr>
-        <tr>
-          <td height="80px"></td>
-        </tr>
-        <tr>
-          <td class="ttd"><b><u>Alfian Maulana</u></b></td>
-        </tr>
-        <tr>
-          <td class="ttd">NIP : 18.110.0018</td>
-        </tr>
-      </table>
-    </div>
+		'.$footer.'
 		');
 
     $mpdf->Output('Penambahan_Bulanan_('.$bulan.'-'.$tahun.').pdf','I');
@@ -635,9 +656,34 @@ class Laporan_Petugas extends Controller
 		$request = Services::request();
 		$db = \Config\Database::connect();
 		$buku = new InsertBukuModel($request);
+		$petugas = new PetugasModel($request);
 
     $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'orientation' => 'P', 'format' => [210,330]]);
     $mpdf->curlAllowUnsafeSslRequests = true;
+
+		$footer = '';
+		$nama_ketua = implode(" ",$petugas->select('nama_petugas')->where(['jabatan_petugas' => 'Ketua'])->first());
+		$id_ketua = implode(" ",$petugas->select('id_petugas')->where(['jabatan_petugas' => 'Ketua'])->first());
+		$footer .= '<div style="margin-top: 20px;">
+                  <table width="100%">
+                    <tr>
+                      <td rowspan="5" width="60%"></td>
+                      <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
+                    </tr>
+                    <tr>
+                      <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
+                    </tr>
+                    <tr>
+                      <td height="80px"></td>
+                    </tr>
+                    <tr>
+                      <td class="ttd"><b><u>'.$nama_ketua.'</u></b></td>
+                    </tr>
+                    <tr>
+                      <td class="ttd">NIP : '.$id_ketua.'</td>
+                    </tr>
+                  </table>
+                </div>';
 
 		$tahun = $request->getPost('yearAll');
 
@@ -835,26 +881,7 @@ class Laporan_Petugas extends Controller
 			</tr>
 		</table>
 		</div>
-		<div style="margin-top: 40px;">
-      <table width="100%">
-        <tr>
-          <td rowspan="5" width="65%"></td>
-          <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
-        </tr>
-        <tr>
-          <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
-        </tr>
-        <tr>
-          <td height="80px"></td>
-        </tr>
-        <tr>
-          <td class="ttd"><b><u>Alfian Maulana</u></b></td>
-        </tr>
-        <tr>
-          <td class="ttd">NIP : 18.110.0018</td>
-        </tr>
-      </table>
-    </div>
+		'.$footer.'
 		');
 
     $mpdf->Output('Penambahan_Tahunan_('.$tahun.').pdf','I');
@@ -865,9 +892,34 @@ class Laporan_Petugas extends Controller
 		$request = Services::request();
 		$db = \Config\Database::connect();
 		$kembali = new PengembalianModel($request);
+		$petugas = new PetugasModel($request);
 
     $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'orientation' => 'P', 'format' => [210,330]]);
     $mpdf->curlAllowUnsafeSslRequests = true;
+
+		$footer = '';
+		$nama_ketua = implode(" ",$petugas->select('nama_petugas')->where(['jabatan_petugas' => 'Ketua'])->first());
+		$id_ketua = implode(" ",$petugas->select('id_petugas')->where(['jabatan_petugas' => 'Ketua'])->first());
+		$footer .= '<div style="margin-top: 20px;">
+                  <table width="100%">
+                    <tr>
+                      <td rowspan="5" width="60%"></td>
+                      <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
+                    </tr>
+                    <tr>
+                      <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
+                    </tr>
+                    <tr>
+                      <td height="80px"></td>
+                    </tr>
+                    <tr>
+                      <td class="ttd"><b><u>'.$nama_ketua.'</u></b></td>
+                    </tr>
+                    <tr>
+                      <td class="ttd">NIP : '.$id_ketua.'</td>
+                    </tr>
+                  </table>
+                </div>';
 
 		$tahun = $request->getPost('yearAll');
 
@@ -998,26 +1050,7 @@ class Laporan_Petugas extends Controller
 			</tr>
 		</table>
 		</div>
-		<div style="margin-top: 40px;">
-      <table width="100%">
-        <tr>
-          <td rowspan="5" width="65%"></td>
-          <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
-        </tr>
-        <tr>
-          <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
-        </tr>
-        <tr>
-          <td height="80px"></td>
-        </tr>
-        <tr>
-          <td class="ttd"><b><u>Alfian Maulana</u></b></td>
-        </tr>
-        <tr>
-          <td class="ttd">NIP : 18.110.0018</td>
-        </tr>
-      </table>
-    </div>
+		'.$footer.'
 		');
 
     $mpdf->Output('Denda_Tahunan_('.$tahun.').pdf','I');

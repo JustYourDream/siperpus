@@ -276,37 +276,47 @@
     </div>
     <div id="row">
       <div class="col-md-3 col-sm-6 team">
-        <div class="thumbnail"> <img src="../home_page/img/team/01.png" alt="..." class="team-img">
+        <div class="thumbnail"> <img src="../home_page/img/team/kepsek.jpg" alt="..." class="team-img">
           <div class="caption">
-            <h4>Eren Yeager</h4>
+            <h4>Dra. Lutfiah Barliana, M.Pd</h4>
             <p>Kepala Sekolah</p>
           </div>
         </div>
       </div>
+      <?php
+      $query = $db->query('SELECT foto_petugas,nama_petugas FROM petugas WHERE jabatan_petugas = "Ketua"');
+      $result = $query->getResult();
+
+      foreach ($result as $row){
+      ?>
       <div class="col-md-3 col-sm-6 team">
-        <div class="thumbnail"> <img src="../home_page/img/team/02.png" alt="..." class="team-img">
+        <div class="thumbnail"> <img src="../assets/img/profile_pic/<?= $row->foto_petugas ?>" alt="..." class="team-img">
           <div class="caption">
-            <h4>Grisha Yeager</h4>
+            <h4><?= $row->nama_petugas ?></h4>
             <p>Kepala Perpustakaan</p>
           </div>
         </div>
       </div>
+      <?php
+      }
+      ?>
+      <?php
+      $query = $db->query('SELECT foto_petugas,nama_petugas FROM petugas WHERE jabatan_petugas = "Petugas"');
+      $result = $query->getResult();
+
+      foreach ($result as $row){
+      ?>
       <div class="col-md-3 col-sm-6 team">
-        <div class="thumbnail"> <img src="../home_page/img/team/03.png" alt="..." class="team-img">
+        <div class="thumbnail"> <img src="../assets/img/profile_pic/<?= $row->foto_petugas ?>" alt="..." class="team-img">
           <div class="caption">
-            <h4>Historia Reiss</h4>
+            <h4><?= $row->nama_petugas ?></h4>
             <p>Petugas Perpustakaan</p>
           </div>
         </div>
       </div>
-      <div class="col-md-3 col-sm-6 team">
-        <div class="thumbnail"> <img src="../home_page/img/team/04.png" alt="..." class="team-img">
-          <div class="caption">
-            <h4>Zeke Yeager</h4>
-            <p>Petugas Perpustakaan</p>
-          </div>
-        </div>
-      </div>
+      <?php
+      }
+      ?>
     </div>
   </div>
 </div>

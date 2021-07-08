@@ -12,6 +12,7 @@ use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
 use Endroid\QrCode\Writer\PngWriter;
 use CodeIgniter\Controller;
 use App\Models\ModelBuku;
+use App\Models\PetugasModel;
 use Config\Services;
 
 class DataBuku_Petugas extends Controller{
@@ -89,6 +90,9 @@ class DataBuku_Petugas extends Controller{
     ->setForegroundColor(new Color(0, 0, 0))
     ->setBackgroundColor(new Color(255, 255, 255));
 
+    $logo = Logo::create('../public/assets/img/brand/amgalogo.png')
+    ->setResizeToWidth(80);
+
     $data = array(
       'no_induk' => $request->getPost('NoInduk'),
       'isbn' => $request->getPost('Isbn'),
@@ -104,7 +108,7 @@ class DataBuku_Petugas extends Controller{
     );
 
     $insert = $buku->save_buku($data);
-    $result = $writer->write($qrCode);
+    $result = $writer->write($qrCode, $logo);
     $result->saveToFile('../public/assets/qr_code/'.$request->getPost('NoInduk').'-QR.png');
     echo json_encode(array("status" => TRUE));
   }
@@ -217,12 +221,37 @@ class DataBuku_Petugas extends Controller{
   public function cetak_list(){
     $request = Services::request();
     $buku = new ModelBuku($request);
+    $petugas = new PetugasModel($request);
     $hasil = $buku->get();
     $table = '';
+    $footer = '';
     $no = 1;
 
     $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'format' => [210, 330], 'orientation' => 'L']);
     $mpdf->curlAllowUnsafeSslRequests = true;
+
+		$nama_ketua = implode(" ",$petugas->select('nama_petugas')->where(['jabatan_petugas' => 'Ketua'])->first());
+		$id_ketua = implode(" ",$petugas->select('id_petugas')->where(['jabatan_petugas' => 'Ketua'])->first());
+		$footer .= '<div style="margin-top: 20px;">
+                  <table width="100%">
+                    <tr>
+                      <td rowspan="5" width="60%"></td>
+                      <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
+                    </tr>
+                    <tr>
+                      <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
+                    </tr>
+                    <tr>
+                      <td height="80px"></td>
+                    </tr>
+                    <tr>
+                      <td class="ttd"><b><u>'.$nama_ketua.'</u></b></td>
+                    </tr>
+                    <tr>
+                      <td class="ttd">NIP : '.$id_ketua.'</td>
+                    </tr>
+                  </table>
+                </div>';
 
     foreach ($hasil->getResult('array') as $row) {
       $table .='<tr>
@@ -314,26 +343,7 @@ class DataBuku_Petugas extends Controller{
         </tbody>
       </table>
     </div>
-    <div style="margin-top: 20px;">
-      <table width="100%">
-        <tr>
-          <td rowspan="5" width="75%"></td>
-          <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
-        </tr>
-        <tr>
-          <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
-        </tr>
-        <tr>
-          <td height="80px"></td>
-        </tr>
-        <tr>
-          <td class="ttd"><b><u>Alfian Maulana</u></b></td>
-        </tr>
-        <tr>
-          <td class="ttd">NIP : 18.110.0018</td>
-        </tr>
-      </table>
-    </div>
+    '.$footer.'
     ');
 
     $mpdf->Output('Daftar_Buku.pdf','I');
@@ -378,7 +388,7 @@ class DataBuku_Petugas extends Controller{
                   </tr>';
       }
       $mpdf->WriteHTML('
-      <table>
+      <table cellspacing = "10">
         <tbody>
           '.$table.'
         </tbody>

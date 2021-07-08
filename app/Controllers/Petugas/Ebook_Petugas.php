@@ -12,6 +12,7 @@ use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
 use Endroid\QrCode\Writer\PngWriter;
 use CodeIgniter\Controller;
 use App\Models\EbookModel;
+use App\Models\PetugasModel;
 use Config\Services;
 
 class Ebook_Petugas extends Controller{
@@ -95,8 +96,11 @@ class Ebook_Petugas extends Controller{
     ->setForegroundColor(new Color(0, 0, 0))
     ->setBackgroundColor(new Color(255, 255, 255));
 
+    $logo = Logo::create('../public/assets/img/brand/amgalogo.png')
+    ->setResizeToWidth(80);
+
     //Save QR
-    $result = $writer->write($qrCode);
+    $result = $writer->write($qrCode, $logo);
     $result->saveToFile('../public/assets/eBook/QR/'.$request->getPost('NoEbook').'-QR.png');
 
     //Validasi File & Sampul
@@ -299,12 +303,37 @@ class Ebook_Petugas extends Controller{
   public function cetak_list(){
     $request = Services::request();
     $ebook = new EbookModel($request);
+    $petugas = new PetugasModel($request);
     $hasil = $ebook->get();
     $table = '';
     $no = 1;
 
     $mpdf = new Mpdf(['debug'=>FALSE,'mode' => 'utf-8', 'format' => 'A4-L']);
     $mpdf->curlAllowUnsafeSslRequests = true;
+
+    $footer = '';
+		$nama_ketua = implode(" ",$petugas->select('nama_petugas')->where(['jabatan_petugas' => 'Ketua'])->first());
+		$id_ketua = implode(" ",$petugas->select('id_petugas')->where(['jabatan_petugas' => 'Ketua'])->first());
+		$footer .= '<div style="margin-top: 20px;">
+                  <table width="100%">
+                    <tr>
+                      <td rowspan="5" width="60%"></td>
+                      <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
+                    </tr>
+                    <tr>
+                      <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
+                    </tr>
+                    <tr>
+                      <td height="80px"></td>
+                    </tr>
+                    <tr>
+                      <td class="ttd"><b><u>'.$nama_ketua.'</u></b></td>
+                    </tr>
+                    <tr>
+                      <td class="ttd">NIP : '.$id_ketua.'</td>
+                    </tr>
+                  </table>
+                </div>';
 
     foreach ($hasil->getResult('array') as $row) {
       $table .='<tr>
@@ -389,24 +418,7 @@ class Ebook_Petugas extends Controller{
       </table>
     </div>
     <div style="margin-top: 20px;">
-      <table width="100%">
-        <tr>
-          <td rowspan="5" width="75%"></td>
-          <td class="ttd">Ampelgading, '.date('d-m-Y').'</td>
-        </tr>
-        <tr>
-          <td class="ttd">Ketua Perpustakaan "Inti Gading"</td>
-        </tr>
-        <tr>
-          <td height="80px"></td>
-        </tr>
-        <tr>
-          <td class="ttd"><b><u>Alfian Maulana</u></b></td>
-        </tr>
-        <tr>
-          <td class="ttd">NIP : 18.110.0018</td>
-        </tr>
-      </table>
+      '.$footer.'
     </div>
     ');
 

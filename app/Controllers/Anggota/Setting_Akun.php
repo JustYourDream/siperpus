@@ -230,15 +230,15 @@ class Setting_Akun extends Controller
       $logo = base_url('assets/img/template_id/logo.png');
       $tgl = $row['tanggal_lahir'];
       $tgl_convert = date('d-m-Y', strtotime($tgl));
-      $mpdf->WriteHTML('
+			$mpdf->WriteHTML('
           <style>
             .title{
               text-align: center;
-              font-size: 13px;
+              font-size: 10px;
             }
             .idCard{
-              width: 380px;
-              height: 210px;
+              width: 321px;
+              height: 207px;
               background-image: url("'.$cover.'");
               padding:10px;
               float: left;
@@ -247,12 +247,12 @@ class Setting_Akun extends Controller
               border-radius: 10px;
             }
             .alert{
-              font-size: 11px;
+              font-size: 9.5px;
             }
           </style>
 
           <div class="idCard">
-            <table style="width: 100%; font-size: 12px" cellpadding="0" cellspacing="3">
+            <table style="width: 100%; font-size: 10px" cellpadding="0" cellspacing="3">
               <tr>
                 <td rowspan="3"><img src="'.$logo.'" height"60px" width="60px"></td>
                 <td class="title" colspan="3">KARTU PERPUSTAKAAN</td>
@@ -266,7 +266,7 @@ class Setting_Akun extends Controller
               <!-- Content -->
               <tr></tr>
               <tr>
-                <td rowspan="7" width="90px"><img src="'.$foto.'" height="80px" width="80px"></td>
+                <td rowspan="7" width="90px"><img src="'.$foto.'" height="70px" width="70px"></td>
                 <td width="80px">Nama</td>
                 <td width="20px">:</td>
                 <td>'.$row['nama_anggota'].'</td>
@@ -333,7 +333,10 @@ class Setting_Akun extends Controller
                 <td class="alert">Apabila kartu ini hilang/rusak, segera lapor ke petugas perpustakaan</td>
               </tr>
               <tr>
-                <td colspan="2" style="text-align: right;"><img src="'.$qr.'" height="75px" width="75px"></td>
+                <td colspan="2">&nbsp;</td>
+              </tr>
+              <tr>
+                <td colspan="2" style="text-align: right;"><img src="'.$qr.'" height="70px" width="70px"></td>
               </tr>
             </table>
           </div>
