@@ -59,6 +59,7 @@ $routes->get('anggota/baca_buku', 'Anggota/Baca_Buku::index',['filter' => 'auth'
 $routes->get('anggota/info_peminjaman', 'Anggota/Info_Peminjaman::index',['filter' => 'auth']);
 $routes->get('anggota/info_pengembalian', 'Anggota/Info_Pengembalian::index',['filter' => 'auth']);
 $routes->get('anggota/setting_akun', 'Anggota/Setting_Akun::index',['filter' => 'auth']);
+$routes->get('anggota/baca_buku/view_buku', 'Anggota/Baca_Buku::view_buku',['filter' => 'auth']);
 
 
 /*

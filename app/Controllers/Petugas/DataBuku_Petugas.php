@@ -13,6 +13,7 @@ use Endroid\QrCode\Writer\PngWriter;
 use CodeIgniter\Controller;
 use App\Models\ModelBuku;
 use App\Models\PetugasModel;
+use App\Models\InsertBukuModel;
 use Config\Services;
 
 class DataBuku_Petugas extends Controller{
@@ -125,6 +126,7 @@ class DataBuku_Petugas extends Controller{
   {
     $request = Services::request();
     $buku = new ModelBuku($request);
+    $insert = new InsertBukuModel($request);
     $this->_validate();
     $data = array(
       'isbn' => $request->getPost('Isbn'),
@@ -137,7 +139,16 @@ class DataBuku_Petugas extends Controller{
       'no_rak' => $request->getPost('Rak'),
       'kategori_buku' => $request->getPost('Kategori'),
     );
+
+    //Update data insert_buku
+    $data1 = array(
+      'judul_buku' => $request->getPost('Judul'),
+      'kategori_buku' => $request->getPost('Kategori'),
+      'eksemplar_buku' => $request->getPost('Eksemplar')
+    );
+
     $buku->buku_update(array('no_induk' => $request->getPost('NoInduk')), $data);
+    $insert->buku_update(array('no_induk' => $request->getPost('NoInduk')), $data1);
     echo json_encode(array("status" => TRUE));
   }
   public function ajax_delete($id)

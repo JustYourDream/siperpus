@@ -20,4 +20,11 @@ class InsertBukuModel extends Model {
     $this->request = $request;
     $this->dt = $this->db->table($this->table);
   }
+
+  public function buku_update($where, $data)
+  {
+    $this->dt->update($data, $where);
+    $query = $this->dt->get();
+    return $query->getResult();
+  }
 }

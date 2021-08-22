@@ -63,7 +63,7 @@
                       <img class="card-img-top" src="<?= base_url('assets/eBook/Cover/'.$data['cover_ebook']); ?>" alt="Card image cap">
                       <div class="card-body">
                         <h5 class="card-title" align="center" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><strong><?= $data['judul_ebook']; ?></strong></h5>
-                        <a href="<?= base_url('assets/vendor/pdf.js/web/viewer.html?file=').base_url('assets/eBook/PDF/'.$data['file_ebook']); ?>" target="_blank" class="btn btn-default btn-block" title="<?= $data['judul_ebook']; ?>">Baca</a>
+                        <a href="<?= base_url('anggota/baca_buku/view_buku/'.$data['id_ebook']) ?>" target="_blank" class="btn btn-default btn-block" title="<?= $data['judul_ebook']; ?>">Baca</a>
                       </div>
                     </div>
                   </div>

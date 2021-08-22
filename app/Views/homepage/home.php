@@ -104,31 +104,12 @@
 <div id="about">
   <div class="container">
     <div class="row">
-      <div class="col-xs-12 col-md-6"> <img src="../home_page/img/about.jpg" class="img-responsive" alt=""> </div>
+      <div class="col-xs-12 col-md-6"> <img src="../home_page/img/perpus.jpg" class="img-responsive" alt=""> </div>
       <div class="col-xs-12 col-md-6">
         <div class="about-text">
           <h2>Profil Perpustakaan</h2>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-          <div class="list-style">
-            <div class="col-lg-6 col-sm-6 col-xs-12">
-              <h3>VISI</h3>
-              <ul>
-                <li>Lorem ipsum dolor</li>
-                <li>Tempor incididunt</li>
-                <li>Lorem ipsum dolor</li>
-                <li>Incididunt ut labore</li>
-              </ul>
-            </div>
-            <div class="col-lg-6 col-sm-6 col-xs-12">
-              <h3>MISI</h3>
-              <ul>
-                <li>Aliquip ex ea commodo</li>
-                <li>Lorem ipsum dolor</li>
-                <li>Exercitation ullamco</li>
-                <li>Lorem ipsum dolor</li>
-              </ul>
-            </div>
-          </div>
+          <p style="text-align: justify; text-indent: 0.5in;">Perpustakaan <b>INTI GADING</b> merupakan perpustakaan yang ada pada SMK Negeri 1 Ampelgading, perpustakaan ini dibangun dengan tujuan untuk memberikan berbagai macam informasi, pengetahuan, dan bahan pustaka guna mendukung kegiatan belajar mengajar di SMK Negeri 1 Ampelgading. Bahan pustaka di perpustakaan ini dapat dibaca maupun dipinjam secara langsung oleh siswa-siswi SMK Negeri 1 Ampelgading.</p>
+
         </div>
       </div>
     </div>
@@ -146,7 +127,7 @@
 
         //QUERY
         $query_buku = $db->table('data_buku')->selectCount('no_induk');
-        $query_eksemplar = $db->table('data_buku')->selectSum('eksemplar_buku')->get();
+        $query_eksemplar = $db->table('insert_buku')->selectSum('eksemplar_buku')->get();
         $query_ebook = $db->table('data_ebook')->selectCount('id_ebook');
         $query_anggota = $db->table('data_anggota')->selectCount('no_anggota');
         $query_peminjaman = $db->table('data_peminjaman')->selectCount('id_peminjaman');
@@ -222,7 +203,7 @@
       <div class="col-lg-3 col-md-3 col-sm-6">
         <div class="panel panel-default">
           <div class="panel-body">
-            <a href="<?= base_url('assets/vendor/pdf.js/web/viewer.html?file=').base_url('assets/eBook/PDF/'.$row->file_ebook); ?>" target="_blank" style="margin-bottom: 0px;" class="thumbnail" title="<?= $row->judul_ebook; ?>">
+            <a href="<?= base_url('view_ebook/view/'.$row->id_ebook); ?>" target="_blank" style="margin-bottom: 0px;" class="thumbnail" title="<?= $row->judul_ebook; ?>">
               <img src="<?= base_url('assets/eBook/Cover/'.$row->cover_ebook); ?>" style="height: auto; width: 100%;">
             </a>
           </div>

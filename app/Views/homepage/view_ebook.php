@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SIPERPUS | Cari Ebook</title>
+<title>SIPERPUS | Baca Ebook</title>
 <meta name="description" content="">
 <meta name="author" content="">
 
@@ -46,52 +46,14 @@
 </nav>
 
 <!-- Testimonials Section -->
-<div id="testimonials">
+<div id="testimonials" width="100%">
   <div class="container">
     <div class="section-title text-center" style="margin-bottom: 20px; padding-top: 20px">
-      <h2>Cari E-book</h2>
+      <h2><?= $judul_ebook; ?></h2>
     </div>
     <div class="row" align="center" style="margin-bottom: 20px;">
-      <div class="col-md-12">
-        <div class="input-group">
-          <?php
-          $form_keyword = [
-            'type'  => 'text',
-            'name'  => 'keyword',
-            'id'    => 'keyword',
-            'value' => $keyword,
-            'class' => 'form-control custom-input',
-            'placeholder' => 'Masukkan kata kunci...'
-          ];
-          echo form_input($form_keyword);
-          ?>
-          <div class="input-group-btn">
-            <button class="btn btn-custom" type="button" id="search">
-              <span class="fa fa-search"></span> CARI
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row" style="padding-top: 20px;">
-      <?php foreach ($ebook as $key => $data): ?>
-      <div class="col-lg-3 col-md-3 col-sm-6">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <a href="<?= base_url('view_ebook/view/'.$data['id_ebook']); ?>" target="_blank" style="margin-bottom: 0px;" class="thumbnail" title="<?= $data['judul_ebook']; ?>">
-              <img src="<?= base_url('assets/eBook/Cover/'.$data['cover_ebook']); ?>" style="height: auto; width: 100%;">
-            </a>
-          </div>
-          <div class="panel-footer" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" align="center">
-            <?= $data['judul_ebook']; ?>
-          </div>
-        </div>
-      </div>
-      <?php endforeach; ?>
-    </div>
-    <div class="row">
-      <div class="col-md-12 text-center">
-        <?= $pager->links('ebook', 'bootstrap3_pagination') ?>
+      <div class="col-md-8 col-md-offset-2">
+        <iframe id="pdf-js-viewer" src="<?= base_url('assets/vendor/pdf.js/web/viewer.html?file=').base_url('assets/eBook/PDF/'.$file_ebook); ?>" title="webviewer" frameborder="0" width="100%" height="800"></iframe>
       </div>
     </div>
   </div>
@@ -112,16 +74,5 @@
 <script type="text/javascript" src="<?= base_url('../home_page/js/contact_me.js') ?>"></script>
 <script type="text/javascript" src="<?= base_url('../home_page/js/main.js') ?>"></script>
 <script type="text/javascript" src="<?= base_url('../home_page/js/counter.js') ?>"></script>
-<script>
-$(document).ready(function(){
-    $("#search").click(function(){
-        filter();
-    });
-    var filter = function(){
-        var keyword = $("#keyword").val();
-        window.location.replace("ebook?keyword="+keyword);
-    }
-});
-</script>
 </body>
 </html>

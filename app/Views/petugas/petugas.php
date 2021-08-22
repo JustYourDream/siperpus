@@ -33,7 +33,7 @@
                   $query_buku = $db->table('data_buku')->selectCount('no_induk');
                   $query_buku_perbulan = $db->table('insert_buku')->selectCount('no_induk')->where(['MONTH(tanggal_insert)' => date('m')]);
 
-                  $query_eksemplar = $db->table('data_buku')->selectSum('eksemplar_buku')->get();
+                  $query_eksemplar = $db->table('insert_buku')->selectSum('eksemplar_buku')->get();
                   $query_eksemplar_perbulan = $db->table('insert_buku')->selectSum('eksemplar_buku')->where(['MONTH(tanggal_insert)' => date('m')])->get();
 
                   $query_peminjaman = $db->table('data_peminjaman')->selectCount('id_peminjaman');
